@@ -1,6 +1,5 @@
 resource "qwiltcdn_site" "example" {
   site_name      = "Terraform Advanced Example Site 1"
-  routing_method = "HTTP"
 }
 
 resource "qwiltcdn_site_configuration" "example" {

@@ -13,7 +13,6 @@ provider "qwiltcdn" {
 
 resource "qwiltcdn_site" "example" {
   site_name      = ""
-  routing_method = ""
 }
 
 resource "qwiltcdn_site_configuration" "example" {

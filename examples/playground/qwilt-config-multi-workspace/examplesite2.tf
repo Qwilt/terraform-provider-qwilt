@@ -1,6 +1,5 @@
 resource "qwiltcdn_site" "example2" {
   site_name      = terraform.workspace == "prod" ? "Terraform Advanced Workspace Example Site 2" : "Terraform Advanced Workspace Example Site 2 Testing"
-  routing_method = "HTTP"
 }
 
 resource "qwiltcdn_site_configuration" "example2" {
