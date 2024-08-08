@@ -1,0 +1,25 @@
+{
+	"hosts": [
+		{
+			"host": "tfm.example.com",
+			"host-metadata": {
+				"metadata": [
+					{
+						"generic-metadata-type": "MI.SourceMetadataExtended",
+						"generic-metadata-value": {
+							"sources": [
+								{
+									"protocol": "https/1.1",
+									"endpoints": [
+										"origin-host.example.com"
+									]
+								}
+							]
+						}
+					}
+				],
+				"paths": []
+			}
+		}
+	]
+}
