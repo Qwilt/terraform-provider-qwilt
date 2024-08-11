@@ -101,8 +101,7 @@ func (r *siteResource) Create(ctx context.Context, req resource.CreateRequest, r
 
 	// Generate API request body from plan
 	siteCreate := api.SiteCreateRequest{
-		SiteName:      plan.SiteName.ValueString(),
-		RoutingMethod: "DNS",
+		SiteName: plan.SiteName.ValueString(),
 	}
 
 	// Create new site

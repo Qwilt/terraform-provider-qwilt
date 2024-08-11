@@ -12,7 +12,7 @@ provider "qwiltcdn" {
 }
 
 resource "qwiltcdn_site" "example" {
-  site_name      = ""
+  site_name = ""
 }
 
 resource "qwiltcdn_site_configuration" "example" {

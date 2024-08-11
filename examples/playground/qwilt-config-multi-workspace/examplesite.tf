@@ -1,5 +1,5 @@
 resource "qwiltcdn_site" "example" {
-  site_name      = terraform.workspace == "prod" ? "Terraform Advanced Workspace Example Site 1" : "Terraform Advanced Workspace Example Site 1 Testing"
+  site_name = terraform.workspace == "prod" ? "Terraform Advanced Workspace Example Site 1" : "Terraform Advanced Workspace Example Site 1 Testing"
 }
 
 resource "qwiltcdn_site_configuration" "example" {

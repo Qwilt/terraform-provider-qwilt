@@ -1,5 +1,5 @@
 resource "qwiltcdn_site" "example2" {
-  site_name      = "Terraform Advanced Example Site 2"
+  site_name = "Terraform Advanced Example Site 2"
 }
 
 resource "qwiltcdn_site_configuration" "example2" {
