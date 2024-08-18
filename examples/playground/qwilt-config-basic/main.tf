@@ -12,7 +12,7 @@ provider "qwiltcdn" {
 }
 
 resource "qwiltcdn_site" "example" {
-  site_name = "Terraform Basic Example Site 88"
+  site_name      = "Terraform Basic Example Site"
 }
 
 resource "qwiltcdn_site_configuration" "example" {
@@ -22,7 +22,7 @@ resource "qwiltcdn_site_configuration" "example" {
 {
 	"hosts": [
 		{
-			"host": "tf1.example.com",
+			"host": "tf.example.com",
 			"host-metadata": {
 				"metadata": [
 					{
@@ -58,21 +58,21 @@ resource "qwiltcdn_certificate" "example" {
 resource "qwiltcdn_site_activation" "example" {
   site_id        = qwiltcdn_site_configuration.example.site_id
   revision_id    = qwiltcdn_site_configuration.example.revision_id
-  certificate_id = null
+  certificate_id = qwiltcdn_certificate.example.cert_id
 }
 
-#output "examplesite" {
-#  value = qwiltcdn_site.example
-#}
-#
-#output "examplesiteconfig" {
-#  value = qwiltcdn_site_configuration.example
-#}
-#
-#output "examplecertificate" {
-#  value = qwiltcdn_certificate.example
-#}
-#
-#output "examplesiteactivation" {
-#  value = qwiltcdn_site_activation.example
-#}
+output "examplesite" {
+  value = qwiltcdn_site.example
+}
+
+output "examplesiteconfig" {
+  value = qwiltcdn_site_configuration.example
+}
+
+output "examplecertificate" {
+  value = qwiltcdn_certificate.example
+}
+
+output "examplesiteactivation" {
+  value = qwiltcdn_site_activation.example
+}
