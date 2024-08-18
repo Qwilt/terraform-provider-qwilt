@@ -18,6 +18,78 @@ import (
 	"time"
 )
 
+func TestSiteActivationResourceSchema(t *testing.T) {
+
+	t.Logf("Starting TestSiteActivationResourceSchema test")
+
+	//os.Setenv("TF_CLI_CONFIG_FILE", "/Users/efrats/.terraformrc")
+
+	tfBinaryPath := "terraform"
+
+	// Create a temporary directory to hold the Terraform configuration
+	tempDir, err := os.MkdirTemp("", "tf-exec-example")
+	if err != nil {
+		log.Fatalf("Failed to create temp directory: %s", err)
+	}
+	defer os.RemoveAll(tempDir) // Clean up the temporary directory after the test
+
+	// Write the Terraform configuration to a file in the temporary directory
+	tfFilePath := tempDir + "/main.tf"
+
+	// Initialize a new Terraform instance
+	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
+	assert.Equal(t, nil, err)
+
+	var curSiteName string
+	var curHostName string
+	generateSiteName(&curSiteName)
+	generateHostName(&curHostName)
+
+	var changeDesc = fmt.Sprintf("Terraform plugin unit testing description for site %s", curSiteName)
+
+	defer os.RemoveAll(tempDir) // Clean up the temporary directory after the test
+
+	test_id := 43
+
+	terraformBuilder := NewTerraformConfigBuilder()
+	terraformBuilder.SiteResource("test", generateSiteName(&curSiteName))
+	terraformBuilder.SiteConfigResource("test", curHostName, changeDesc)
+	terraformBuilder.SiteActivationResourceWithCert("test", &test_id, nil)
+	terraformConfig := terraformBuilder.Build()
+
+	t.Logf("config: %s", terraformConfig)
+	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
+	assert.Equal(t, nil, err)
+
+	//check that plan is OK
+	plan, err := tf.Plan(context.Background())
+	assert.Nil(t, err)
+	assert.True(t, plan) //diffs
+
+	terraformBuilder.SiteActivationResourceWithCert("test", nil, &test_id)
+	terraformConfig = terraformBuilder.Build()
+
+	t.Logf("config: %s", terraformConfig)
+	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
+	assert.Equal(t, nil, err)
+
+	//check that plan is OK
+	plan, err = tf.Plan(context.Background())
+	assert.Nil(t, err)
+	assert.True(t, plan) //diffs
+
+	terraformBuilder.SiteActivationResourceWithCert("test", &test_id, &test_id)
+	terraformConfig = terraformBuilder.Build()
+
+	t.Logf("config: %s", terraformConfig)
+	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
+	assert.Equal(t, nil, err)
+
+	//check that plan is OK
+	plan, err = tf.Plan(context.Background())
+	assert.NotNil(t, err) //should fail due to MutualExclusion
+}
+
 func TestSiteActivationResource(t *testing.T) {
 
 	t.Logf("Starting TestSiteActivationResource test")

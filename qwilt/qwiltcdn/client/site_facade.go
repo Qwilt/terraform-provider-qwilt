@@ -17,6 +17,7 @@ type SiteClientFacade struct {
 	*SiteClient
 	*SiteConfigurationClient
 	*SiteCertificatesClient
+	*CertificatesClient
 	ApiEndpoint string
 }
 
@@ -27,6 +28,7 @@ func NewSiteFacadeClient(target string, client *Client) *SiteClientFacade {
 		SiteClient:              NewSiteClient(target, client),
 		SiteConfigurationClient: NewSiteConfigurationClient(target, client),
 		SiteCertificatesClient:  NewSiteCertificatesClient(target, client),
+		CertificatesClient:      NewCertificatesClient(client),
 	}
 	return &c
 }

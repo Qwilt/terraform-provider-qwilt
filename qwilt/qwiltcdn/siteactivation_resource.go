@@ -18,6 +18,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"strconv"
 	"strings"
@@ -69,8 +71,18 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Required:    true,
 			},
 			"certificate_id": schema.Int64Attribute{
-				Description: "The ID of the certificate you want to link to this site.",
+				Description: "The ID of the certificate you want to associate to this site. Mutually exclusive with csr_id",
 				Optional:    true,
+				Validators: []validator.Int64{
+					NewMutualExclusiveValidator(path.Root("csr_id")),
+				},
+			},
+			"csr_id": schema.Int64Attribute{
+				Description: "The ID of the CSR you want to associate to this site. Mutually exclusive with certificate_id",
+				Optional:    true,
+				Validators: []validator.Int64{
+					NewMutualExclusiveValidator(path.Root("certificate_id")),
+				},
 			},
 			"publish_id": schema.StringAttribute{
 				Description: "The ID of the publishing operation for which you want to retrieve metadata.",
@@ -237,7 +249,7 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 		)
 		return
 	}
-	certsResp, err := r.client.GetSiteCertificates(state.SiteId.ValueString(), "")
+	siteCertsResp, err := r.client.GetSiteCertificates(state.SiteId.ValueString(), "")
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Getting Certificates for Qwilt CDN Site",
@@ -247,8 +259,12 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	var certId int64
-	if len(certsResp) > 0 {
-		certId, err = strconv.ParseInt(certsResp[0].CertificateId, 10, 64)
+	autoManagedCsr := false
+	var csrId int64 = 0
+
+	if len(siteCertsResp) > 0 {
+		certId, err = strconv.ParseInt(siteCertsResp[0].CertificateId, 10, 64)
+		tflog.Info(ctx, "found associated certificate "+siteCertsResp[0].CertificateId+" for site "+state.SiteId.ValueString())
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Converting Certificate Id",
@@ -256,17 +272,40 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 			)
 			return
 		}
+
+		certsResp, err := r.client.GetCertificate(types.Int64Value(certId), false)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting Certificates for Qwilt CDN Site",
+				"Could not get certificate details for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+
+		if certsResp.CsrId != nil {
+			csrResp, err := r.client.GetCertificateSigningRequest(types.Int64Value(*certsResp.CsrId))
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error Getting CSR for Qwilt CDN Site",
+					"Could not get certificate signing request details for Qwilt CDN Site, unexpected error: "+err.Error(),
+				)
+				return
+			}
+			if csrResp.AutoManagedCsr {
+				csrId = *certsResp.CsrId
+				autoManagedCsr = true
+			}
+		}
 	}
 
 	// Overwrite items with refreshed state
-	state = cdnmodel.SiteActivationBuilder{}.
+	stateBuilder := cdnmodel.SiteActivationBuilder{}.
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).
 		SiteId(state.SiteId.ValueString()).
 		Username(pubOpResp.Username).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
-		CertificateId(certId).
 		PublishState(pubOpResp.PublishState).
 		OperationType(pubOpResp.OperationType).
 		Target(pubOpResp.Target).
@@ -274,9 +313,15 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 		AcceptanceStatus(pubOpResp.PublishAcceptanceStatus).
 		OperationType(pubOpResp.OperationType).
 		IsActive(pubOpResp.IsActive).
-		ValidateErrDetails(pubOpResp.ValidatorsErrDetails).
-		//StatusLine(pubOpResp.StatusLine).
-		Build()
+		ValidateErrDetails(pubOpResp.ValidatorsErrDetails)
+
+	if autoManagedCsr {
+		stateBuilder.CsrId(csrId)
+	} else {
+		stateBuilder.CertificateId(certId)
+	}
+
+	state = stateBuilder.Build()
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)

@@ -11,6 +11,7 @@ type SiteActivation struct {
 	SiteId                  types.String `tfsdk:"site_id"`
 	RevisionId              types.String `tfsdk:"revision_id"`
 	CertificateId           types.Int64  `tfsdk:"certificate_id"`
+	CsrId                   types.Int64  `tfsdk:"csr_id"`
 	PublishId               types.String `tfsdk:"publish_id"`
 	CreationTimeMilli       types.Int64  `tfsdk:"creation_time_milli"`
 	OwnerOrgId              types.String `tfsdk:"owner_org_id"`
@@ -52,6 +53,14 @@ func (b SiteActivationBuilder) CertificateId(value int64) SiteActivationBuilder 
 		b.activation.CertificateId = types.Int64Value(value)
 	} else {
 		b.activation.CertificateId = types.Int64Null()
+	}
+	return b
+}
+func (b SiteActivationBuilder) CsrId(value int64) SiteActivationBuilder {
+	if value != 0 {
+		b.activation.CsrId = types.Int64Value(value)
+	} else {
+		b.activation.CsrId = types.Int64Null()
 	}
 	return b
 }

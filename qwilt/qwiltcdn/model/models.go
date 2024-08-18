@@ -65,4 +65,10 @@ type CertificateDataModel struct {
 	Domain      types.String `tfsdk:"domain"`
 	Status      types.String `tfsdk:"status"`
 	Type        types.String `tfsdk:"type"`
+	CsrId       types.Int64  `tfsdk:"csr_id"`
+}
+
+type CsrDataModel struct {
+	CsrId          types.Int64 `tfsdk:"csr_id"`
+	AutoManagedCsr types.Bool  `tfsdk:"auto_manged_csr"`
 }

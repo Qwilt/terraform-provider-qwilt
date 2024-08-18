@@ -12,6 +12,7 @@ import (
 	"fmt"
 	tfjson "github.com/hashicorp/terraform-json"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -128,6 +129,25 @@ resource "qwiltcdn_site_activation" "%s" {
 		site_id = qwiltcdn_site_configuration.%s.site_id
 		revision_id = qwiltcdn_site_configuration.%s.revision_id
 	}`, name, name, name)
+	b.siteActivationResources[name] = cfg
+	return b
+}
+func (b *TerraformConfigBuilder) SiteActivationResourceWithCert(name string, cert_id, csr_id *int) *TerraformConfigBuilder {
+	var cert_id_str string = "null"
+	var csr_id_str string = "null"
+	if cert_id != nil {
+		cert_id_str = strconv.Itoa(*cert_id)
+	}
+	if csr_id != nil {
+		csr_id_str = strconv.Itoa(*csr_id)
+	}
+	cfg := fmt.Sprintf(`
+resource "qwiltcdn_site_activation" "%s" {
+		site_id = qwiltcdn_site_configuration.%s.site_id
+		revision_id = qwiltcdn_site_configuration.%s.revision_id
+		certificate_id = %s
+		csr_id = %s
+	}`, name, name, name, cert_id_str, csr_id_str)
 	b.siteActivationResources[name] = cfg
 	return b
 }
