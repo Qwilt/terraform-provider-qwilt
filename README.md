@@ -1,6 +1,6 @@
 # Qwilt Terraform Provider
 
-> Qwilt CDN Terraform provider.
+> ⚠️ **Disclaimer**: the project is still in the 0.x.x version, which means it’s still in the experimental phase.
 
 ## Requirements
 
