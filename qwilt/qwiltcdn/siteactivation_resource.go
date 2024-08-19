@@ -155,12 +155,29 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 
 	if plan.CertificateId.ValueInt64() != 0 {
 		//there is a certificate that should be linked
-		// Create new site
 		_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(plan.CertificateId.ValueInt64())))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Linking Certificate to Qwilt CDN Site",
 				"Could not link certificate to Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+	} else if plan.CsrId.ValueInt64() != 0 {
+		csrResp, err := r.client.GetCertificateSigningRequest(plan.CsrId)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting CSR for Qwilt CDN Site",
+				"Could not get certificate signing request details for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+		//use the latest certificate of this csr, and associate it with the site
+		_, err = r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(csrResp.LatestCertId)))
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Linking latest CSR Certificate to Qwilt CDN Site",
+				"Could not link latest CSR certificate to Qwilt CDN Site, unexpected error: "+err.Error(),
 			)
 			return
 		}
@@ -209,6 +226,7 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 		Username(pubOpResp.Username).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(plan.CertificateId.ValueInt64()).
+		CsrId(plan.CsrId.ValueInt64()).
 		PublishState(pubOpResp.PublishState).
 		OperationType(pubOpResp.OperationType).
 		Target(pubOpResp.Target).
@@ -351,10 +369,42 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	if state.CertificateId != plan.CertificateId {
-		if !state.CertificateId.IsNull() {
-			//unlink previous certificate
-			err := r.client.UnLinkSiteCertificate(state.SiteId.ValueString(), strconv.Itoa(int(state.CertificateId.ValueInt64())))
+	var newCertId types.Int64
+	var curCertId types.Int64
+	siteCertsResp, err := r.client.GetSiteCertificates(state.SiteId.ValueString(), "")
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Getting Certificates for Qwilt CDN Site",
+			"Could not get certificates for Qwilt CDN Site, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	if len(siteCertsResp) > 0 {
+		curCertIdVal, err := strconv.ParseInt(siteCertsResp[0].CertificateId, 10, 64)
+		tflog.Info(ctx, "found associated certificate "+siteCertsResp[0].CertificateId+" for site "+state.SiteId.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Converting Certificate Id",
+				"Could not convert certificate ID for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+		curCertId = types.Int64Value(curCertIdVal)
+	}
+
+	if !plan.CertificateId.IsNull() {
+		newCertId = plan.CertificateId
+	} else if !plan.CsrId.IsNull() {
+		//get latest from CSR
+	}
+	if curCertId != newCertId {
+		curCertIdStr := strconv.Itoa(int(curCertId.ValueInt64()))
+		newCertIdStr := strconv.Itoa(int(newCertId.ValueInt64()))
+		tflog.Info(ctx, "Detected new certificate to associate: "+curCertIdStr+" -->  "+newCertIdStr)
+		if !curCertId.IsNull() {
+			//unlink currently associated certificate
+			err := r.client.UnLinkSiteCertificate(state.SiteId.ValueString(), curCertIdStr)
 			if err != nil {
 				resp.Diagnostics.AddError(
 					"Error UnLinking Certificate to Qwilt CDN Site",
@@ -363,9 +413,9 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 				return
 			}
 		}
-		if !plan.CertificateId.IsNull() {
-			//there is a certificate that should be linked
-			_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(plan.CertificateId.ValueInt64())))
+		if !newCertId.IsNull() {
+			//there is a new certificate that should be linked
+			_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), newCertIdStr)
 			if err != nil {
 				resp.Diagnostics.AddError(
 					"Error Linking Certificate to Qwilt CDN Site",
@@ -417,6 +467,7 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		Username(pubOpResp.Username).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(plan.CertificateId.ValueInt64()).
+		CsrId(plan.CsrId.ValueInt64()).
 		PublishState(pubOpResp.PublishState).
 		PublishStatus(pubOpResp.PublishStatus).
 		AcceptanceStatus(pubOpResp.PublishAcceptanceStatus).

@@ -104,7 +104,7 @@ func (b *TerraformConfigBuilder) SiteConfigResource(name string, host string, ch
 											{
 												"protocol": "https/1.1",
 												"endpoints": [
-													"www.example-origin-Host.com"
+													"www.example-origin-host.com"
 												]
 											}
 										]
@@ -244,7 +244,7 @@ func generateHostName(generatedHostName *string) string {
 	randomStr := randString(16)
 
 	// Create the final string with prefix
-	hostName := fmt.Sprintf("www.terraform-unit-test-%s.com", randomStr)
+	hostName := fmt.Sprintf("www.%s-terraform-unit-test.com", randomStr)
 	*generatedHostName = hostName
 	return hostName
 }

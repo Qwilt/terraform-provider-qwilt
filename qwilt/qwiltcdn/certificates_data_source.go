@@ -151,14 +151,14 @@ func (d *qwiltCertificatesDataSource) Read(ctx context.Context, _ datasource.Rea
 		return
 	}
 
-	csrs, err := d.client.GetCertificateSigningRequests()
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Unable to Read Qwilt Certificate Signing Requests",
-			err.Error(),
-		)
-		return
-	}
+	//csrs, err := d.client.GetCertificateSigningRequests()
+	//if err != nil {
+	//	resp.Diagnostics.AddError(
+	//		"Unable to Read Qwilt Certificate Signing Requests",
+	//		err.Error(),
+	//	)
+	//	return
+	//}
 
 	// Get state
 	diags := resp.State.Get(ctx, &state)
@@ -202,19 +202,19 @@ func (d *qwiltCertificatesDataSource) Read(ctx context.Context, _ datasource.Rea
 		state.Cert = append(state.Cert, certState)
 	}
 
-	if certIdFilter.IsNull() {
-		for _, csr := range csrs {
-			//if !certIdFilter.IsNull() && csr.CsrId != certIdFilter.ValueInt64() {
-			//	continue
-			//}
-			csrState := cdnmodel.CsrDataModel{
-				CsrId:          types.Int64Value(csr.CsrId),
-				AutoManagedCsr: types.BoolValue(csr.AutoManagedCsr),
-			}
-
-			state.Csr = append(state.Csr, csrState)
-		}
-	}
+	//if certIdFilter.IsNull() {
+	//	for _, csr := range csrs {
+	//		//if !certIdFilter.IsNull() && csr.CsrId != certIdFilter.ValueInt64() {
+	//		//	continue
+	//		//}
+	//		csrState := cdnmodel.CsrDataModel{
+	//			CsrId:          types.Int64Value(csr.CsrId),
+	//			AutoManagedCsr: types.BoolValue(csr.AutoManagedCsr),
+	//		}
+	//
+	//		state.Csr = append(state.Csr, csrState)
+	//	}
+	//}
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)

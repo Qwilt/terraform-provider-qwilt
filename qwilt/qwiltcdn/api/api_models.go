@@ -192,6 +192,7 @@ type CertificateSigningRequest struct {
 	OrganizationName                 string              `json:"organizationName"`
 	ChallengeDelegationOfDomainsList []CertificateDomain `json:"challengeDelegationOfDomainsList"`
 	AutoManagedCsr                   bool                `json:"autoManagedCsr"`
+	LatestCertId                     int64               `json:"latestCertId"`
 }
 
 // SiteCertificateLinkRequest - Model for requesting a new Link Request
