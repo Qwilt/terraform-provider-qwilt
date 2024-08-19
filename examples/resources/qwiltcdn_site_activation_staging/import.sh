@@ -1,3 +1,5 @@
+#THIS FEATURE IS EXPERIMENTAL AND SHOULD NOT BE USED!
+
 #keep an empty resource to import into
 #after import is completed the user should manually set the required attributes in the resource from the imported state file
 #it is advised to change site_id and site_id and revision_id attributes with references to qwiltcdn_site_configuration resource to achieve implicit dependency
