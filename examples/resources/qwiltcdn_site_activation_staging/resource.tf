@@ -1,4 +1,5 @@
-#
+#THIS FEATURE IS EXPERIMENTAL AND SHOULD NOT BE USED!
+
 #Notes
 #this resource is similar to site_activation resource but activates the selected configuration to staging segment only.
 #Note that activation cannot be performed if a previous activation is still in-progress

@@ -1,9 +1,10 @@
-# Configuration resources are implicitly defining dependencies by using references.
-# The implicit order is as follows:
-# 1. qwiltcdn_certificate, qwiltcdn_site
-# 2. qwiltcdn_site_configuration (implicitly depends-on qwiltcdn_site - by using references)
-# 3. qwiltcdn_site_activation (implicitly depends-on qwiltcdn_site_configuration, qwiltcdn_certificate - by using references)
-
+# authentication is supported by methods: login and xapi token
+# 1. xapi_token is always the preferred method
+# 2. user/password are supported but not recommended and might be deprecated in the near future.
+# 3. each of these variables can be replaced with a corresponding env variable:
+#  - username --> QCDN_USERNAME
+#  - password --> QCDN_PASSWORD
+#  - xapi_token --> QCDN_XAPI_TOKEN
 
 provider "qwiltcdn" {
   # Specify username, or set env variable QCDN_USERNAME
