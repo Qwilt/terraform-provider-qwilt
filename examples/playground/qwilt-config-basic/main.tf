@@ -12,7 +12,7 @@ provider "qwiltcdn" {
 }
 
 resource "qwiltcdn_site" "example" {
-  site_name      = "Terraform Basic Example Site"
+  site_name = "Terraform Basic Example Site"
 }
 
 resource "qwiltcdn_site_configuration" "example" {
