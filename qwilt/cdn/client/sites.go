@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/api"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	"log"
 	"net/http"
 	"strconv"

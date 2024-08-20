@@ -5,19 +5,19 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
 	"fmt"
-	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/model"
+	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	// "github.com/hashicorp/terraform-plugin-log/tflog"
 
-	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/client"
+	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 )
 
 var (
@@ -48,7 +48,7 @@ type qwiltCertificatesFilterModel struct {
 
 // Metadata returns the data source type name.
 func (d *qwiltCertificatesDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_certificates"
+	resp.TypeName = req.ProviderTypeName + "_cdn_certificates"
 }
 
 // Schema defines the schema for the data source.

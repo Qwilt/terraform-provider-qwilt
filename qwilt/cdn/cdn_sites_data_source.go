@@ -5,20 +5,20 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
 	"fmt"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/api"
-	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/model"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
+	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	// "github.com/hashicorp/terraform-plugin-log/tflog"
 
-	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/client"
+	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 )
 
 var (
@@ -36,25 +36,9 @@ type qwiltSitesDataSource struct {
 	client *cdnclient.SiteClientFacade
 }
 
-// qwiltSitesDataSourceModel maps the data source schema data.
-type qwiltSitesDataSourceModel struct {
-	Site     []cdnmodel.SiteModel       `tfsdk:"site"`
-	Revision []cdnmodel.SiteConfigModel `tfsdk:"revision"`
-	PubOp    []cdnmodel.PubOpModel      `tfsdk:"publish_op"`
-	Filter   types.Object               `tfsdk:"filter"`
-}
-
-// qwiltSitesFilterModel
-type qwiltSitesFilterModel struct {
-	SiteId            types.String `tfsdk:"site_id"`
-	RevisionId        types.String `tfsdk:"revision_id"`
-	PublishId         types.String `tfsdk:"publish_id"`
-	TruncateHostIndex types.Bool   `tfsdk:"truncate_host_index"`
-}
-
 // Metadata returns the data source type name.
 func (d *qwiltSitesDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_sites"
+	resp.TypeName = req.ProviderTypeName + "_cdn_sites"
 }
 
 // Schema defines the schema for the data source.
@@ -263,7 +247,7 @@ func (d *qwiltSitesDataSource) Schema(_ context.Context, _ datasource.SchemaRequ
 
 // Read refreshes the Terraform state with the latest data.
 func (d *qwiltSitesDataSource) Read(ctx context.Context, _ datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var state qwiltSitesDataSourceModel
+	var state cdnmodel.QwiltSitesDataSourceModel
 
 	sites, err := d.client.GetSites(true, true)
 	if err != nil {
@@ -282,7 +266,7 @@ func (d *qwiltSitesDataSource) Read(ctx context.Context, _ datasource.ReadReques
 	}
 
 	// Filter variables
-	var filter qwiltSitesFilterModel
+	var filter cdnmodel.QwiltSitesFilterModel
 	var siteIdFilter string
 	var revisionIdFilter string
 	var publishIdFilter string

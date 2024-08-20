@@ -5,55 +5,19 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/api"
+	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-exec/tfexec"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"os"
 	"testing"
-
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
-
-func TestAccCoffeesDataSource(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			// Read testing
-			{
-				Config: QwiltCdnProviderConfig + `data "qwiltcdn_sites" "test" {}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					// TODO: Ideally, I would like to see this:
-					// 1. Use the resource to provision a site
-					// 2. Look up the site and revision IDs of the site
-					// 3. Verify that the attributes exist for that site and are correct
-					// 4. Remove that site
-					// But, that will require some more work.
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.#"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.created_user"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.creation_time_milli"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.is_self_service_blocked"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.last_update_time_milli"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.last_updated_user"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.owner_org_id"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.routing_method"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.service_id"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.service_type"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.should_provision_to_third_party_cdn"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.site_dns_cname_delegation_target"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.site_id"),
-					resource.TestCheckResourceAttrSet("data.qwiltcdn_sites.test", "site.0.site_name"),
-				),
-			},
-		},
-	})
-}
 
 func TestSitesDataResource(t *testing.T) {
 
@@ -84,12 +48,15 @@ func TestSitesDataResource(t *testing.T) {
 	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
 	assert.Equal(t, nil, err)
 
+	tf.SetStdout(os.Stdout)
+	tf.SetStderr(os.Stderr)
+
 	err = tf.Apply(context.Background())
 	assert.Equal(t, nil, err)
 
 	//get the site_id to test it later with data-source
 	state, err := tf.Show(context.Background())
-	siteState := findStateResource(state, "qwiltcdn_site", "test")
+	siteState := findStateResource(state, "qwilt_cdn_site", "test")
 	siteId := fmt.Sprintf("%s", siteState.AttributeValues["site_id"])
 
 	tempDir2, err := os.MkdirTemp("", "tf-exec-example-data-sources")
@@ -110,20 +77,22 @@ func TestSitesDataResource(t *testing.T) {
 	tf2, err := tfexec.NewTerraform(tempDir2, tfBinaryPath)
 	assert.Equal(t, nil, err)
 
+	//varOption := tfexec.Var(fmt.Sprintf("site_id=%s", siteId))
 	err = tf2.Apply(context.Background())
 	assert.Equal(t, nil, err)
 
 	// Read the output value
 	output, err := tf2.Output(context.Background())
-
 	assert.Equal(t, nil, err)
 
+	t.Logf("type: %s", output["site_detail"].Type)
+
 	// Assert that the output matches the expected value
-	site := api.Site{}
+	site := cdnmodel.SiteModel{}
 	err = json.Unmarshal(output["site_detail"].Value, &site)
 	assert.Equal(t, nil, err)
 
-	//t.Logf("site: %s", site.SiteName)
+	t.Logf("site name: %s", site.SiteName)
 	//assert.Equal(t, siteId, site.SiteId)
 
 }

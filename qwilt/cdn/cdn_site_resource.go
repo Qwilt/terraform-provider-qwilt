@@ -5,14 +5,14 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
 	"fmt"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/api"
-	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/client"
-	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/model"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
+	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
+	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -40,7 +40,7 @@ type siteResource struct {
 
 // Metadata returns the resource type name.
 func (r *siteResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_site"
+	resp.TypeName = req.ProviderTypeName + "_cdn_site"
 }
 
 // Schema defines the schema for the resource.

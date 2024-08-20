@@ -5,14 +5,14 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package provider
 
 import (
 	"context"
 	"fmt"
-	qwiltprovider "github.com/Qwilt/terraform-provider-qwilt/qwilt/provider"
-	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/client"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/model"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn"
+	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -25,8 +25,8 @@ import (
 // Ensure qwiltCDNProvider satisfies various provider interfaces.
 var _ provider.Provider = &qwiltCDNProvider{}
 
-// NewCdnProvider is a helper function to simplify provider server and testing implementation.
-func NewCdnProvider(version string) *qwiltCDNProvider {
+// NewQwiltProvider is a helper function to simplify provider server and testing implementation.
+func NewQwiltProvider(version string) *qwiltCDNProvider {
 	return &qwiltCDNProvider{
 		version: version,
 	}
@@ -40,28 +40,28 @@ type qwiltCDNProvider struct {
 }
 
 func (p *qwiltCDNProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "qwiltcdn"
+	resp.TypeName = "qwilt"
 	resp.Version = p.version
 }
 
 func (p *qwiltCDNProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
-	qwiltprovider.AddResponseSchema(resp)
+	AddResponseSchema(resp)
 }
 
 func (p *qwiltCDNProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewCertificateResource,
-		NewSiteActivationResource,
-		NewSiteActivationStagingResource,
-		NewSiteConfigResource,
-		NewSiteResource,
+		cdn.NewCertificateResource,
+		cdn.NewSiteActivationResource,
+		cdn.NewSiteActivationStagingResource,
+		cdn.NewSiteConfigResource,
+		cdn.NewSiteResource,
 	}
 }
 
 func (p *qwiltCDNProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewSitesDataSource,
-		NewCertificatesDataSource,
+		cdn.NewSitesDataSource,
+		cdn.NewCertificatesDataSource,
 	}
 }
 
@@ -69,7 +69,7 @@ func (p *qwiltCDNProvider) Configure(ctx context.Context, req provider.Configure
 	tflog.Info(ctx, "Configuring Qwilt provider")
 
 	// Retrieve provider data from configuration
-	var config qwiltprovider.QwiltProviderModel
+	var config QwiltProviderModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -109,7 +109,7 @@ func (p *qwiltCDNProvider) Configure(ctx context.Context, req provider.Configure
 	tflog.Info(ctx, "Configured Qwilt CDN client", map[string]any{"success": true})
 }
 
-func (p *qwiltCDNProvider) parseConfig(config qwiltprovider.QwiltProviderModel) model.Settings {
+func (p *qwiltCDNProvider) parseConfig(config QwiltProviderModel) model.Settings {
 	// Default values to environment variables, but override with Terraform
 	// configuration value if set.
 	cfg := model.Settings{

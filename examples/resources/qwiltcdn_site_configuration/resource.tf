@@ -1,6 +1,6 @@
 
-resource "qwiltcdn_site_configuration" "example" {
-  site_id            = qwiltcdn_site.example.site_id
+resource "qwilt_cdn_site_configuration" "example" {
+  site_id            = qwilt_cdn_site.example.site_id
   host_index         = <<-EOT
 {
 	"hosts": [

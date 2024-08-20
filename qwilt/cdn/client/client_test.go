@@ -11,13 +11,13 @@ package client_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/api"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"strings"
 	"testing"
 
-	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/client"
+	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 )
 
 // Run "go generate" to format example terraform files and generate the docs for the registry/website

@@ -5,7 +5,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
@@ -71,9 +71,9 @@ func TestSiteActivationResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 3, len(state.Values.RootModule.Resources))
 
-	siteState := findStateResource(state, "qwiltcdn_site", "test")
-	siteConfigState := findStateResource(state, "qwiltcdn_site_configuration", "test")
-	siteActivationState := findStateResource(state, "qwiltcdn_site_activation", "test")
+	siteState := findStateResource(state, "qwilt_cdn_site", "test")
+	siteConfigState := findStateResource(state, "qwilt_cdn_site_configuration", "test")
+	siteActivationState := findStateResource(state, "qwilt_cdn_site_activation", "test")
 	assert.NotNil(t, siteState)
 	assert.NotNil(t, siteConfigState)
 	assert.NotNil(t, siteActivationState)
@@ -99,7 +99,7 @@ func TestSiteActivationResource(t *testing.T) {
 	publishCompleted := false
 	for time.Since(start) < 60*time.Second {
 		tf.Refresh(context.Background())
-		siteActivationState = findStateResource(state, "qwiltcdn_site_activation", "test")
+		siteActivationState = findStateResource(state, "qwilt_cdn_site_activation", "test")
 		if siteActivationState.AttributeValues["publish_status"] != "InProgress" {
 			publishCompleted = true
 			t.Logf("publish operation %s completed, status %s", publishId, siteActivationState.AttributeValues["publish_status"])
@@ -114,39 +114,39 @@ func TestSiteActivationResource(t *testing.T) {
 	assert.Equal(t, "null", siteActivationState.AttributeValues["validators_err_details"])
 
 	//prepare for import, remove existing resources from state
-	err = tf.StateRm(context.Background(), "qwiltcdn_site_activation.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site_activation.test")
 	assert.Equal(t, nil, err)
 
-	err = tf.StateRm(context.Background(), "qwiltcdn_site_configuration.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site_configuration.test")
 	assert.Equal(t, nil, err)
 
-	err = tf.StateRm(context.Background(), "qwiltcdn_site.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site.test")
 	assert.Equal(t, nil, err)
 
 	//import resources using only site_id
 	t.Logf("implicitly importing resources for site %s", siteId)
-	err = tf.Import(context.Background(), "qwiltcdn_site.test", fmt.Sprintf("%s", siteId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site.test", fmt.Sprintf("%s", siteId))
 	assert.Equal(t, nil, err)
 
-	err = tf.Import(context.Background(), "qwiltcdn_site_configuration.test", fmt.Sprintf("%s", siteId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site_configuration.test", fmt.Sprintf("%s", siteId))
 	assert.Equal(t, nil, err)
 
-	err = tf.Import(context.Background(), "qwiltcdn_site_activation.test", fmt.Sprintf("%s", siteId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site_activation.test", fmt.Sprintf("%s", siteId))
 	assert.Equal(t, nil, err)
 
 	//prepare for import, remove existing resources from state
-	err = tf.StateRm(context.Background(), "qwiltcdn_site_activation.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site_activation.test")
 	assert.Equal(t, nil, err)
 
-	err = tf.StateRm(context.Background(), "qwiltcdn_site_configuration.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site_configuration.test")
 	assert.Equal(t, nil, err)
 
 	//import resources using explicit identifiers
 	t.Logf("explicitly importing resources for site %s", siteId)
-	err = tf.Import(context.Background(), "qwiltcdn_site_configuration.test", fmt.Sprintf("%s:%s", siteId, revisionId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site_configuration.test", fmt.Sprintf("%s:%s", siteId, revisionId))
 	assert.Equal(t, nil, err)
 
-	err = tf.Import(context.Background(), "qwiltcdn_site_activation.test", fmt.Sprintf("%s:%s", siteId, publishId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site_activation.test", fmt.Sprintf("%s:%s", siteId, publishId))
 	assert.Equal(t, nil, err)
 
 	//check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
@@ -170,9 +170,9 @@ func TestSiteActivationResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 1, len(state.Values.RootModule.Resources))
 
-	siteState = findStateResource(state, "qwiltcdn_site", "test")
-	siteConfigState = findStateResource(state, "qwiltcdn_site_configuration", "test")
-	siteActivationState = findStateResource(state, "qwiltcdn_site_activation", "test")
+	siteState = findStateResource(state, "qwilt_cdn_site", "test")
+	siteConfigState = findStateResource(state, "qwilt_cdn_site_configuration", "test")
+	siteActivationState = findStateResource(state, "qwilt_cdn_site_activation", "test")
 	assert.NotNil(t, siteState)
 	assert.Nil(t, siteConfigState)
 	assert.Nil(t, siteActivationState)
@@ -194,7 +194,7 @@ func TestSiteActivationResource(t *testing.T) {
 	assert.Nil(t, state.Values)
 
 	//use data source to query the data source
-	//terraformConfig = QwiltCdnFullProviderConfig + `data "qwiltcdn_sites" "test" {}`
+	//terraformConfig = QwiltCdnFullProviderConfig + `data "qwilt_cdn_sites" "test" {}`
 	//err = ioutil.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
 	//err = tf.Apply(context.Background())
 	//assert.Equal(t, nil, err)

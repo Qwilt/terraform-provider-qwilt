@@ -1,11 +1,11 @@
-// Package qwiltcdn
+// Package qwilt_cdn
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
@@ -114,7 +114,7 @@ func TestCertificateResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 1, len(state.Values.RootModule.Resources))
 
-	certState := findStateResource(state, "qwiltcdn_certificate", "test")
+	certState := findStateResource(state, "qwilt_cdn_certificate", "test")
 	assert.NotNil(t, certState)
 
 	certId := certState.AttributeValues["cert_id"]
@@ -145,7 +145,7 @@ func TestCertificateResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 1, len(state.Values.RootModule.Resources))
 
-	certState = findStateResource(state, "qwiltcdn_certificate", "test")
+	certState = findStateResource(state, "qwilt_cdn_certificate", "test")
 	assert.NotNil(t, certState)
 
 	assert.Equal(t, certId, certState.AttributeValues["cert_id"]) //make sure therewas no replace, just update
@@ -162,21 +162,21 @@ func TestCertificateResource(t *testing.T) {
 	assert.False(t, plan) //no diff
 
 	//prepare for import
-	err = tf.StateRm(context.Background(), "qwiltcdn_certificate.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_certificate.test")
 	assert.Equal(t, nil, err)
 
 	state, err = tf.Show(context.Background())
 	assert.Equal(t, nil, err)
 	assert.Nil(t, state.Values)
 
-	err = tf.Import(context.Background(), "qwiltcdn_certificate.test", fmt.Sprintf("%s", certId))
+	err = tf.Import(context.Background(), "qwilt_cdn_certificate.test", fmt.Sprintf("%s", certId))
 	assert.Equal(t, nil, err)
 
 	state, err = tf.Show(context.Background())
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 1, len(state.Values.RootModule.Resources))
 
-	certState = findStateResource(state, "qwiltcdn_certificate", "test")
+	certState = findStateResource(state, "qwilt_cdn_certificate", "test")
 	assert.NotNil(t, certState)
 
 	assert.Equal(t, certId, certState.AttributeValues["cert_id"])

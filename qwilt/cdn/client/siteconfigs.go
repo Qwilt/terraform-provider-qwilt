@@ -10,7 +10,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/api"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	"net/http"
 	"strings"
 )

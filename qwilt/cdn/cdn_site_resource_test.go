@@ -1,11 +1,11 @@
-// Package qwiltcdn
+// Package qwilt_cdn
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
@@ -40,10 +40,13 @@ func TestSiteResource(t *testing.T) {
 	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
 	assert.Equal(t, nil, err)
 
+	//tf.SetStdout(os.Stdout)
+	//tf.SetStderr(os.Stderr)
+
 	terraformBuilder := NewTerraformConfigBuilder().SiteResource("test", generateSiteName(&curSiteName))
 	terraformConfig := terraformBuilder.Build()
 
-	//t.Logf("config: %s", terraformConfig)
+	t.Logf("config: %s", terraformConfig)
 	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
 	assert.Equal(t, nil, err)
 
@@ -54,7 +57,7 @@ func TestSiteResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 1, len(state.Values.RootModule.Resources))
 
-	siteState := findStateResource(state, "qwiltcdn_site", "test")
+	siteState := findStateResource(state, "qwilt_cdn_site", "test")
 	assert.NotNil(t, siteState)
 
 	t.Logf("site: %s", siteState.AttributeValues)
@@ -87,7 +90,7 @@ func TestSiteResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 1, len(state.Values.RootModule.Resources))
 
-	siteState = findStateResource(state, "qwiltcdn_site", "test")
+	siteState = findStateResource(state, "qwilt_cdn_site", "test")
 	assert.NotNil(t, siteState)
 
 	assert.Equal(t, siteId, siteState.AttributeValues["site_id"])
@@ -95,13 +98,13 @@ func TestSiteResource(t *testing.T) {
 	assert.Equal(t, "devorg", siteState.AttributeValues["owner_org_id"])
 	assert.Equal(t, "DNS", siteState.AttributeValues["routing_method"])
 
-	err = tf.StateRm(context.Background(), "qwiltcdn_site.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site.test")
 	assert.Equal(t, nil, err)
 
-	err = tf.Import(context.Background(), "qwiltcdn_site.test", fmt.Sprintf("%s", siteId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site.test", fmt.Sprintf("%s", siteId))
 	assert.Equal(t, nil, err)
 
-	siteState = findStateResource(state, "qwiltcdn_site", "test")
+	siteState = findStateResource(state, "qwilt_cdn_site", "test")
 	assert.NotNil(t, siteState)
 
 	assert.Equal(t, curSiteName2, siteState.AttributeValues["site_name"])

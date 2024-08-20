@@ -5,11 +5,11 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
-	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn/client"
+	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 )
@@ -33,7 +33,7 @@ type siteActivationStagingResource struct {
 
 // Metadata returns the resource type name.
 func (r *siteActivationStagingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_site_activation_staging"
+	resp.TypeName = req.ProviderTypeName + "_cdn_site_activation_staging"
 }
 
 // Schema defines the schema for the resource.

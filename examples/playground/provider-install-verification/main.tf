@@ -10,6 +10,6 @@ provider "qwiltcdn" {
   xapi_token = var.token
 }
 
-data "qwiltcdn_sites" "detail" {
+data "qwilt_cdn_sites" "detail" {
   filter = {}
 }

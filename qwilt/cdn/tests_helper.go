@@ -5,7 +5,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	b64 "encoding/base64"
@@ -37,7 +37,7 @@ func NewTerraformConfigBuilder() *TerraformConfigBuilder {
 }
 func (b *TerraformConfigBuilder) SitesDataResource(name, siteId string) *TerraformConfigBuilder {
 	dataCfg := fmt.Sprintf(`
-data "qwiltcdn_sites" "%s" {
+data "qwilt_cdn_sites" "%s" {
 	filter = {
 		site_id             = "%s"
 		revision_id         = "all"
@@ -46,7 +46,7 @@ data "qwiltcdn_sites" "%s" {
 	}
 }
 output "site_%s" {
-	value = data.qwiltcdn_sites.%s.site[0]
+	value = data.qwilt_cdn_sites.%s.site[0]
 }`, name, siteId, name, name)
 
 	b.siteDataSources[name] = dataCfg
@@ -55,7 +55,7 @@ output "site_%s" {
 func (b *TerraformConfigBuilder) CertResource(name, pk, cert, desc string) *TerraformConfigBuilder {
 	certBase64Encode := b64.URLEncoding.EncodeToString([]byte(cert))
 	pkBase64Encode := b64.URLEncoding.EncodeToString([]byte(pk))
-	certCfg := fmt.Sprintf(`resource "qwiltcdn_certificate" "%s" {
+	certCfg := fmt.Sprintf(`resource "qwilt_cdn_certificate" "%s" {
 certificate       = <<EOF
 %s
 EOF
@@ -79,7 +79,7 @@ lifecycle {
 }
 func (b *TerraformConfigBuilder) SiteResource(name, siteName string) *TerraformConfigBuilder {
 	siteCfg := fmt.Sprintf(`
-resource "qwiltcdn_site" "%s" {
+resource "qwilt_cdn_site" "%s" {
 	site_name = "%s"
 }`, name, siteName)
 	b.siteResources[name] = siteCfg
@@ -87,8 +87,8 @@ resource "qwiltcdn_site" "%s" {
 }
 func (b *TerraformConfigBuilder) SiteConfigResource(name string, host string, changeDesc string) *TerraformConfigBuilder {
 	siteConfigCfg := fmt.Sprintf(`
-		resource "qwiltcdn_site_configuration" "%s" {
-			site_id = qwiltcdn_site.%s.site_id
+		resource "qwilt_cdn_site_configuration" "%s" {
+			site_id = qwilt_cdn_site.%s.site_id
 			host_index = <<-EOT
 			{
 				"hosts": [
@@ -124,18 +124,18 @@ func (b *TerraformConfigBuilder) SiteConfigResource(name string, host string, ch
 }
 func (b *TerraformConfigBuilder) SiteActivationResource(name string) *TerraformConfigBuilder {
 	cfg := fmt.Sprintf(`
-resource "qwiltcdn_site_activation" "%s" {
-		site_id = qwiltcdn_site_configuration.%s.site_id
-		revision_id = qwiltcdn_site_configuration.%s.revision_id
+resource "qwilt_cdn_site_activation" "%s" {
+		site_id = qwilt_cdn_site_configuration.%s.site_id
+		revision_id = qwilt_cdn_site_configuration.%s.revision_id
 	}`, name, name, name)
 	b.siteActivationResources[name] = cfg
 	return b
 }
 func (b *TerraformConfigBuilder) SiteActivationStagingResource(name string) *TerraformConfigBuilder {
 	cfg := fmt.Sprintf(`
-resource "qwiltcdn_site_activation_staging" "%s" {
-		site_id = qwiltcdn_site_configuration.%s.site_id
-		revision_id = qwiltcdn_site_configuration.%s.revision_id
+resource "qwilt_cdn_site_activation_staging" "%s" {
+		site_id = qwilt_cdn_site_configuration.%s.site_id
+		revision_id = qwilt_cdn_site_configuration.%s.revision_id
 	}`, name, name, name)
 	b.siteActivationStagingResources[name] = cfg
 	return b
@@ -232,7 +232,7 @@ func generateHostName(generatedHostName *string) string {
 //func VerifySite(st *terraform.State) error {
 //
 //	debugLog := log.New(log.Writer(), "xzjbcsjkbksjdbdskjbskj ", log.LstdFlags)
-//	site_id := st.Modules[0].Resources["qwiltcdn_site.test"].Primary.Attributes["site_id"]
+//	site_id := st.Modules[0].Resources["qwilt_cdn_site.test"].Primary.Attributes["site_id"]
 //	debugLog.Println("****** state site_id: " + site_id)
 //	return nil
 //}

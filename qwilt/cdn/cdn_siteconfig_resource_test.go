@@ -5,7 +5,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
 // Copyright (c) 2024 Qwilt Inc.
-package qwiltcdn
+package cdn
 
 import (
 	"context"
@@ -65,7 +65,7 @@ func TestSiteConfigResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 2, len(state.Values.RootModule.Resources))
 
-	siteCfgState := findStateResource(state, "qwiltcdn_site_configuration", "test")
+	siteCfgState := findStateResource(state, "qwilt_cdn_site_configuration", "test")
 	assert.NotNil(t, siteCfgState)
 
 	//get the site_id and revision_id to test it later with import
@@ -98,7 +98,7 @@ func TestSiteConfigResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 2, len(state.Values.RootModule.Resources))
 
-	siteCfgState = findStateResource(state, "qwiltcdn_site_configuration", "test")
+	siteCfgState = findStateResource(state, "qwilt_cdn_site_configuration", "test")
 	assert.NotNil(t, siteCfgState)
 
 	revisionNum2 := siteCfgState.AttributeValues["revision_num"].(json.Number)
@@ -114,35 +114,35 @@ func TestSiteConfigResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.False(t, plan) //no diff
 
-	err = tf.StateRm(context.Background(), "qwiltcdn_site_configuration.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site_configuration.test")
 	assert.Equal(t, nil, err)
 
 	//import  with default revision (revision 2, latest)
-	err = tf.Import(context.Background(), "qwiltcdn_site_configuration.test", fmt.Sprintf("%s", siteId))
+	err = tf.Import(context.Background(), "qwilt_cdn_site_configuration.test", fmt.Sprintf("%s", siteId))
 	assert.Equal(t, nil, err)
 
 	state, err = tf.Show(context.Background())
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 2, len(state.Values.RootModule.Resources))
 
-	siteCfgState = findStateResource(state, "qwiltcdn_site_configuration", "test")
+	siteCfgState = findStateResource(state, "qwilt_cdn_site_configuration", "test")
 	assert.NotNil(t, siteCfgState)
 
 	revisionIdAfterImport := siteCfgState.AttributeValues["revision_id"]
 	assert.Equal(t, revisionId2, revisionIdAfterImport)
 
-	err = tf.StateRm(context.Background(), "qwiltcdn_site_configuration.test")
+	err = tf.StateRm(context.Background(), "qwilt_cdn_site_configuration.test")
 	assert.Equal(t, nil, err)
 
 	//import with explicit revision_id
-	err = tf.Import(context.Background(), "qwiltcdn_site_configuration.test", fmt.Sprintf("%s:%s", siteId, revisionId1))
+	err = tf.Import(context.Background(), "qwilt_cdn_site_configuration.test", fmt.Sprintf("%s:%s", siteId, revisionId1))
 	assert.Equal(t, nil, err)
 
 	state, err = tf.Show(context.Background())
 	assert.Equal(t, nil, err)
 	assert.Equal(t, 2, len(state.Values.RootModule.Resources))
 
-	siteCfgState = findStateResource(state, "qwiltcdn_site_configuration", "test")
+	siteCfgState = findStateResource(state, "qwilt_cdn_site_configuration", "test")
 	assert.NotNil(t, siteCfgState)
 
 	importedRevisionNum := siteCfgState.AttributeValues["revision_num"].(json.Number)
