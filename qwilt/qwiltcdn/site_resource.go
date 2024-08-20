@@ -52,10 +52,6 @@ func (r *siteResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 				Description: "The unique identifier of the site. Equals site_id. Required for testing infra",
 				Computed:    true,
 			},
-			"last_updated": schema.StringAttribute{
-				Description: "Timestamp of the last Terraform update of the site.",
-				Computed:    true,
-			},
 			"site_id": schema.StringAttribute{
 				Description: "The unique identifier of the site. The siteID will be needed when you add the site configuration and when you publish the site.",
 				Computed:    true,

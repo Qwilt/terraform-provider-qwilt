@@ -6,7 +6,6 @@ import (
 )
 
 type Site struct {
-	LastUpdated                  types.String `tfsdk:"last_updated"`
 	Id                           types.String `tfsdk:"id"`
 	SiteId                       types.String `tfsdk:"site_id"`
 	OwnerOrgId                   types.String `tfsdk:"owner_org_id"`

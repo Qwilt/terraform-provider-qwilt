@@ -173,7 +173,7 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 			return
 		}
 		//use the latest certificate of this csr, and associate it with the site
-		_, err = r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(csrResp.LatestCertId)))
+		_, err = r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(csrResp.LastCertificateId)))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Linking latest CSR Certificate to Qwilt CDN Site",
@@ -397,8 +397,17 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		newCertId = plan.CertificateId
 	} else if !plan.CsrId.IsNull() {
 		//get latest from CSR
+		csrResp, err := r.client.GetCertificateSigningRequest(plan.CsrId)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting CSR for Qwilt CDN Site",
+				"Could not get CSR for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+		newCertId = types.Int64Value(csrResp.LastCertificateId)
 	}
-	if curCertId != newCertId {
+	if curCertId.ValueInt64() != newCertId.ValueInt64() {
 		curCertIdStr := strconv.Itoa(int(curCertId.ValueInt64()))
 		newCertIdStr := strconv.Itoa(int(newCertId.ValueInt64()))
 		tflog.Info(ctx, "Detected new certificate to associate: "+curCertIdStr+" -->  "+newCertIdStr)

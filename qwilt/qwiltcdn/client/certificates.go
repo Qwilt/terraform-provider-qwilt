@@ -188,7 +188,7 @@ func (c *CertificatesClient) GetCertificateSigningRequest(csrId types.Int64) (*a
 		return nil, fmt.Errorf("csrId is empty")
 	}
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/certificate-signing-requests/%d", c.apiEndpoint, csrId), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/certificate-signing-requests/%d", c.apiEndpoint, csrId.ValueInt64()), nil)
 	if err != nil {
 		return nil, err
 	}

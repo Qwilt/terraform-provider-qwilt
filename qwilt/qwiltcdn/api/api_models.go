@@ -178,21 +178,21 @@ type CertificateUpdateRequest struct {
 }
 
 // CertificateSigningRequest - Model for the CertificateSigningRequest object
-type CertificateDomain struct {
+type ChallengeDelegationDomains struct {
 	FromDomain string `json:"fromDomain"`
 	ToDomain   string `json:"toDomain"`
 }
 
 // CertificateSigningRequest - Model for the CertificateSigningRequest object
 type CertificateSigningRequest struct {
-	CsrId                            int64               `json:"csrId"`
-	Country                          string              `json:"country"`
-	State                            string              `json:"state"`
-	Locality                         string              `json:"locality"`
-	OrganizationName                 string              `json:"organizationName"`
-	ChallengeDelegationOfDomainsList []CertificateDomain `json:"challengeDelegationOfDomainsList"`
-	AutoManagedCsr                   bool                `json:"autoManagedCsr"`
-	LatestCertId                     int64               `json:"latestCertId"`
+	CsrId                            int64                        `json:"csrId"`
+	Country                          string                       `json:"country"`
+	State                            string                       `json:"state"`
+	Locality                         string                       `json:"locality"`
+	OrganizationName                 string                       `json:"organizationName"`
+	ChallengeDelegationOfDomainsList []ChallengeDelegationDomains `json:"challengeDelegationOfDomainsList"`
+	AutoManagedCsr                   bool                         `json:"autoManagedCsr"`
+	LastCertificateId                int64                        `json:"lastCertificateId"`
 }
 
 // SiteCertificateLinkRequest - Model for requesting a new Link Request
