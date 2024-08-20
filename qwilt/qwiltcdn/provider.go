@@ -86,7 +86,7 @@ func (p *qwiltCDNProvider) Configure(ctx context.Context, req provider.Configure
 	}
 
 	if cfg.EnvType == "" {
-		cfg.EnvType = "dev" //TEMP!!! SHOULD BE REPLACED WITH "PROD" IN FORMAL RELEASE!!
+		cfg.EnvType = "prod"
 	}
 
 	logMsg := fmt.Sprintf("Creating Qwilt CDN API client with env_type: %s, xapi_token length: %d", cfg.EnvType, len(cfg.XApiToken))
