@@ -35,7 +35,7 @@ func NewTerraformConfigBuilder() *TerraformConfigBuilder {
 	b.siteDataSources = make(map[string]string, 0)
 	return &b
 }
-func (b *TerraformConfigBuilder) SitesDataResource(name, siteId string) *TerraformConfigBuilder {
+func (b *TerraformConfigBuilder) SitesDataSource(name, siteId string) *TerraformConfigBuilder {
 	dataCfg := fmt.Sprintf(`
 data "qwilt_cdn_sites" "%s" {
 	filter = {
@@ -48,6 +48,20 @@ data "qwilt_cdn_sites" "%s" {
 output "site_detail" {
 	value = data.qwilt_cdn_sites.%s.site[0]
 }`, name, siteId, name)
+
+	b.siteDataSources[name] = dataCfg
+	return b
+}
+func (b *TerraformConfigBuilder) CertsDataSource(name, certId string) *TerraformConfigBuilder {
+	dataCfg := fmt.Sprintf(`
+data "qwilt_cdn_certificates" "%s" {
+	filter = {
+		cert_id             = "%s"
+	}
+}
+output "cert_detail" {
+	value = data.qwilt_cdn_certificates.%s.certificate[0]
+}`, name, certId, name)
 
 	b.siteDataSources[name] = dataCfg
 	return b

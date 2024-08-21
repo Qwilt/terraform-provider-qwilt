@@ -64,7 +64,7 @@ func TestSitesDataSource(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir2) // Clean up the temporary directory after the test
 
-	terraformBuilder2 := NewTerraformConfigBuilder().SitesDataResource("detail", siteId)
+	terraformBuilder2 := NewTerraformConfigBuilder().SitesDataSource("detail", siteId)
 	terraformConfig2 := terraformBuilder2.Build()
 
 	t.Logf("ncjhdbcj: %s", terraformConfig2)
