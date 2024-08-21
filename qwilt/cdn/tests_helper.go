@@ -45,9 +45,9 @@ data "qwilt_cdn_sites" "%s" {
 		truncate_host_index = false
 	}
 }
-output "site_%s" {
+output "site_detail" {
 	value = data.qwilt_cdn_sites.%s.site[0]
-}`, name, siteId, name, name)
+}`, name, siteId, name)
 
 	b.siteDataSources[name] = dataCfg
 	return b

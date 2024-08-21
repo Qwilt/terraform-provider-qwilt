@@ -1,4 +1,4 @@
-#THIS FEATURE IS EXPERIMENTAL AND SHOULD NOT BE USED!
+#> ⚠️ **Disclaimer**: this resource is experimental and should not be used!
 
 #Notes
 #this resource is similar to site_activation resource but activates the selected configuration to staging segment only.

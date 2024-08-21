@@ -6,7 +6,7 @@
 #  - password --> QCDN_PASSWORD
 #  - xapi_token --> QCDN_XAPI_TOKEN
 
-provider "qwiltcdn" {
+provider "qwilt" {
   # Specify username, or set env variable QCDN_USERNAME
   username = "me@mycompany.com"
   # Specify password or set env variable QCDN_PASSWORD

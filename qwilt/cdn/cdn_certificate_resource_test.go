@@ -97,8 +97,8 @@ func TestCertificateResource(t *testing.T) {
 	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
 	assert.Equal(t, nil, err)
 
-	//tf.SetStdout(os.Stdout)
-	//tf.SetStderr(os.Stderr)
+	tf.SetStdout(os.Stdout)
+	tf.SetStderr(os.Stderr)
 
 	terraformBuilder := NewTerraformConfigBuilder().CertResource("test", domain_key, domain_crt, "ccc")
 	terraformConfig := terraformBuilder.Build()

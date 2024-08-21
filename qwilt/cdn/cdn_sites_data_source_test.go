@@ -11,7 +11,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-exec/tfexec"
 	"github.com/stretchr/testify/assert"
 	"log"
@@ -19,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestSitesDataResource(t *testing.T) {
+func TestSitesDataSource(t *testing.T) {
 
 	t.Logf("Starting TestSitesDataResource test DEBUG")
 
@@ -85,14 +84,14 @@ func TestSitesDataResource(t *testing.T) {
 	output, err := tf2.Output(context.Background())
 	assert.Equal(t, nil, err)
 
-	t.Logf("type: %s", output["site_detail"].Type)
+	//t.Logf("type: %s", output["site_detail"].Type)
 
 	// Assert that the output matches the expected value
-	site := cdnmodel.SiteModel{}
-	err = json.Unmarshal(output["site_detail"].Value, &site)
+	var data map[string]interface{}
+	err = json.Unmarshal(output["site_detail"].Value, &data)
 	assert.Equal(t, nil, err)
 
-	t.Logf("site name: %s", site.SiteName)
-	//assert.Equal(t, siteId, site.SiteId)
+	assert.Equal(t, siteId, data["site_id"])
+	assert.Equal(t, curSiteName, data["site_name"])
 
 }
