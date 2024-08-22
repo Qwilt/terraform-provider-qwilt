@@ -24,7 +24,7 @@ import (
 
 var (
 	// TODO: Update this string with the published name of provider.
-	providerName = "qwilt.com/qwiltinc/qwilt"
+	providerName = "Qwilt/qwilt"
 
 	// these will be set by the goreleaser configuration
 	// to appropriate values for the compiled binary.
