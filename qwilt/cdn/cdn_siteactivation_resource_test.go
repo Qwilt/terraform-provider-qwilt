@@ -97,7 +97,7 @@ func TestSiteActivationResource(t *testing.T) {
 	//wait for activation to complete
 	start := time.Now()
 	publishCompleted := false
-	for time.Since(start) < 60*time.Second {
+	for time.Since(start) < 120*time.Second {
 		tf.Refresh(context.Background())
 		siteActivationState = findStateResource(state, "qwilt_cdn_site_activation", "test")
 		if siteActivationState.AttributeValues["publish_status"] != "InProgress" {

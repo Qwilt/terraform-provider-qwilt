@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     qwilt = {
-      source = "qwilt.com/qwiltinc/qwilt"
+      source = "Qwilt/qwilt"
+      version = "0.1.4"
     }
   }
 }
