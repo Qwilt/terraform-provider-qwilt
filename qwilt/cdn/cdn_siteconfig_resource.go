@@ -70,7 +70,7 @@ func (r *siteConfigResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			},
 			"change_description": schema.StringAttribute{
 				Description: "Comments added by the user to the configuration JSON payload.",
-				Optional:    true,
+				Required:    true,
 			},
 			"owner_org_id": schema.StringAttribute{
 				Description: "The organization that owns the site.",
