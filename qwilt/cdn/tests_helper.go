@@ -165,6 +165,16 @@ resource "qwilt_cdn_site_activation" "%s" {
 	b.siteActivationResources[name] = cfg
 	return b
 }
+func (b *TerraformConfigBuilder) SiteActivationResourceWithCertRef(name string, cert_ref_name string) *TerraformConfigBuilder {
+	cfg := fmt.Sprintf(`
+resource "qwilt_cdn_site_activation" "%s" {
+		site_id = qwilt_cdn_site_configuration.%s.site_id
+		revision_id = qwilt_cdn_site_configuration.%s.revision_id
+		certificate_id = qwilt_cdn_certificate.%s.cert_id
+	}`, name, name, name, cert_ref_name)
+	b.siteActivationResources[name] = cfg
+	return b
+}
 func (b *TerraformConfigBuilder) SiteActivationStagingResource(name string) *TerraformConfigBuilder {
 	cfg := fmt.Sprintf(`
 resource "qwilt_cdn_site_activation_staging" "%s" {

@@ -111,7 +111,7 @@ func (r *siteResource) Create(ctx context.Context, req resource.CreateRequest, r
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	plan = cdnmodel.SiteBuilder{}.
+	plan = cdnmodel.NewSiteBuilder().
 		SiteId(siteResp.SiteId).
 		OwnerOrgId(siteResp.OwnerOrgId).
 		SiteName(siteResp.SiteName).
@@ -151,7 +151,8 @@ func (r *siteResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	// Overwrite items with refreshed state
-	state = cdnmodel.SiteBuilder{}.SiteId(siteResp.SiteId).
+	state = cdnmodel.NewSiteBuilder().
+		SiteId(siteResp.SiteId).
 		OwnerOrgId(siteResp.OwnerOrgId).
 		SiteName(siteResp.SiteName).
 		RoutingMethod(siteResp.RoutingMethod).
@@ -202,7 +203,7 @@ func (r *siteResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	plan = cdnmodel.SiteBuilder{}.
+	plan = cdnmodel.NewSiteBuilder().
 		SiteId(siteResp.SiteId).
 		OwnerOrgId(siteResp.OwnerOrgId).
 		SiteName(siteResp.SiteName).

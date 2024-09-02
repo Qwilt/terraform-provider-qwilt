@@ -218,7 +218,7 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	newPlan := cdnmodel.SiteActivationBuilder{}.
+	newPlan := cdnmodel.NewSiteActivationBuilder().
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).
@@ -317,7 +317,7 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	// Overwrite items with refreshed state
-	stateBuilder := cdnmodel.SiteActivationBuilder{}.
+	stateBuilder := cdnmodel.NewSiteActivationBuilder().
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).
@@ -468,7 +468,7 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 	tflog.Info(ctx, "siteActivationResource: PUBLISH ACCEPTANCE STATUS after timeout IS: "+pubOpResp.PublishAcceptanceStatus+"\n")
 
 	// Map response body to schema and populate Computed attribute values
-	newPlan := cdnmodel.SiteActivationBuilder{}.
+	newPlan := cdnmodel.NewSiteActivationBuilder().
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).
@@ -519,9 +519,26 @@ func (r *siteActivationResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
+	var certId int64 = 0
 	if state.CertificateId.ValueInt64() != 0 {
+		certId = state.CertificateId.ValueInt64()
+	} else if state.CsrId.ValueInt64() != 0 {
+		//get latest from CSR
+		csrResp, err := r.client.GetCertificateSigningRequest(state.CsrId)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting CSR for Qwilt CDN Site",
+				"Could not get CSR for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+		if csrResp.LastCertificateId != 0 {
+			certId = csrResp.LastCertificateId
+		}
+	}
+	if certId != 0 {
 		//unlink previous certificate
-		err := r.client.UnLinkSiteCertificate(state.SiteId.ValueString(), strconv.Itoa(int(state.CertificateId.ValueInt64())))
+		err := r.client.UnLinkSiteCertificate(state.SiteId.ValueString(), strconv.Itoa(int(certId)))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error UnLinking Certificate to Qwilt CDN Site",
