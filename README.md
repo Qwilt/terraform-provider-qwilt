@@ -51,6 +51,10 @@ provider_installation {
   direct {}
 }
 ```
+Set the local provider name in main.go:
+```
+providerName = "qwilt.com/qwiltinc/qwilt"
+```
 
 To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
 

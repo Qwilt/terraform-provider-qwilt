@@ -2,10 +2,13 @@
 
 This is a simple example demonstrating how to import 1 site, site configuration, certificate, and activation resource.
 
+First, make sure your QCDN_XAPI_TOKEN env variable is set (this is the recommended method for authentication.
+See other authentication alternatives in details in the provider documentation.
+
 ## Basic Import
 
 Basic import uses site_id to detect revison_id and publish_id automatically and spare the user the hustle of more complex commands.
-The logic for qwiltcdn_site_configuration is:
+The logic for qwilt_cdn_site_configuration is:
 1. use published active revision_id (if available)
 2. use published last revision_id (if available)
 3. use latest revision_id (max revision_number)
@@ -21,10 +24,10 @@ The import is a rather manual operation. To complete the import process the foll
 
 To use it for step (1), define your API token and run:
 ```
-$ terraform import qwiltcdn_certificate.example <cert_id> -var="token=<API Token>"
-$ terraform import qwiltcdn_site.example <site_id> -var="token=<API Token>"
-$ terraform import qwiltcdn_site_configuration.example <site_id> -var="token=<API Token>"
-$ terraform import qwiltcdn_site_activation.example <site_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_certificate.example <cert_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_site.example <site_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_site_configuration.example <site_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_site_activation.example <site_id> -var="token=<API Token>"
 ```
 
 ## Advanced Import
@@ -42,8 +45,8 @@ The import is a rather manual operation. To complete the import process the foll
 
 To use it for step (1), define your API token and run:
 ```
-$ terraform import qwiltcdn_certificate.example <cert_id> -var="token=<API Token>"
-$ terraform import qwiltcdn_site.example <site_id> -var="token=<API Token>"
-$ terraform import qwiltcdn_site_configuration.example <site_id>:<revision_id> -var="token=<API Token>"
-$ terraform import qwiltcdn_site_activation.example <site_id>:<publish_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_certificate.example <cert_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_site.example <site_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_site_configuration.example <site_id>:<revision_id> -var="token=<API Token>"
+$ terraform import qwilt_cdn_site_activation.example <site_id>:<publish_id> -var="token=<API Token>"
 ```
