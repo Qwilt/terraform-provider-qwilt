@@ -23,6 +23,7 @@ import (
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate -provider-name qwilt
 
 var (
+
 	providerName = "Qwilt/qwilt"
 
 	// these will be set by the goreleaser configuration
