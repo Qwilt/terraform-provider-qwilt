@@ -24,6 +24,7 @@ import (
 
 var (
 
+	//providerName = "qwilt.com/qwiltinc/qwilt" - use this when developing locally
 	providerName = "Qwilt/qwilt"
 
 	// these will be set by the goreleaser configuration
