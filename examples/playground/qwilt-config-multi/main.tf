@@ -1,12 +1,10 @@
 terraform {
   required_providers {
-    qwiltcdn = {
-      source  = "qwilt.com/qwiltinc/qwilt"
-      version = "1.0.0"
+    qwilt = {
+      source = "Qwilt/qwilt"
     }
   }
 }
 
-provider "qwiltcdn" {
-  xapi_token = var.token
+provider "qwilt" {
 }

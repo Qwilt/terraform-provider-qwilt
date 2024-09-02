@@ -1,22 +1,20 @@
 terraform {
   required_providers {
-    qwiltcdn = {
-      source  = "qwilt.com/qwiltinc/qwilt"
-      version = "1.0.0"
+    qwilt = {
+      source = "Qwilt/qwilt"
     }
   }
 }
 
-provider "qwiltcdn" {
-  xapi_token = var.token
+provider "qwilt" {
 }
 
-resource "qwiltcdn_site" "example" {
+resource "qwilt_cdn_site" "example" {
   site_name = "Terraform Basic Example Site"
 }
 
-resource "qwiltcdn_site_configuration" "example" {
-  site_id = qwiltcdn_site.example.site_id
+resource "qwilt_cdn_site_configuration" "example" {
+  site_id = qwilt_cdn_site.example.site_id
   #host_index = file("./examplesitebasic.json")
   host_index         = <<-EOT
 {
@@ -48,31 +46,31 @@ EOT
   change_description = "Basic example demonstrating the Terraform plugin"
 }
 
-resource "qwiltcdn_certificate" "example" {
+resource "qwilt_cdn_certificate" "example" {
   certificate       = filebase64("./tf.example.com.crt")
   certificate_chain = filebase64("./tf.example.com.crt")
   private_key       = filebase64("./tf.example.com.key")
   description       = "Certificate for the Terraform basic example configuration"
 }
 
-resource "qwiltcdn_site_activation" "example" {
-  site_id        = qwiltcdn_site_configuration.example.site_id
-  revision_id    = qwiltcdn_site_configuration.example.revision_id
-  certificate_id = qwiltcdn_certificate.example.cert_id
+resource "qwilt_cdn_site_activation" "example" {
+  site_id        = qwilt_cdn_site_configuration.example.site_id
+  revision_id    = qwilt_cdn_site_configuration.example.revision_id
+  certificate_id = qwilt_cdn_certificate.example.cert_id
 }
 
 output "examplesite" {
-  value = qwiltcdn_site.example
+  value = qwilt_cdn_site.example
 }
 
 output "examplesiteconfig" {
-  value = qwiltcdn_site_configuration.example
+  value = qwilt_cdn_site_configuration.example
 }
 
 output "examplecertificate" {
-  value = qwiltcdn_certificate.example
+  value = qwilt_cdn_certificate.example
 }
 
 output "examplesiteactivation" {
-  value = qwiltcdn_site_activation.example
+  value = qwilt_cdn_site_activation.example
 }

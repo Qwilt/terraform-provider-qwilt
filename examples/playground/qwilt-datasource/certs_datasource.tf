@@ -8,7 +8,7 @@ variable "cert_domain" {
   default = null
 }
 
-data "qwiltcdn_certificates" "detail" {
+data "qwilt_cdn_certificates" "detail" {
   filter = {
     cert_id = var.cert_id != null && var.cert_id != "all" ? try(tonumber(var.cert_id), -1) : null
   }

@@ -23,7 +23,7 @@ variable "site_name" {
   default = null
 }
 
-data "qwiltcdn_sites" "detail" {
+data "qwilt_cdn_sites" "detail" {
   filter = {
     site_id             = var.site_id
     revision_id         = var.revision_id

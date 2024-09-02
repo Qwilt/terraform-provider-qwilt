@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"flag"
-	cdn "github.com/Qwilt/terraform-provider-qwilt/qwilt/qwiltcdn"
+	cdn "github.com/Qwilt/terraform-provider-qwilt/qwilt/provider"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -20,10 +20,10 @@ import (
 
 // Run the docs generation tool, check its repository for more information on how it works and how docs
 // can be customized.
-//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate -provider-name qwiltcdn
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate -provider-name qwilt
 
 var (
-	// TODO: Update this string with the published name of provider.
+
 	providerName = "Qwilt/qwilt"
 
 	// these will be set by the goreleaser configuration
@@ -43,8 +43,8 @@ func main() {
 	ctx := context.Background()
 
 	providers := []func() tfprotov6.ProviderServer{
-		providerserver.NewProtocol6(cdn.NewCdnProvider(version)),
-		//providerserver.NewProtocol6(oeprovider.NewCdnProvider(version)),
+		providerserver.NewProtocol6(cdn.NewQwiltProvider(version)),
+		//providerserver.NewProtocol6(oeprovider.NewQwiltProvider(version)),
 	}
 
 	muxServer, err := tf6muxserver.NewMuxServer(ctx, providers...)

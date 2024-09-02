@@ -1,52 +1,50 @@
 terraform {
   required_providers {
-    qwiltcdn = {
-      source  = "qwilt.com/qwiltinc/qwilt"
-      version = "1.0.0"
+    qwilt = {
+      source = "Qwilt/qwilt"
     }
   }
 }
 
-provider "qwiltcdn" {
-  xapi_token = var.token
+provider "qwilt" {
 }
 
-resource "qwiltcdn_site" "example" {
+resource "qwilt_cdn_site" "example" {
   site_name = ""
 }
 
-resource "qwiltcdn_site_configuration" "example" {
+resource "qwilt_cdn_site_configuration" "example" {
   site_id = ""
   #host_index = file("./examplesitebasic.json")
   host_index         = ""
   change_description = ""
 }
 
-resource "qwiltcdn_certificate" "example" {
+resource "qwilt_cdn_certificate" "example" {
   certificate       = ""
   certificate_chain = ""
   private_key       = ""
   description       = ""
 }
 
-resource "qwiltcdn_site_activation" "example" {
+resource "qwilt_cdn_site_activation" "example" {
   site_id        = ""
   revision_id    = ""
   certificate_id = ""
 }
 
 output "examplesite" {
-  value = qwiltcdn_site.example
+  value = qwilt_cdn_site.example
 }
 
 output "examplesiteconfig" {
-  value = qwiltcdn_site_configuration.example
+  value = qwilt_cdn_site_configuration.example
 }
 
 output "examplecertificate" {
-  value = qwiltcdn_certificate.example
+  value = qwilt_cdn_certificate.example
 }
 
 output "examplesiteactivation" {
-  value = qwiltcdn_site_activation.example
+  value = qwilt_cdn_site_activation.example
 }
