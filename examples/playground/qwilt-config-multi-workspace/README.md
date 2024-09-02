@@ -8,6 +8,9 @@ This example may be more complex than your individual needs.  Qwilt's system pro
 
 In this example, configurations are managed through separate Terraform configuration files (e.g. examplesite.tf and examplesite2.tf), and SVTA configurations are managed through corresponding JSON files that are included in the configuration.  Both the configuration and JSON configuration are templated to allow variable substitution based on what type of site is being managed.  Each site and instance has its own associated certificate and private key.
 
+First, make sure your QCDN_XAPI_TOKEN env variable is set (this is the recommended method for authentication.
+See other authentication alternatives in details in the provider documentation.
+
 To get started, you must create your workspaces.  For example:
 ```
 $ terraform workspace new prod

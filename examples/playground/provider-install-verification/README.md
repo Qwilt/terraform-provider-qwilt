@@ -2,7 +2,10 @@
 
 This is a very trivial, bare-bones example to verify that you have the Qwilt Terraform Provider installed correctly.
 
-To use it, define your API token and run 'apply':
+First, make sure your QCDN_XAPI_TOKEN env variable is set (this is the recommended method for authentication.
+See other authentication alternatives in details in the provider documentation.
+
+To use it, run 'apply':
 ```
-$ terraform apply -var="token=<API Token>"
+$ terraform apply
 ```

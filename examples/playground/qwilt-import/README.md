@@ -2,6 +2,9 @@
 
 This is a simple example demonstrating how to import 1 site, site configuration, certificate, and activation resource.
 
+First, make sure your QCDN_XAPI_TOKEN env variable is set (this is the recommended method for authentication.
+See other authentication alternatives in details in the provider documentation.
+
 ## Basic Import
 
 Basic import uses site_id to detect revison_id and publish_id automatically and spare the user the hustle of more complex commands.
