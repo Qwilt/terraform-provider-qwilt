@@ -41,7 +41,7 @@ Switched to workspace "prod".
 
 Now, you may apply the configuration as follows:
 ```
-$ terraform apply -var="token=<API Token>"
+$ terraform apply
 ```
 
 The same may be done within the "dev" workspace.  Managing more than 2 workspaces (prod and non-prod) will require further changes to the configuration.

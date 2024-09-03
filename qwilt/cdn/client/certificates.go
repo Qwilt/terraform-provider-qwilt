@@ -183,12 +183,12 @@ func (c *CertificatesClient) GetCertificateSigningRequests() ([]api.CertificateS
 }
 
 // GetCertificateSigningRequest - Returns GetCertificateSigningRequest details
-func (c *CertificatesClient) GetCertificateSigningRequest(csrId types.Int64) (*api.CertificateSigningRequest, error) {
-	if csrId.IsNull() {
+func (c *CertificatesClient) GetCertificateSigningRequest(csrId string) (*api.CertificateSigningRequest, error) {
+	if len(csrId) == 0 {
 		return nil, fmt.Errorf("csrId is empty")
 	}
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/certificate-signing-requests/%d", c.apiEndpoint, csrId.ValueInt64()), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/certificate-signing-requests/%s", c.apiEndpoint, csrId), nil)
 	if err != nil {
 		return nil, err
 	}

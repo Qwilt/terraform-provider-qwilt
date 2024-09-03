@@ -156,7 +156,7 @@ type Certificate struct {
 	Domain      string `json:"domain"`
 	Status      string `json:"status"`
 	Type        string `json:"type"`
-	CsrId       *int64 `json:"csr_id"`
+	CsrId       string `json:"csrId"`
 }
 
 // CertificateCreateRequest - Model for creating a new Certificate

@@ -164,7 +164,7 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 			return
 		}
 	} else if plan.CsrId.ValueInt64() != 0 {
-		csrResp, err := r.client.GetCertificateSigningRequest(plan.CsrId)
+		csrResp, err := r.client.GetCertificateSigningRequest(strconv.FormatInt(plan.CsrId.ValueInt64(), 10))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Getting CSR for Qwilt CDN Site",
@@ -300,8 +300,9 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 			return
 		}
 
-		if certsResp.CsrId != nil {
-			csrResp, err := r.client.GetCertificateSigningRequest(types.Int64Value(*certsResp.CsrId))
+		if certsResp.CsrId != "" {
+			tflog.Info(ctx, "Reading CSR: "+certsResp.CsrId)
+			csrResp, err := r.client.GetCertificateSigningRequest(certsResp.CsrId)
 			if err != nil {
 				resp.Diagnostics.AddError(
 					"Error Getting CSR for Qwilt CDN Site",
@@ -310,9 +311,12 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 				return
 			}
 			if csrResp.AutoManagedCsr {
-				csrId = *certsResp.CsrId
+				tflog.Info(ctx, "found AUTO-MANAGED CSR associated certificate "+siteCertsResp[0].CertificateId+" : "+certsResp.CsrId)
+				csrId, _ = strconv.ParseInt(certsResp.CsrId, 10, 64)
 				autoManagedCsr = true
 			}
+		} else {
+			tflog.Info(ctx, "NO CSR for associated certificate "+siteCertsResp[0].CertificateId)
 		}
 	}
 
@@ -397,7 +401,7 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		newCertId = plan.CertificateId
 	} else if !plan.CsrId.IsNull() {
 		//get latest from CSR
-		csrResp, err := r.client.GetCertificateSigningRequest(plan.CsrId)
+		csrResp, err := r.client.GetCertificateSigningRequest(strconv.FormatInt(plan.CsrId.ValueInt64(), 10))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Getting CSR for Qwilt CDN Site",
@@ -524,7 +528,7 @@ func (r *siteActivationResource) Delete(ctx context.Context, req resource.Delete
 		certId = state.CertificateId.ValueInt64()
 	} else if state.CsrId.ValueInt64() != 0 {
 		//get latest from CSR
-		csrResp, err := r.client.GetCertificateSigningRequest(state.CsrId)
+		csrResp, err := r.client.GetCertificateSigningRequest(strconv.FormatInt(state.CsrId.ValueInt64(), 10))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Getting CSR for Qwilt CDN Site",

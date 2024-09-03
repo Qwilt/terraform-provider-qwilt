@@ -9,5 +9,5 @@ See other authentication alternatives in details in the provider documentation.
 
 To use it, define your API token and run 'apply':
 ```
-$ terraform apply -var="token=<API Token>"
+$ terraform apply
 ```

@@ -9,11 +9,13 @@ package cdn
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-exec/tfexec"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -131,6 +133,7 @@ func TestSiteActivationResource(t *testing.T) {
 	certGen := NewSelfSignedCertGenerator()
 	certGen.generate(domain)
 
+	t.Logf("Configuring site activation with NO certificate/CSR association")
 	terraformBuilder := NewTerraformConfigBuilder()
 	terraformBuilder.CertResource("test", certGen.PK, certGen.Crt, "ccc")
 	terraformBuilder.SiteResource("test", generateSiteName(&curSiteName))
@@ -163,6 +166,8 @@ func TestSiteActivationResource(t *testing.T) {
 	siteId := siteState.AttributeValues["site_id"]
 	revisionId := siteConfigState.AttributeValues["revision_id"]
 
+	//associate a certificate with this site
+	t.Logf("Configuring site activation with certificate association")
 	terraformBuilder.SiteActivationResourceWithCertRef("test", "test")
 	terraformConfig = terraformBuilder.Build()
 
@@ -209,6 +214,72 @@ func TestSiteActivationResource(t *testing.T) {
 	//wait for activation to complete
 	start := time.Now()
 	publishCompleted := false
+	for time.Since(start) < 120*time.Second {
+		tf.Refresh(context.Background())
+		state, err = tf.Show(context.Background())
+		siteActivationState = findStateResource(state, "qwilt_cdn_site_activation", "test")
+		if siteActivationState.AttributeValues["publish_status"] != "InProgress" {
+			publishCompleted = true
+			t.Logf("publish operation %s completed, status %s", publishId, siteActivationState.AttributeValues["publish_status"])
+			break
+		}
+		t.Logf("wait for publish operation %s completion", publishId)
+		time.Sleep(3 * time.Second) // Wait for few seconds before checking again
+	}
+	assert.True(t, publishCompleted)
+	assert.Equal(t, "Success", siteActivationState.AttributeValues["publish_status"])
+	assert.Equal(t, "Accepted", siteActivationState.AttributeValues["publish_acceptance_status"])
+	assert.Equal(t, "null", siteActivationState.AttributeValues["validators_err_details"])
+
+	//associate a CSR with this site
+	t.Logf("Configuring site activation with CSR association")
+	var csr_id = 6 //use predefined CSR in kan11 env!!! until we support managing lifecycle of CSR's from terraform
+	terraformBuilder.SiteActivationResourceWithCert("test", nil, &csr_id)
+	terraformConfig = terraformBuilder.Build()
+
+	//t.Logf("config: %s", terraformConfig)
+	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
+	assert.Equal(t, nil, err)
+
+	err = tf.Apply(context.Background())
+	assert.Equal(t, nil, err)
+
+	state, err = tf.Show(context.Background())
+	assert.Equal(t, nil, err)
+	assert.Equal(t, 4, len(state.Values.RootModule.Resources))
+
+	certState = findStateResource(state, "qwilt_cdn_certificate", "test")
+	siteState = findStateResource(state, "qwilt_cdn_site", "test")
+	siteConfigState = findStateResource(state, "qwilt_cdn_site_configuration", "test")
+	siteActivationState = findStateResource(state, "qwilt_cdn_site_activation", "test")
+	assert.NotNil(t, certState)
+	assert.NotNil(t, siteState)
+	assert.NotNil(t, siteConfigState)
+	assert.NotNil(t, siteActivationState)
+
+	//get id's to test it later with import
+	//certId := certState.AttributeValues["csr_id"]
+	siteId = siteState.AttributeValues["site_id"]
+	revisionId = siteConfigState.AttributeValues["revision_id"]
+	publishId = siteActivationState.AttributeValues["publish_id"]
+
+	assert.Equal(t, revisionId, siteActivationState.AttributeValues["revision_id"])
+	assert.Equal(t, siteId, siteActivationState.AttributeValues["site_id"])
+	assert.Nil(t, siteActivationState.AttributeValues["certificate_id"])
+	assert.Equal(t, json.Number(strconv.Itoa(csr_id)), json.Number(fmt.Sprintf("%v", siteActivationState.AttributeValues["csr_id"])))
+	assert.Equal(t, "ga", siteActivationState.AttributeValues["target"])
+	assert.Equal(t, "null", siteActivationState.AttributeValues["validators_err_details"])
+	assert.Equal(t, "Publish", siteActivationState.AttributeValues["operation_type"])
+
+	////check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
+	plan, err = tf.Plan(context.Background())
+	//t.Logf("%s", siteActivationState.AttributeValues)
+	assert.Equal(t, nil, err)
+	assert.False(t, plan) //no diff
+
+	//wait for activation to complete
+	start = time.Now()
+	publishCompleted = false
 	for time.Since(start) < 120*time.Second {
 		tf.Refresh(context.Background())
 		state, err = tf.Show(context.Background())
