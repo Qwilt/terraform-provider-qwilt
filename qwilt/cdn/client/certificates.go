@@ -30,7 +30,7 @@ func NewCertificatesClient(client *Client) *CertificatesClient {
 	return &c
 }
 
-// GetCertificates - Returns list of sites
+// GetCertificates - Returns list of certificates
 func (c *CertificatesClient) GetCertificates(detailed bool) ([]api.Certificate, error) {
 
 	querystring := ""
@@ -158,4 +158,51 @@ func (c *CertificatesClient) DeleteCertificate(certId types.Int64) error {
 	}
 
 	return nil
+}
+
+// GetCertificateSigningRequests - Returns list of csr's
+func (c *CertificatesClient) GetCertificateSigningRequests() ([]api.CertificateSigningRequest, error) {
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/certificate-signing-requests", c.apiEndpoint), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	certs := []api.CertificateSigningRequest{}
+	err = json.Unmarshal(body, &certs)
+	if err != nil {
+		return nil, err
+	}
+
+	return certs, nil
+}
+
+// GetCertificateSigningRequest - Returns GetCertificateSigningRequest details
+func (c *CertificatesClient) GetCertificateSigningRequest(csrId string) (*api.CertificateSigningRequest, error) {
+	if len(csrId) == 0 {
+		return nil, fmt.Errorf("csrId is empty")
+	}
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/certificate-signing-requests/%s", c.apiEndpoint, csrId), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	certDetail := api.CertificateSigningRequest{}
+	err = json.Unmarshal(body, &certDetail)
+	if err != nil {
+		return nil, err
+	}
+
+	return &certDetail, nil
 }

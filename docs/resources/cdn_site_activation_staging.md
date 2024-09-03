@@ -37,7 +37,8 @@ resource "qwilt_cdn_site_activation_staging" "example" {
 
 ### Optional
 
-- `certificate_id` (Number) The ID of the certificate you want to link to this site.
+- `certificate_id` (Number) The ID of the certificate you want to associate to this site. Mutually exclusive with csr_id
+- `csr_id` (Number) The ID of the CSR you want to associate to this site. Mutually exclusive with certificate_id
 
 ### Read-Only
 

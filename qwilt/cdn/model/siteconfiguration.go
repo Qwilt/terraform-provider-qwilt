@@ -24,31 +24,36 @@ type SiteConfigBuilder struct {
 	ctx context.Context
 }
 
-func (b SiteConfigBuilder) WithCtx(ctx context.Context) SiteConfigBuilder {
+func NewSiteConfigBuilder() *SiteConfigBuilder {
+	b := SiteConfigBuilder{}
+	return &b
+}
+
+func (b *SiteConfigBuilder) WithCtx(ctx context.Context) *SiteConfigBuilder {
 	b.ctx = ctx
 	return b
 }
-func (b SiteConfigBuilder) LastUpdateTimeMilli(value int) SiteConfigBuilder {
+func (b *SiteConfigBuilder) LastUpdateTimeMilli(value int) *SiteConfigBuilder {
 	b.cfg.LastUpdateTimeMilli = types.Int64Value(int64(value))
 	return b
 }
-func (b SiteConfigBuilder) WithSiteId(siteId string) SiteConfigBuilder {
+func (b *SiteConfigBuilder) WithSiteId(siteId string) *SiteConfigBuilder {
 	b.cfg.SiteId = types.StringValue(siteId)
 	return b
 }
-func (b SiteConfigBuilder) WithOwnerOrgId(ownerOrgId string) SiteConfigBuilder {
+func (b *SiteConfigBuilder) WithOwnerOrgId(ownerOrgId string) *SiteConfigBuilder {
 	b.cfg.OwnerOrgId = types.StringValue(ownerOrgId)
 	return b
 }
-func (b SiteConfigBuilder) WithRevisionId(revision string) SiteConfigBuilder {
+func (b *SiteConfigBuilder) WithRevisionId(revision string) *SiteConfigBuilder {
 	b.cfg.RevisionId = types.StringValue(revision)
 	return b
 }
-func (b SiteConfigBuilder) WithRevisionNum(revision int) SiteConfigBuilder {
+func (b *SiteConfigBuilder) WithRevisionNum(revision int) *SiteConfigBuilder {
 	b.cfg.RevisionNum = types.Int64Value(int64(revision))
 	return b
 }
-func (b SiteConfigBuilder) WithHostIndex(hostIndex json.RawMessage, indent bool) SiteConfigBuilder {
+func (b *SiteConfigBuilder) WithHostIndex(hostIndex json.RawMessage, indent bool) *SiteConfigBuilder {
 
 	if indent {
 		//Format the HostIndex JSON string from the API.
@@ -69,12 +74,12 @@ func (b SiteConfigBuilder) WithHostIndex(hostIndex json.RawMessage, indent bool)
 	}
 	return b
 }
-func (b SiteConfigBuilder) WithChangeDescription(desc string) SiteConfigBuilder {
+func (b *SiteConfigBuilder) WithChangeDescription(desc string) *SiteConfigBuilder {
 	b.cfg.ChangeDescription = types.StringValue(desc)
 	return b
 }
 
-func (b SiteConfigBuilder) Build() SiteConfiguration {
+func (b *SiteConfigBuilder) Build() SiteConfiguration {
 	id := b.cfg.SiteId.ValueString() + ":" + b.cfg.RevisionId.ValueString()
 	b.cfg.Id = types.StringValue(id)
 	return b.cfg
