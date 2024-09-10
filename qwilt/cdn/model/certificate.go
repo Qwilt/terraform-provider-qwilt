@@ -24,54 +24,49 @@ type CertificateBuilder struct {
 	cert Certificate
 }
 
-func NewCertificateBuilder() *CertificateBuilder {
-	b := CertificateBuilder{}
-	return &b
-}
-
-func (b *CertificateBuilder) CertificateId(value int64) *CertificateBuilder {
+func (b CertificateBuilder) CertificateId(value int64) CertificateBuilder {
 	b.cert.CertId = types.Int64Value(value)
 	b.cert.Id = b.cert.CertId
 	return b
 }
-func (b *CertificateBuilder) Certificate(value string) *CertificateBuilder {
+func (b CertificateBuilder) Certificate(value string) CertificateBuilder {
 	b.cert.Certificate = types.StringValue(value)
 	return b
 }
-func (b *CertificateBuilder) CertificateChain(value string) *CertificateBuilder {
+func (b CertificateBuilder) CertificateChain(value string) CertificateBuilder {
 	b.cert.CertificateChain = types.StringValue(value)
 	return b
 }
 
-func (b *CertificateBuilder) PrivateKey(value string) *CertificateBuilder {
+func (b CertificateBuilder) PrivateKey(value string) CertificateBuilder {
 	b.cert.PrivateKey = types.StringValue(value)
 	return b
 }
-func (b *CertificateBuilder) Description(description string) *CertificateBuilder {
+func (b CertificateBuilder) Description(description string) CertificateBuilder {
 	b.cert.Description = types.StringValue(description)
 	return b
 }
-func (b *CertificateBuilder) PkHash(value string) *CertificateBuilder {
+func (b CertificateBuilder) PkHash(value string) CertificateBuilder {
 	b.cert.PkHash = types.StringValue(value)
 	return b
 }
-func (b *CertificateBuilder) Tenant(description string) *CertificateBuilder {
+func (b CertificateBuilder) Tenant(description string) CertificateBuilder {
 	b.cert.Tenant = types.StringValue(description)
 	return b
 }
-func (b *CertificateBuilder) Domain(description string) *CertificateBuilder {
+func (b CertificateBuilder) Domain(description string) CertificateBuilder {
 	b.cert.Domain = types.StringValue(description)
 	return b
 }
-func (b *CertificateBuilder) Status(description string) *CertificateBuilder {
+func (b CertificateBuilder) Status(description string) CertificateBuilder {
 	b.cert.Status = types.StringValue(description)
 	return b
 }
-func (b *CertificateBuilder) Type(description string) *CertificateBuilder {
+func (b CertificateBuilder) Type(description string) CertificateBuilder {
 	b.cert.Type = types.StringValue(description)
 	return b
 }
 
-func (b *CertificateBuilder) Build() Certificate {
+func (b CertificateBuilder) Build() Certificate {
 	return b.cert
 }

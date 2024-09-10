@@ -156,7 +156,6 @@ type Certificate struct {
 	Domain      string `json:"domain"`
 	Status      string `json:"status"`
 	Type        string `json:"type"`
-	CsrId       string `json:"csrId"`
 }
 
 // CertificateCreateRequest - Model for creating a new Certificate
@@ -175,24 +174,6 @@ type CertificateUpdateRequest struct {
 	PrivateKey       string `json:"privateKey"`
 	//Email            string `json:"email"`
 	Description string `json:"description"`
-}
-
-// CertificateSigningRequest - Model for the CertificateSigningRequest object
-type ChallengeDelegationDomains struct {
-	FromDomain string `json:"fromDomain"`
-	ToDomain   string `json:"toDomain"`
-}
-
-// CertificateSigningRequest - Model for the CertificateSigningRequest object
-type CertificateSigningRequest struct {
-	CsrId                            int64                        `json:"csrId"`
-	Country                          string                       `json:"country"`
-	State                            string                       `json:"state"`
-	Locality                         string                       `json:"locality"`
-	OrganizationName                 string                       `json:"organizationName"`
-	ChallengeDelegationOfDomainsList []ChallengeDelegationDomains `json:"challengeDelegationOfDomainsList"`
-	AutoManagedCsr                   bool                         `json:"autoManagedCsr"`
-	LastCertificateId                int64                        `json:"lastCertificateId"`
 }
 
 // SiteCertificateLinkRequest - Model for requesting a new Link Request
