@@ -6,6 +6,7 @@ import (
 )
 
 type Site struct {
+	LastUpdated                  types.String `tfsdk:"last_updated"`
 	Id                           types.String `tfsdk:"id"`
 	SiteId                       types.String `tfsdk:"site_id"`
 	OwnerOrgId                   types.String `tfsdk:"owner_org_id"`
@@ -20,40 +21,35 @@ type SiteBuilder struct {
 	ctx  context.Context
 }
 
-func NewSiteBuilder() *SiteBuilder {
-	b := SiteBuilder{}
-	return &b
-}
-
-func (b *SiteBuilder) WithCtx(ctx context.Context) *SiteBuilder {
+func (b SiteBuilder) WithCtx(ctx context.Context) SiteBuilder {
 	b.ctx = ctx
 	return b
 }
-func (b *SiteBuilder) LastUpdateTimeMilli(value int) *SiteBuilder {
+func (b SiteBuilder) LastUpdateTimeMilli(value int) SiteBuilder {
 	b.site.LastUpdateTimeMilli = types.Int64Value(int64(value))
 	return b
 }
-func (b *SiteBuilder) SiteId(value string) *SiteBuilder {
+func (b SiteBuilder) SiteId(value string) SiteBuilder {
 	b.site.SiteId = types.StringValue(value)
 	b.site.Id = b.site.SiteId
 	return b
 }
-func (b *SiteBuilder) OwnerOrgId(value string) *SiteBuilder {
+func (b SiteBuilder) OwnerOrgId(value string) SiteBuilder {
 	b.site.OwnerOrgId = types.StringValue(value)
 	return b
 }
-func (b *SiteBuilder) SiteName(value string) *SiteBuilder {
+func (b SiteBuilder) SiteName(value string) SiteBuilder {
 	b.site.SiteName = types.StringValue(value)
 	return b
 }
-func (b *SiteBuilder) RoutingMethod(value string) *SiteBuilder {
+func (b SiteBuilder) RoutingMethod(value string) SiteBuilder {
 	b.site.RoutingMethod = types.StringValue(value)
 	return b
 }
-func (b *SiteBuilder) SiteDnsCnameDelegationTarget(value string) *SiteBuilder {
+func (b SiteBuilder) SiteDnsCnameDelegationTarget(value string) SiteBuilder {
 	b.site.SiteDnsCnameDelegationTarget = types.StringValue(value)
 	return b
 }
-func (b *SiteBuilder) Build() Site {
+func (b SiteBuilder) Build() Site {
 	return b.site
 }

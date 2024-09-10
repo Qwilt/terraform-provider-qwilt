@@ -52,6 +52,10 @@ func (r *siteResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 				Description: "The unique identifier of the site. Equals site_id. Required for testing infra",
 				Computed:    true,
 			},
+			"last_updated": schema.StringAttribute{
+				Description: "Timestamp of the last Terraform update of the site.",
+				Computed:    true,
+			},
 			"site_id": schema.StringAttribute{
 				Description: "The unique identifier of the site. The siteID will be needed when you add the site configuration and when you publish the site.",
 				Computed:    true,
@@ -111,7 +115,7 @@ func (r *siteResource) Create(ctx context.Context, req resource.CreateRequest, r
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	plan = cdnmodel.NewSiteBuilder().
+	plan = cdnmodel.SiteBuilder{}.
 		SiteId(siteResp.SiteId).
 		OwnerOrgId(siteResp.OwnerOrgId).
 		SiteName(siteResp.SiteName).
@@ -151,8 +155,7 @@ func (r *siteResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	// Overwrite items with refreshed state
-	state = cdnmodel.NewSiteBuilder().
-		SiteId(siteResp.SiteId).
+	state = cdnmodel.SiteBuilder{}.SiteId(siteResp.SiteId).
 		OwnerOrgId(siteResp.OwnerOrgId).
 		SiteName(siteResp.SiteName).
 		RoutingMethod(siteResp.RoutingMethod).
@@ -203,7 +206,7 @@ func (r *siteResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	plan = cdnmodel.NewSiteBuilder().
+	plan = cdnmodel.SiteBuilder{}.
 		SiteId(siteResp.SiteId).
 		OwnerOrgId(siteResp.OwnerOrgId).
 		SiteName(siteResp.SiteName).

@@ -1,5 +1,5 @@
-#variable "token" {
-#  description = "API Token"
-#  type        = string
-#  sensitive   = true
-#}
+variable "token" {
+  description = "API Token"
+  type        = string
+  sensitive   = true
+}
