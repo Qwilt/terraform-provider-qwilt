@@ -16,5 +16,5 @@ type QwiltProviderModel struct {
 	EnvType   types.String `tfsdk:"env_type"`
 	Username  types.String `tfsdk:"username"`
 	Password  types.String `tfsdk:"password"`
-	XApiToken types.String `tfsdk:"xapi_token"`
+	XApiToken types.String `tfsdk:"api_key"`
 }

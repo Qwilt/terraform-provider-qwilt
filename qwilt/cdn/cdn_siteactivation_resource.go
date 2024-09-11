@@ -189,7 +189,7 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	newPlan := cdnmodel.SiteActivationBuilder{}.
+	newPlan := cdnmodel.NewSiteActivationBuilder().
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).
@@ -259,7 +259,7 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	// Overwrite items with refreshed state
-	state = cdnmodel.SiteActivationBuilder{}.
+	state = cdnmodel.NewSiteActivationBuilder().
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).
@@ -364,7 +364,7 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 	tflog.Info(ctx, "siteActivationResource: PUBLISH ACCEPTANCE STATUS after timeout IS: "+pubOpResp.PublishAcceptanceStatus+"\n")
 
 	// Map response body to schema and populate Computed attribute values
-	newPlan := cdnmodel.SiteActivationBuilder{}.
+	newPlan := cdnmodel.NewSiteActivationBuilder().
 		Ctx(ctx).
 		PublishId(pubOpResp.PublishId).
 		RevisionId(pubOpResp.RevisionId).

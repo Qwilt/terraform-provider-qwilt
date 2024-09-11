@@ -30,7 +30,7 @@ func NewCertificatesClient(client *Client) *CertificatesClient {
 	return &c
 }
 
-// GetCertificates - Returns list of sites
+// GetCertificates - Returns list of certificates
 func (c *CertificatesClient) GetCertificates(detailed bool) ([]api.Certificate, error) {
 
 	querystring := ""

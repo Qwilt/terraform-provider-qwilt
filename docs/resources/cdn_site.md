@@ -29,7 +29,6 @@ resource "qwilt_cdn_site" "example" {
 
 - `id` (String) The unique identifier of the site. Equals site_id. Required for testing infra
 - `last_update_time_milli` (Number) When the site last updated, in epoch time.
-- `last_updated` (String) Timestamp of the last Terraform update of the site.
 - `owner_org_id` (String) The organization that owns the site.
 - `routing_method` (String) The routing method used for the site. It is defaulted to 'DNS'.
 - `site_dns_cname_delegation_target` (String) The CNAME you'll use direct traffic from your website to the cdnclient.

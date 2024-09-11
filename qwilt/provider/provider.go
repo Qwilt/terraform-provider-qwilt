@@ -89,7 +89,7 @@ func (p *qwiltCDNProvider) Configure(ctx context.Context, req provider.Configure
 		cfg.EnvType = "prod"
 	}
 
-	logMsg := fmt.Sprintf("Creating Qwilt CDN API client with env_type: %s, xapi_token length: %d", cfg.EnvType, len(cfg.XApiToken))
+	logMsg := fmt.Sprintf("Creating Qwilt CDN API client with env_type: %s, api_key length: %d", cfg.EnvType, len(cfg.XApiToken))
 	tflog.Debug(ctx, logMsg)
 
 	client, err := cdnclient.NewClient(cfg.EnvType, cfg.Username, cfg.Password, cfg.XApiToken)
@@ -116,7 +116,7 @@ func (p *qwiltCDNProvider) parseConfig(config QwiltProviderModel) model.Settings
 		EnvType:   os.Getenv("QCDN_ENVTYPE"),
 		Username:  os.Getenv("QCDN_USERNAME"),
 		Password:  os.Getenv("QCDN_PASSWORD"),
-		XApiToken: os.Getenv("QCDN_XAPI_TOKEN"),
+		XApiToken: os.Getenv("QCDN_API_KEY"),
 	}
 
 	if !config.EnvType.IsNull() {
@@ -145,7 +145,7 @@ func (p *qwiltCDNProvider) isConfigValid(cfg model.Settings, resp *provider.Conf
 			path.Root("token"),
 			"Unknown QC Services login token",
 			"The provider is missing value for the login token, which is the preferred authentication method. "+
-				"It is recommended to Either set the value statically in the configuration, or use the QCDN_XAPI_TOKEN environment variable.",
+				"It is recommended to Either set the value statically in the configuration, or use the QCDN_API_KEY environment variable.",
 		)
 		if cfg.Username == "" {
 			resp.Diagnostics.AddAttributeError(

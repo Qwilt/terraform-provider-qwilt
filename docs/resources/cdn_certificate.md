@@ -26,13 +26,13 @@ resource "qwilt_cdn_certificate" "example" {
 
 ### Required
 
+- `certificate` (String) A single X.509 signed PEM certificate, encoded in Base64.
 - `certificate_chain` (String) An ordered concatenation of PEM-encoded signed certificates. The first is the signer of the imported certificate, and the last is an intermediate CA signed by a well known Root CA. The whole string must be Base64 encoded.
+- `private_key` (String) A PEM private key, which pairs with the public key that is embedded in the certificate. The entire string must be Base64 encoded.
 
 ### Optional
 
-- `certificate` (String) A single X.509 signed PEM certificate, encoded in Base64.
 - `description` (String) The certificate description.
-- `private_key` (String) A PEM private key, which pairs with the public key that is embedded in the certificate. The entire string must be Base64 encoded.
 
 ### Read-Only
 

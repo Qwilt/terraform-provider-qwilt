@@ -2,7 +2,7 @@
 
 This is a practical demonstration of how to use the sites and certificates data sources to query for various resources within your configuration.
 
-First, make sure your QCDN_XAPI_TOKEN env variable is set (this is the recommended method for authentication.
+First, make sure your QCDN_API_KEY env variable is set (this is the recommended method for authentication.
 See other authentication alternatives in details in the provider documentation.
 
 By default, checking the plan will return an empty result:

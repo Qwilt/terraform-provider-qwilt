@@ -206,7 +206,7 @@ func auth(envType string, username string, password string, token string) (clien
 	}
 
 	if token == "" {
-		fmt.Printf("export QCDN_XAPI_TOKEN='%s'\n", client.Token)
+		fmt.Printf("export QCDN_API_KEY='%s'\n", client.Token)
 	}
 
 	return client
@@ -223,7 +223,7 @@ func auth(envType string, username string, password string, token string) (clien
 //	envtype := "dev" //os.Getenv("QCDN_ENVTYPE")
 //	username := os.Getenv("QCDN_USERNAME")
 //	password := "" // Only doing token authentication; eval $(go run token.go)
-//	token := os.Getenv("QCDN_XAPI_TOKEN")
+//	token := os.Getenv("QCDN_API_KEY")
 //
 //	// siteId := "65ea13f8bda5005ce98807e5"
 //	// revisionId := "65ea1411bda5005ce98807e6"

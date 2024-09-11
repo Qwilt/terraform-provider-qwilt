@@ -60,7 +60,7 @@ func (r *certificateResource) Schema(_ context.Context, _ resource.SchemaRequest
 			"certificate": schema.StringAttribute{
 				Description: "A single X.509 signed PEM certificate, encoded in Base64.",
 				Computed:    false,
-				Optional:    true,
+				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -76,7 +76,7 @@ func (r *certificateResource) Schema(_ context.Context, _ resource.SchemaRequest
 			"private_key": schema.StringAttribute{
 				Description: "A PEM private key, which pairs with the public key that is embedded in the certificate. The entire string must be Base64 encoded.",
 				Computed:    false,
-				Optional:    true,
+				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -145,7 +145,7 @@ func (r *certificateResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	newPlan := cdnmodel.CertificateBuilder{}.
+	newPlan := cdnmodel.NewCertificateBuilder().
 		CertificateId(certResp.CertId).
 		CertificateChain(plan.CertificateChain.ValueString()).
 		Certificate(plan.Certificate.ValueString()).
@@ -187,7 +187,7 @@ func (r *certificateResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 
 	// Overwrite items with refreshed state
-	state = cdnmodel.CertificateBuilder{}.
+	state = cdnmodel.NewCertificateBuilder().
 		CertificateId(certResp.CertId).
 		CertificateChain(certResp.CertificateChain).
 		Certificate(certResp.Certificate).
@@ -246,7 +246,7 @@ func (r *certificateResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	// Map response body to schema and populate Computed attribute values
-	plan = cdnmodel.CertificateBuilder{}.
+	plan = cdnmodel.NewCertificateBuilder().
 		CertificateId(certResp.CertId).
 		CertificateChain(plan.CertificateChain.ValueString()).
 		Certificate(plan.Certificate.ValueString()).

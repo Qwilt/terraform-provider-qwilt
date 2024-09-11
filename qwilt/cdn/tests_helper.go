@@ -12,6 +12,7 @@ import (
 	"fmt"
 	tfjson "github.com/hashicorp/terraform-json"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -117,7 +118,7 @@ func (b *TerraformConfigBuilder) SiteConfigResource(name string, host string, ch
 											{
 												"protocol": "https/1.1",
 												"endpoints": [
-													"www.example-origin-Host.com"
+													"www.example-origin-host.com"
 												]
 											}
 										]
@@ -142,6 +143,35 @@ resource "qwilt_cdn_site_activation" "%s" {
 		site_id = qwilt_cdn_site_configuration.%s.site_id
 		revision_id = qwilt_cdn_site_configuration.%s.revision_id
 	}`, name, name, name)
+	b.siteActivationResources[name] = cfg
+	return b
+}
+func (b *TerraformConfigBuilder) SiteActivationResourceWithCert(name string, cert_id, csr_id *int) *TerraformConfigBuilder {
+	var cert_id_str string = "null"
+	var csr_id_str string = "null"
+	if cert_id != nil {
+		cert_id_str = strconv.Itoa(*cert_id)
+	}
+	if csr_id != nil {
+		csr_id_str = strconv.Itoa(*csr_id)
+	}
+	cfg := fmt.Sprintf(`
+resource "qwilt_cdn_site_activation" "%s" {
+		site_id = qwilt_cdn_site_configuration.%s.site_id
+		revision_id = qwilt_cdn_site_configuration.%s.revision_id
+		certificate_id = %s
+		csr_id = %s
+	}`, name, name, name, cert_id_str, csr_id_str)
+	b.siteActivationResources[name] = cfg
+	return b
+}
+func (b *TerraformConfigBuilder) SiteActivationResourceWithCertRef(name string, cert_ref_name string) *TerraformConfigBuilder {
+	cfg := fmt.Sprintf(`
+resource "qwilt_cdn_site_activation" "%s" {
+		site_id = qwilt_cdn_site_configuration.%s.site_id
+		revision_id = qwilt_cdn_site_configuration.%s.revision_id
+		certificate_id = qwilt_cdn_certificate.%s.cert_id
+	}`, name, name, name, cert_ref_name)
 	b.siteActivationResources[name] = cfg
 	return b
 }
@@ -238,7 +268,7 @@ func generateHostName(generatedHostName *string) string {
 	randomStr := randString(16)
 
 	// Create the final string with prefix
-	hostName := fmt.Sprintf("www.terraform-unit-test-%s.com", randomStr)
+	hostName := fmt.Sprintf("www.%s-terraform-unit-test.com", randomStr)
 	*generatedHostName = hostName
 	return hostName
 }
