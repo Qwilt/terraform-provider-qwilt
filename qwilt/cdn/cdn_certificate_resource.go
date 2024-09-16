@@ -47,7 +47,7 @@ func (r *certificateResource) Schema(_ context.Context, _ resource.SchemaRequest
 		Description: "Manages a Qwilt CDN Certificate.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.Int64Attribute{
-				Description: "The unique identifier of the site. Equals cert_id. Required for testing infra",
+				Description: "For internal use only, for testing. Equals cert_id.",
 				Computed:    true,
 			},
 			"cert_id": schema.Int64Attribute{
@@ -208,7 +208,7 @@ func (r *certificateResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 }
 
-// Update updates the resource and sets the updated Terraform state on success.
+// Update the resource and sets the updated Terraform state on success.
 func (r *certificateResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	// Retrieve values from plan
 	var plan cdnmodel.Certificate
@@ -267,7 +267,7 @@ func (r *certificateResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 }
 
-// Delete deletes the resource and removes the Terraform state on success.
+// Deletes the resource and removes the Terraform state on success.
 func (r *certificateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	// Retrieve values from state
 	var state cdnmodel.Certificate

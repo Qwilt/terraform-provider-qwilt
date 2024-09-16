@@ -44,10 +44,10 @@ func (d *qwiltSitesDataSource) Metadata(_ context.Context, req datasource.Metada
 // Schema defines the schema for the data source.
 func (d *qwiltSitesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetches Qwilt Sites configuration.",
+		Description: "Retrieves the sites available to your user. By default, the output includes site metadata, details about the associated site configuration versions, and details about the associated publishing operations. You can apply filters to the data source.",
 		Attributes: map[string]schema.Attribute{
 			"site": schema.ListNestedAttribute{
-				Description: "List of site configurations.",
+				Description: "Site metadata.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -148,7 +148,7 @@ func (d *qwiltSitesDataSource) Schema(_ context.Context, _ datasource.SchemaRequ
 							Computed:    true,
 						},
 						"host_index": schema.StringAttribute{
-							Description: "The SVTA metadata objects that define the delivery service	   configuration, in application/json format.",
+							Description: "The SVTA metadata objects that define the delivery service configuration, in application/json format.",
 							Computed:    true,
 						},
 						"change_description": schema.StringAttribute{

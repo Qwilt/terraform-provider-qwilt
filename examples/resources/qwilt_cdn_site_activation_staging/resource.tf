@@ -1,8 +1,8 @@
-#> ⚠️ **Disclaimer**: this resource is experimental and should not be used!
+#> ⚠️ **Disclaimer**: This is a limited availability feature.
 
-#Notes
-#this resource is similar to site_activation resource but activates the selected configuration to staging segment only.
-#Note that activation cannot be performed if a previous activation is still in-progress
+#Notes:
+#- This resource is similar to the qwilt_cdn_site_activation resource but activates the selected configuration to the staging environment only.
+#- Activation cannot be initiated while a previous activation is still in-progress.
 
 
 resource "qwilt_cdn_site_activation_staging" "example" {
@@ -10,3 +10,6 @@ resource "qwilt_cdn_site_activation_staging" "example" {
   revision_id = qwilt_cdn_site_configuration.example.revision_id
   #certificate_id = qwilt_cdn_certificate.example.cert_id
 }
+
+
+

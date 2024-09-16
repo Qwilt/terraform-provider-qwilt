@@ -49,7 +49,7 @@ func (r *siteConfigResource) Schema(_ context.Context, _ resource.SchemaRequest,
 		Description: "Manages a Qwilt CDN site Configuration.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the site configuration. Equals site_id:revision_id. Required for testing infra",
+				Description: "For internal use only, for testing. Equals site_id:revision_id.",
 				Computed:    true,
 			},
 			"site_id": schema.StringAttribute{

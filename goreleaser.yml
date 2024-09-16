@@ -35,7 +35,7 @@ checksum:
 signs:
   - artifacts: checksum
     args:
-      # We must pass the --batch flag to indicate to GitHub Actions that its
+      # We must pass the --batch flag to indicate to GitHub Actions that it's
       # not interactive.
       - "--batch"
       - "--local-user"

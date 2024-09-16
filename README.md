@@ -1,6 +1,6 @@
 # Qwilt Terraform Provider
 
-> ⚠️ **Disclaimer**: the project is still in the 0.x.x version, which means it’s still in the experimental phase.
+> ⚠️ **Disclaimer**: This provider is currently in limited availability. 
 
 ## Requirements
 
@@ -9,8 +9,8 @@
 
 ## Building The Provider
 
-1. Clone the repository
-1. Enter the repository directory
+1. Clone the repository.
+1. Enter the repository directory.
 1. Build the provider using the Go `install` command:
 
 ```shell
@@ -35,7 +35,7 @@ Then commit the changes to `go.mod` and `go.sum`.
 
 ## Developing the Provider
 
-Configure `~/.terraformrc` with the name of your provider and go
+Configure `~/.terraformrc` with the name of your provider and Go
 installation. For example:
 
 ```
@@ -47,7 +47,7 @@ provider_installation {
 
   # For all other providers, install them directly from their origin provider
   # registries as normal. If you omit this, Terraform will _only_ use
-  # the dev_overrides block, and so no other providers will be available.
+  # the dev_overrides block, so no other providers will be available.
   direct {}
 }
 ```
@@ -62,7 +62,7 @@ To generate or update documentation, run `go generate`.
 
 In order to run the full suite of Acceptance tests, run `make testacc`.
 
-*Note:* Acceptance tests create real resources, and often cost money to run. Don'r run it on production environment.
+*Note:* Acceptance tests create real resources, and often cost money to run. Don't run them on a production environment.
 
 ```shell
 make testacc

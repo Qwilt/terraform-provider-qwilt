@@ -54,7 +54,7 @@ func (d *qwiltCertificatesDataSource) Metadata(_ context.Context, req datasource
 // Schema defines the schema for the data source.
 func (d *qwiltCertificatesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetches Qwilt Certificates configuration.",
+		Description: "Retrieve the certificates uploaded by your organization to Qwilt CDN, and associated metadata.",
 		Attributes: map[string]schema.Attribute{
 			"certificate": schema.ListNestedAttribute{
 				Description: "List of certificates.",
@@ -76,7 +76,7 @@ func (d *qwiltCertificatesDataSource) Schema(_ context.Context, _ datasource.Sch
 							Required:    true,
 						},
 						"description": schema.StringAttribute{
-							Description: "The certificate's description.",
+							Description: "The certificate description.",
 							Computed:    false,
 							Optional:    true,
 						},
@@ -108,7 +108,7 @@ func (d *qwiltCertificatesDataSource) Schema(_ context.Context, _ datasource.Sch
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"cert_id": schema.Int64Attribute{
-						Description: "Filter certificates based on a specific certificate ID.",
+						Description: "The ID of the specific certificate you want to retrieve.",
 						Optional:    true,
 					},
 				},

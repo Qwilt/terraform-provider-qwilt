@@ -43,7 +43,7 @@ resource "qwilt_cdn_site_configuration" "example" {
 	]
 }
 EOT
-  change_description = "Basic example demonstrating the Terraform plugin"
+  change_description = "Basic example demonstrating the Terraform plugin."
 }
 
 resource "qwilt_cdn_certificate" "example" {

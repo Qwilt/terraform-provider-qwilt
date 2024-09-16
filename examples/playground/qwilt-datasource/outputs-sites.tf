@@ -13,7 +13,7 @@ output "site_detail" {
   value = var.site_id == "all" || var.site_id == null || data.qwilt_cdn_sites.detail.site == null ? null : data.qwilt_cdn_sites.detail.site[0]
 }
 
-# Output to dump every attribute of every site in the account (probably not what you want)
+# Output to dump every attribute of every site available to your user (probably not what you want)
 #output "all_sites" {
 #  value = data.qwilt_cdn_sites.detail
 #}

@@ -49,7 +49,7 @@ func (r *siteResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 		Description: "Manages a Qwilt CDN site.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the site. Equals site_id. Required for testing infra",
+				Description: "For internal use only, for testing. Equals site_id.",
 				Computed:    true,
 			},
 			"site_id": schema.StringAttribute{
@@ -60,7 +60,7 @@ func (r *siteResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 				},
 			},
 			"site_dns_cname_delegation_target": schema.StringAttribute{
-				Description: "The CNAME you'll use direct traffic from your website to the cdnclient.",
+				Description: "The CNAME you'll use to direct traffic from your website to the cdnclient.",
 				Computed:    true,
 			},
 			"site_name": schema.StringAttribute{
@@ -68,7 +68,7 @@ func (r *siteResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 				Required:    true,
 			},
 			"routing_method": schema.StringAttribute{
-				Description: "The routing method used for the site. It is defaulted to 'DNS'.",
+				Description: "The routing method used for the site. The default is 'DNS.',
 				Computed:    true,
 			},
 			"owner_org_id": schema.StringAttribute{

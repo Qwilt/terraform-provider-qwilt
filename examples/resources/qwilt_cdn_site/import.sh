@@ -1,5 +1,6 @@
-#keep an empty resource to import into
-#after import is completed the user should manually set the required attributes in the resource from the imported state file
+#Create an empty resource to import into.
+#After the import is complete, manually set the required attributes in the resource based on the imported state.
+
 resource "qwilt_cdn_site" "example" {
 }
 

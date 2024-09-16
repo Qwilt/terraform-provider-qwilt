@@ -54,7 +54,7 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 		Description: "Manages a Qwilt CDN site activation and certificate assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the publish operation of this site. Equals site_id:publish_id. Required for testing infra",
+				Description: "For internal use only, for testing. Equals site_id:publish_id.",
 				Computed:    true,
 			},
 			"site_id": schema.StringAttribute{
@@ -101,7 +101,11 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Computed:    true,
 			},
 			"publish_status": schema.StringAttribute{
-				Description: "The publishing operation status.\\n\\nThe \\\"publishStatus\\\" values aggregate the \\\"publishState\\\" values into broader categories.  \\n\\t\\n- Success - The operation succeeded.\\n- Failed - The operation failed.\\n- Aborted - The operation was canceled.\\n- InProgress - The operation is in progress.",
+				Description: "The publishing operation status. The 'publishStatus' values aggregate the 'publishState' values into broader categories. \n\n" +
+				             " - Success - The operation succeeded.\n" +
+							 " - Failed - The operation failed.\n" +
+							 " - Aborted - The operation was canceled.\n" +
+							 " - InProgress - The operation is in progress.",
 				Computed:    true,
 			},
 			"publish_acceptance_status": schema.StringAttribute{

@@ -1,47 +1,55 @@
 # Qwilt Multi-Config Resource Example Using Workspaces
 
-This is our most complex example.  If you are not comfortable with how to use the Qwilt Terraform Provider, we suggest reviewing some of the other examples first.
+⚠️This is our most complex example.  If you are not yet comfortable using the Qwilt Terraform Provider, we suggest reviewing the other examples first.
 
-This is an advanced demonstration for how to use the Terraform workspaces capability to manage multiple instances of the same configuration.  This example manages 2 configurations, and allows you to create production and non-production instances.  This strategy may be used to manage more complex workflows, where different teams (e.g. dev, qa, etc.) may need to work on different instances of a site.
+This example demonstrates how to use Terraform workspaces to manage multiple instances of the same configuration. Specifically, it illustrates how to manage both production and non-production instances of a Terraform configuration that defines two sites.
 
-This example may be more complex than your individual needs.  Qwilt's system provides a method for simple staging of sites for verification prior to production that does not require workspaces.  If your needs are more modest, we encourage you to try this staging capability instead.
+This approach is ideal for managing advanced use cases where different teams (e.g. dev, qa, etc.) need to work on different instances of a site.
 
-In this example, configurations are managed through separate Terraform configuration files (e.g. examplesite.tf and examplesite2.tf), and SVTA configurations are managed through corresponding JSON files that are included in the configuration.  Both the configuration and JSON configuration are templated to allow variable substitution based on what type of site is being managed.  Each site and instance has its own associated certificate and private key.
+If this level of complexity is not needed for your use case, Qwilt provides a simpler method for staging sites for verification before production that does not require workspaces.  For more straightforward requirements, we recommend using the staging capability.
 
-First, make sure your QCDN_API_KEY env variable is set (this is the recommended method for authentication.
-See other authentication alternatives in details in the provider documentation.
+Configurations are managed through separate Terraform configuration files (e.g. examplesite.tf and examplesite2.tf), and the SVTA configurations are managed through the corresponding JSON files (e.g. examplesite.json, examplesite2.json). Both the Terraform and JSON configuration are templated to allow variable substitution based on the type of site being managed. Each site and instance has its own associated certificate and private key.
 
-To get started, you must create your workspaces.  For example:
-```
-$ terraform workspace new prod
-Created and switched to workspace "prod"!
+To use this example:
 
-You're now on a new, empty workspace. Workspaces isolate their state,
-so if you run "terraform plan" Terraform will not see any existing state
-for this configuration.
+1. Make sure your QCDN_API_KEY env variable is set. (This is the recommended authentication method.)
 
-$ terraform workspace new dev
-Created and switched to workspace "dev"!
+    For more information on authentication, see the provider documentation, which also covers alternative methods. 
 
-You're now on a new, empty workspace. Workspaces isolate their state,
-so if you run "terraform plan" Terraform will not see any existing state
-for this configuration.
+2. Create your workspaces.  
 
-$ terraform workspace list
-  default
-* dev
-  prod
-```
+    For example, to create workspaces for production and development, run the following commands:
 
-Terraform will now track separate states for each of these environments.  You may now switch to an environment to operate within it.  This will switch to the production workspace so that you can apply the production configuration:
-```
-$ terraform workspace select prod
-Switched to workspace "prod".
-```
+    ```
+    $ terraform workspace new prod
+    Created and switched to workspace "prod"!
 
-Now, you may apply the configuration as follows:
-```
-$ terraform apply
-```
+      You're now in a new, empty workspace. Workspaces isolate their state, so when you run Terraform plan, Terraform will not detect any existing state for this configuration.
 
-The same may be done within the "dev" workspace.  Managing more than 2 workspaces (prod and non-prod) will require further changes to the configuration.
+    $ terraform workspace new dev
+    Created and switched to workspace "dev"!
+
+      You're now in a new, empty workspace. Workspaces isolate their state, so when you run terraform plan, Terraform will not detect any existing state for this configuration.
+
+   $ terraform workspace list
+      default
+   * dev
+      prod
+   ```
+
+    Terraform will now track separate states for each environment.  You must switch to an environment to operate within it. For example, to apply the production configuration, switch to the production workspace:
+
+   ```
+    $ terraform workspace select prod
+    Switched to workspace "prod".
+    ```
+
+3. Switch to the desired workspace and apply the configuration:
+
+    ```
+    $ terraform apply
+     ```
+
+    Repeat for the "dev" workspace if needed. 
+    
+  Managing more than two workspaces (e.g. additional non-production environments) requires further changes to the configuration.

@@ -1,17 +1,19 @@
 
-#keep an empty resource to import into
-#after import is completed the user should manually set the required attributes in the resource from the imported state file
-#it is advised to change site_id attribute with references to qwilt_cdn_site resource to achieve implicit dependency
+#Create an empty resource to import into.
+#After the import is complete, manually set the required attributes in the resource based on the imported state.
+#We recommend changing the site_id attribute to a reference to the qwilt_cdn_site resource to achieve implicit dependency/
 resource "qwilt_cdn_site_configuration" "example" {
 }
 
-# site_configurations can be imported using their site ID, e.g.
-terraform import qwilt_cdn_site_configuration.example <site_id>
+# You can import the qwilt_cdn_site_configuration resource by specifying just the site_id. 
 
-# By default, either:
-# 1. the active revision will be imported
-# 2. the latest published revision if no version is active
-# 3. the latest configured revision, if no published revision
-# Alternatively, a specific revision_id of the site configuration can be selected by appending an : followed by the revision_id to the site ID, e.g. */
+    #For example: terraform import qwilt_cdn_site_configuration.example <site_id>
+    
+        # The process determines which saved site version (represented by the revisionId) to import based on the following conditions: 
+        # - If there is an active published version, it is imported.
+        # - If there is no active published version, the most recently published version is imported. 
+        # - If the site has never been published, the most recently saved configuration version is imported.
+
+# Alternatively, you can specify a particular revision_id of the site configuration by appending an : followed by the revision_id to the site ID.
 
 terraform import qwilt_cdn_site_configuration.example <site_id>:<revision_id>

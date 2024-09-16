@@ -1,13 +1,21 @@
 # Qwilt Basic Resource Example
 
-This is a simple example demonstrating how to configure 1 site, site configuration, certificate, and activation resource.
+This is a simple example demonstrating how to configure a single site, site configuration, certificate, and activation resource.
 
-The example by default uses the embedded host_index JSON configuration in main.tf.  Optionally, this can be removed, and "examplesitejson.json" can be included instead to maintain the SVTA configuration in a separate file.
+In this example, the host_index JSON configuration is embedded in main.tf.  
 
-First, make sure your QCDN_API_KEY env variable is set (this is the recommended method for authentication.
-See other authentication alternatives in details in the provider documentation.
+If you prefer to maintain the SVTA configuration in a separate file, remove the embedded host_index, and use the reference to "examplesitebasic.json" ```host_index = file("./examplesitebasic.json")``` instead.
 
-To use it, define your API token and run 'apply':
-```
-$ terraform apply
-```
+To use this example:
+
+1. Make sure your QCDN_API_KEY env variable is set. (This is the recommended authentication method.)
+
+    For more information on authentication, see the provider documentation, which also covers alternative methods.
+
+2. Replace the placeholder values with your own specific configuration details. Replace the example certificate and key values with your own.
+
+3. Apply the configuration:
+
+    ```
+    $ terraform apply
+    ```

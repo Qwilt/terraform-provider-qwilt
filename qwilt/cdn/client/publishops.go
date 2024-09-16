@@ -170,7 +170,7 @@ func (c *PublishOpsClient) GetPubOp(siteId string, publishId string) (*api.PubOp
 	return &pubOp, nil
 }
 
-// GetAndWaitForPubOpAcceptance - Returns details on a publishing operation after waitingfor it to completevalidation step
+// GetAndWaitForPubOpAcceptance - Returns details about a publishing operation after waiting for it to complete validation step.
 func (c *PublishOpsClient) GetAndWaitForPubOpAcceptance(siteId string, publishId string, timeout time.Duration) (*api.PubOp, error) {
 	if siteId == "" || publishId == "" {
 		return nil, fmt.Errorf("Invalid input, siteId=%s publishId=%s", siteId, publishId)
