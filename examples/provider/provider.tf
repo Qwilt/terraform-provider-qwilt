@@ -1,33 +1,54 @@
-# Both API key-based and token-based authentication is supported.
-# 1. api_key is always the preferred method
-# 2. user/password (token-based) are supported but not recommended and might be deprecated in the near future.
-# 3. each of these variables can be replaced with a corresponding env variable:
-#  - username --> QCDN_USERNAME
-#  - password --> QCDN_PASSWORD
-#  - api_key --> QCDN_API_KEY
+#The Qwilt Terraform Provider supports two authentication methods for access control:
 
-provider "qwilt" {
-  # Specify username and password, or set env variables QCDN_USERNAME and QCDN_PASSWORD.
-  # username = "me@mycompany.com"
-  # password = "me123456"
-  # Or, specify key or set env variable QCDN_API_KEY.
-  api_key = "eyJhbGciOiJSUzI1NiIsIn..."
-}
+#- **API key-based authentication** - The preferred method.
+#    - When the *api_key* parameter is set, the key is passed in the header of each API call to authenticate the request. 
+#    - To obtain an API key, please contact [support@qwilt.com](mailto:support@qwilt.com?subject=Request%20for%20Qwilt%20API%20Key). 
+
+#- **Login with username and password** - Supported, but not recommended. 
+#  -  When the *user name* and *password* parameters are set, any Terraform command (apply, refresh, plan, etc.)  triggers the [Qwilt Login API](https://api-docs.qwilt.cqloud.com/docs/authentication) to generate the required cqloud access token. 
+#  -  Support for this method may be deprecated in the future.
 
 
-#Provider configuration: If you set the authentication parameters in the Terraform provider configuration, 
-#you can define either the username and password *or* the api_key.
+# You can set the authentication parameters inside the provider configuration or as environment variables. We recommend setting env variables.
 
-# Environment variables: If the QCDN_API_KEY env variable is defined, then the QCDN_USERNAME and QCDN_PASSWORD env variables are ignored.
+# |TF Provider Variable |  Env Variable   | Example Value |
+# | --- | --- | --- |
+# |api_key | QCDN_API_KEY |  "eyJhbGciOiJSUzI1NiIsIn..." |
+# | username| QCDN_USERNAME  | "me@mycompany.com" |
+# | password |QCDN_PASSWORD |  "mypwd123456" |
 
-# When the username and password parameters are set, any Terraform command (apply, refresh, plan, etc.) triggers the Qwilt Login API to 
-# generate the required cqloud access token. A token is valid for one hour.
 
-# When the api_key parameter is set, the key is passed in the header of each API call to authenticate the request. A key is valid for one year.
-# To obtain an API key, please contact [support@qwilt.com](mailto:support@qwilt.com).
+#**Notes**:
+#- If the QCDN_API_KEY env variable is defined, the QCDN_USERNAME and QCDN_PASSWORD env variables are ignored. 
+#- If you set the authentication parameters in the Terraform provider configuration, you can define *either* the api_key *or*  the username and password. 
 
-# When the authentication parameters are set by the shell environment variables, the provider config looks like this:
-# ```
-# provider "qwilt" {}
-# ```
+# Example of how to set the QCDN_API_KEY env variable:
+
+  ```
+  export QCDN_API_KEY="eyJhbGciOiJSUzI1NiIsIn..."
+  ```
+
+<br>
+# When the authentication parameters are set by the environment variables, the provider config looks like this:
+  ```
+  provider "qwilt" { }
+  ```
+
+
+# Example of how to set the API Key param in the provider config:
+
+  ```
+  provider "qwilt" {
+      api_key = "eyJhbGciOiJSUzI1NiIsIn..."
+  }
+  ```
+
+# Example of how to set the username and password params in the provider config:
+  ```
+  provider "qwilt" {
+      username = "me@mycompany.com"    
+      password = "me123456"
+          }
+  ```
+
 

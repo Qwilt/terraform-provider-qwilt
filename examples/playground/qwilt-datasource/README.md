@@ -15,25 +15,27 @@ $ terraform plan
 A common use case for using the data source is to find your site information so that you can import it into a Terraform configuration.  
 
 To search for a site by name, do this:
-    ```
-    $ terraform plan -var="site_name=example.com"
-    ```
-    The above command launches a substring match of the site_name attribute of each defined site and outputs the matching site_ids.
+
+```
+$ terraform plan -var="site_name=example.com"
+```
+
+The above command launches a substring match of the site_name attribute of each defined site and outputs the matching site_ids.
 
 
 To retrieve a list of all sites, do this:
 
-    ```
-    $ terraform plan -var="site_id=all"
-    ```
+```
+$ terraform plan -var="site_id=all"
+```
 
 Once you have identified the site_id that you are targeting, you may search for it directly:
 
-    ```
-    $ terraform plan -var="site_id=<SiteID>"
-    ```
+```
+$ terraform plan -var="site_id=<SiteID>"
+```
    
-   The output includes details about the specified site_id, and a list of associated site configurations (i.e. revisions) and publishing operations (i.e. site activations).
+The output includes details about the specified site_id, and a list of associated site configurations (i.e. revisions) and publishing operations (i.e. site activations).
 
 ## Site Configuration and Activation Lookup
 
@@ -49,24 +51,24 @@ The same logic can be applied to certificates.  Certificates can be queried by d
 
 To search for certificates by domain name:
 
-    ```
-    $ terraform plan -var="cert_domain=example.com"
-    ```
-    The above command launches a substring match of the cert_domain attribute for each defined certificate and outputs the matching cert_ids.
+```
+$ terraform plan -var="cert_domain=example.com"
+```
+The above command launches a substring match of the cert_domain attribute for each defined certificate and outputs the matching cert_ids.
 
 
 To retrieve a list of all certificates, do this:
 
-    ```
-    $ terraform plan -var="cert_id=all"
-    ```
+```
+$ terraform plan -var="cert_id=all"
+```
 
 Once you have identified the cert_id that you are targeting, you may search for it directly:
 
-    ```
-    $ terraform plan -var="cert_id=<CertificateID>"
-    ```
-    The output provides details about the specified cert_id.
+```
+$ terraform plan -var="cert_id=<CertificateID>"
+```
+The output provides details about the specified cert_id.
 
 ## About This Example
 

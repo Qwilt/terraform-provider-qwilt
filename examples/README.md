@@ -8,7 +8,7 @@ The document generation tool looks for files in the following locations by defau
 * **data-sources/`full data source name`/data-source.tf** example file for the named data source page
 * **resources/`full resource name`/resource.tf** example file for the named data source page
 
-Run: go generate -v ./... to generate documentation
+Run: ```go generate -v ./...``` to generate documentation.
 
 
 The sample configuration files under Playground demonstrate how to use the Qwilt Terraform provider. They can be used as starter files for provisioning and managing resources via the Terraform CLI. They are designed for customization-- replace placeholder values with your own specific configuration details. Replace the example certificate and key values with your own.

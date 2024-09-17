@@ -1,4 +1,4 @@
-# Qwilt Multi-Config Resource Example Using Workspaces
+# Qwilt Use Workspaces to Manage Multiple Instances of a TF Config Example
 
 ⚠️This is our most complex example.  If you are not yet comfortable using the Qwilt Terraform Provider, we suggest reviewing the other examples first.
 
@@ -20,31 +20,37 @@ To use this example:
 
     For example, to create workspaces for production and development, run the following commands:
 
+  
+
     ```
     $ terraform workspace new prod
-    Created and switched to workspace "prod"!
+    ```
+      You created and switched to the workspace "prod."
 
-      You're now in a new, empty workspace. Workspaces isolate their state, so when you run Terraform plan, Terraform will not detect any existing state for this configuration.
+      Since you're in a new, empty workspace and workspaces keep their state isolated, running terraform plan will not detect any existing state for this configuration.
 
+    ```
     $ terraform workspace new dev
-    Created and switched to workspace "dev"!
+    ```
 
-      You're now in a new, empty workspace. Workspaces isolate their state, so when you run terraform plan, Terraform will not detect any existing state for this configuration.
+      You created and switched to the workspace "dev."
 
-   $ terraform workspace list
-      default
-   * dev
-      prod
-   ```
+      Since you're in a new, empty workspace and workspaces keep their state isolated, running terraform plan will not detect any existing state for this configuration.
+
+    ```
+     $ terraform workspace list
+       default
+     * dev
+       prod
+    ```
 
     Terraform will now track separate states for each environment.  You must switch to an environment to operate within it. For example, to apply the production configuration, switch to the production workspace:
 
-   ```
-    $ terraform workspace select prod
-    Switched to workspace "prod".
+    ```
+    $ terraform workspace select prod    
     ```
 
-3. Switch to the desired workspace and apply the configuration:
+3. After switching to the desired workspace, apply the configuration:
 
     ```
     $ terraform apply

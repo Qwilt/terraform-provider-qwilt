@@ -1,7 +1,5 @@
 # Qwilt Terraform Provider
 
-> ⚠️ **Disclaimer**: This provider is currently in limited availability. 
-
 ## Requirements
 
 - [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.0
@@ -11,11 +9,11 @@
 
 1. Clone the repository.
 1. Enter the repository directory.
-1. Build the provider using the Go `install` command:
+1. Build the provider using the Go install command:
 
-```shell
-go install
-```
+    ```shell
+    go install
+    ```
 
 ## Adding Dependencies
 
