@@ -1,4 +1,4 @@
-# Qwilt Multi-Config Resource Example
+# Qwilt Multi-Site TF Config Example
 
 This is a more complex example demonstrating how to manage two sites, site configurations, certificates, and activation resources in a single configuration.
 
@@ -10,7 +10,9 @@ To use this example:
 
     For more information on authentication, see the provider documentation, which also covers alternative methods.
 
-2. Replace the placeholder values with your own specific configuration details. Replace the example certificate and key values with your own.
+2. Replace the placeholder values with your own specific configuration details. 
+
+    Replace the example certificate and key values with your own.
 
 3. Apply the configuration:
 

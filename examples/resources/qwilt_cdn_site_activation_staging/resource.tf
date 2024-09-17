@@ -1,4 +1,4 @@
-#> ⚠️ **Disclaimer**: This is a limited availability feature.
+#> ⚠️ This is a limited availability feature.
 
 #Notes:
 #- This resource is similar to the qwilt_cdn_site_activation resource but activates the selected configuration to the staging environment only.

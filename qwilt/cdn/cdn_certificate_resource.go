@@ -208,7 +208,7 @@ func (r *certificateResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 }
 
-// Update the resource and sets the updated Terraform state on success.
+// Updates the resource and sets the updated Terraform state on success.
 func (r *certificateResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	// Retrieve values from plan
 	var plan cdnmodel.Certificate
