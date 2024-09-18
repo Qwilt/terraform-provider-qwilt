@@ -1,4 +1,4 @@
-#The Qwilt Terraform Provider supports two authentication methods for access control:
+#The Qwilt Terraform Provider supports two authentication methods:
 
 #- **API key-based authentication** - The preferred method.
 #    - When the *api_key* parameter is set, the key is passed in the header of each API call to authenticate the request. 
@@ -9,13 +9,14 @@
 #  -  Support for this method may be deprecated in the future.
 
 
-# You can set the authentication parameters inside the provider configuration or as environment variables. We recommend setting env variables.
+# You can set the authentication parameters inside the provider configuration or as environment variables. 
+# We recommend setting env variables.
 
-# |TF Provider Variable |  Env Variable   | Example Value |
-# | --- | --- | --- |
-# |api_key | QCDN_API_KEY |  "eyJhbGciOiJSUzI1NiIsIn..." |
-# | username| QCDN_USERNAME  | "me@mycompany.com" |
-# | password |QCDN_PASSWORD |  "mypwd123456" |
+# |TF Provider Variable |  Env Variable   | Example Value               |
+# | --------------------|-----------------|-----------------------------|
+# | api_key             | QCDN_API_KEY    | "eyJhbGciOiJSUzI1NiIsIn..." |
+# | username            | QCDN_USERNAME   | "me@mycompany.com"          |
+# | password            | QCDN_PASSWORD   | "mypwd123456"               |
 
 
 #**Notes**:
