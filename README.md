@@ -65,3 +65,7 @@ In order to run the full suite of Acceptance tests, run `make testacc`.
 ```shell
 make testacc
 ```
+
+## Releasing the Provider to public registry
+Ones a git tag is created, a git Action is executed and creates a new release in 'Draft' mode.
+Then from github release page you can 'publish release'. Once this is done, terraform-public-registry will detect this release as the latest version.
