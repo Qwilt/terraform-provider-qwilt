@@ -77,6 +77,7 @@ func (r *certificateResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Description: "A PEM private key, which pairs with the public key that is embedded in the certificate. The entire string must be Base64 encoded.",
 				Computed:    false,
 				Required:    true,
+				Sensitive:   true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},

@@ -68,12 +68,20 @@ func (b *SiteActivationBuilder) OperationType(value string) *SiteActivationBuild
 	b.activation.OperationType = types.StringValue(value)
 	return b
 }
+func (b *SiteActivationBuilder) CreationTimeMilli(value int) *SiteActivationBuilder {
+	b.activation.CreationTimeMilli = types.Int64Value(int64(value))
+	return b
+}
 func (b *SiteActivationBuilder) LastUpdateTimeMilli(value int) *SiteActivationBuilder {
 	b.activation.LastUpdateTimeMilli = types.Int64Value(int64(value))
 	return b
 }
 func (b *SiteActivationBuilder) Username(value string) *SiteActivationBuilder {
 	b.activation.Username = types.StringValue(value)
+	return b
+}
+func (b *SiteActivationBuilder) OwnerOrgId(value string) *SiteActivationBuilder {
+	b.activation.OwnerOrgId = types.StringValue(value)
 	return b
 }
 func (b *SiteActivationBuilder) PublishStatus(value string) *SiteActivationBuilder {

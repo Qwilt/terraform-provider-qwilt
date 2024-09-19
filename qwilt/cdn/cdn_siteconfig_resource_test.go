@@ -22,9 +22,8 @@ func TestSiteConfigResource(t *testing.T) {
 
 	t.Logf("Starting TestSiteConfigResource test DEBUG: ")
 
-	//os.Setenv("TF_CLI_CONFIG_FILE", "/Users/efrats/.terraformrc")
-	os.Setenv("TF_LOG", "INFO")
-	os.Setenv("TF_LOG_PROVIDER", "INFO")
+	//set this after running script generate_dev_overrides.sh
+	SetDevOverrides()
 
 	tfBinaryPath := "terraform"
 

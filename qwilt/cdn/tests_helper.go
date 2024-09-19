@@ -12,6 +12,7 @@ import (
 	"fmt"
 	tfjson "github.com/hashicorp/terraform-json"
 	"math/rand"
+	"os"
 	"strconv"
 	"time"
 )
@@ -26,6 +27,11 @@ type TerraformConfigBuilder struct {
 	Host                           string
 }
 
+func SetDevOverrides() {
+	//set this after running script scripts/generate_dev_overrides.sh
+	os.Setenv("TF_CLI_CONFIG_FILE", "/Users/efrats/work/git2/terraform-provider-qwilt/bin/developer_overrides.tfrc")
+
+}
 func NewTerraformConfigBuilder() *TerraformConfigBuilder {
 	b := TerraformConfigBuilder{}
 	b.siteResources = make(map[string]string, 0)

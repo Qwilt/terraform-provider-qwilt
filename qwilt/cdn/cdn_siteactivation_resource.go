@@ -102,11 +102,11 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 			},
 			"publish_status": schema.StringAttribute{
 				Description: "The publishing operation status. The 'publishStatus' values aggregate the 'publishState' values into broader categories. \n\n" +
-				             " - Success - The operation succeeded.\n" +
-							 " - Failed - The operation failed.\n" +
-							 " - Aborted - The operation was canceled.\n" +
-							 " - InProgress - The operation is in progress.",
-				Computed:    true,
+					" - Success - The operation succeeded.\n" +
+					" - Failed - The operation failed.\n" +
+					" - Aborted - The operation was canceled.\n" +
+					" - InProgress - The operation is in progress.",
+				Computed: true,
 			},
 			"publish_acceptance_status": schema.StringAttribute{
 				Description: "The publishing operation acceptance status.",
@@ -199,6 +199,8 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 		RevisionId(pubOpResp.RevisionId).
 		SiteId(plan.SiteId.ValueString()).
 		Username(pubOpResp.Username).
+		CreationTimeMilli(pubOpResp.CreationTimeMilli).
+		OwnerOrgId(pubOpResp.OwnerOrgId).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(plan.CertificateId.ValueInt64()).
 		PublishState(pubOpResp.PublishState).
@@ -269,6 +271,8 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 		RevisionId(pubOpResp.RevisionId).
 		SiteId(state.SiteId.ValueString()).
 		Username(pubOpResp.Username).
+		CreationTimeMilli(pubOpResp.CreationTimeMilli).
+		OwnerOrgId(pubOpResp.OwnerOrgId).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(certId).
 		PublishState(pubOpResp.PublishState).
@@ -374,6 +378,8 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		RevisionId(pubOpResp.RevisionId).
 		SiteId(plan.SiteId.ValueString()).
 		Username(pubOpResp.Username).
+		CreationTimeMilli(pubOpResp.CreationTimeMilli).
+		OwnerOrgId(pubOpResp.OwnerOrgId).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(plan.CertificateId.ValueInt64()).
 		PublishState(pubOpResp.PublishState).

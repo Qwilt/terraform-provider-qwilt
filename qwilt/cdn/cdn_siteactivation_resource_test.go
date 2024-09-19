@@ -22,7 +22,8 @@ func TestSiteActivationResource(t *testing.T) {
 
 	t.Logf("Starting TestSiteActivationResource test")
 
-	//os.Setenv("TF_CLI_CONFIG_FILE", "/Users/efrats/.terraformrc")
+	//set this after running script generate_dev_overrides.sh
+	SetDevOverrides()
 
 	tfBinaryPath := "terraform"
 
@@ -92,6 +93,11 @@ func TestSiteActivationResource(t *testing.T) {
 	siteId := siteState.AttributeValues["site_id"]
 	revisionId := siteConfigState.AttributeValues["revision_id"]
 
+	//check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
+	plan, err := tf.Plan(context.Background())
+	assert.Equal(t, nil, err)
+	assert.False(t, plan) //no diff
+
 	//associate a certificate with this site
 	t.Logf("Configuring site activation with certificate association")
 	terraformBuilder.SiteActivationResourceWithCertRef("test", "test")
@@ -131,8 +137,11 @@ func TestSiteActivationResource(t *testing.T) {
 	assert.Equal(t, "null", siteActivationState.AttributeValues["validators_err_details"])
 	assert.Equal(t, "Publish", siteActivationState.AttributeValues["operation_type"])
 
+	_, ok := siteActivationState.AttributeValues["creation_time_milli"]
+	assert.True(t, ok)
+
 	////check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
-	plan, err := tf.Plan(context.Background())
+	plan, err = tf.Plan(context.Background())
 	//t.Logf("%s", siteActivationState.AttributeValues)
 	assert.Equal(t, nil, err)
 	assert.False(t, plan) //no diff
