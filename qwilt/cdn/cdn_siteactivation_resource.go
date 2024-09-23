@@ -10,6 +10,9 @@ package cdn
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
@@ -19,8 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"strconv"
-	"strings"
 )
 
 var (
@@ -51,7 +52,8 @@ func (r *siteActivationResource) Metadata(_ context.Context, req resource.Metada
 // Schema defines the schema for the resource.
 func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a Qwilt CDN site activation and certificate assignment.",
+		Description:         "Manages a Qwilt CDN site activation and certificate assignment.",
+		MarkdownDescription: "[See the Terraform User Guide for details about authentication.](https://docs.qwilt.com/docs/terraform-user-guide-1#authentication)",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "For internal use only, for testing. Equals site_id:publish_id.",
