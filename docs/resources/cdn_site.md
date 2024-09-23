@@ -27,11 +27,11 @@ resource "qwilt_cdn_site" "example" {
 
 ### Read-Only
 
-- `id` (String) The unique identifier of the site. Equals site_id. Required for testing infra
+- `id` (String) For internal use only, for testing. Equals site_id.
 - `last_update_time_milli` (Number) When the site last updated, in epoch time.
 - `owner_org_id` (String) The organization that owns the site.
-- `routing_method` (String) The routing method used for the site. It is defaulted to 'DNS'.
-- `site_dns_cname_delegation_target` (String) The CNAME you'll use direct traffic from your website to the cdnclient.
+- `routing_method` (String) The routing method used for the site. The default is DNS.
+- `site_dns_cname_delegation_target` (String) The CNAME you'll use to direct traffic from your website to the cdnclient.
 - `site_id` (String) The unique identifier of the site. The siteID will be needed when you add the site configuration and when you publish the site.
 
 ## Import
@@ -39,8 +39,9 @@ resource "qwilt_cdn_site" "example" {
 Import is supported using the following syntax:
 
 ```shell
-#keep an empty resource to import into
-#after import is completed the user should manually set the required attributes in the resource from the imported state file
+#Create an empty resource to import into.
+#After the import is complete, manually set the required attributes in the resource based on the imported state.
+
 resource "qwilt_cdn_site" "example" {
 }
 

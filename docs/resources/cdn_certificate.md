@@ -38,7 +38,7 @@ resource "qwilt_cdn_certificate" "example" {
 
 - `cert_id` (Number) The unique identifier of the certificate. The certId will be needed when you add the certificate configuration and when you assign it to a site.
 - `domain` (String) The site host domain the certificate is linked to.
-- `id` (Number) The unique identifier of the site. Equals cert_id. Required for testing infra
+- `id` (Number) For internal use only, for testing. Equals cert_id.
 - `pk_hash` (String) A unique identifier for the private key that does not expose the actual key itself.
 - `status` (String) The status of the certificate:["ISSUED",
           "ACTIVE",
@@ -52,17 +52,20 @@ resource "qwilt_cdn_certificate" "example" {
 Import is supported using the following syntax:
 
 ```shell
-#keep an empty resource to import into
-#after import is completed the user should manually set the required attributes in the resource from the imported state file
+#Create an empty resource to import into.
+#After the import is complete, manually set the required attributes in the resource based on the imported state.
+
 resource "qwilt_cdn_certificate" "example" {
 
-  #after import, the private_key will remain empty in the state.
-  #to avoid plan keep detecting this as a change, add this lifecycle section to the imported resource
+  #After import, the private_key remains empty in the state.
+  #To prevent this from being detected as a change every time you run ```terraform plan```, add this lifecycle section to the imported resource:
+
   lifecycle {
-      ignore_changes = [
-        private_key
-      ]
-    }
+   ignore_changes = [
+      private_key
+    ]
+  }
+
 }
 
 terraform import qwilt_cdn_certificate.example <cert_id>

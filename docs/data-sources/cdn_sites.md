@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_sites Data Source - qwilt"
 subcategory: ""
 description: |-
-  Fetches Qwilt Sites configuration.
+  Retrieves the sites available to your user. By default, the output includes site metadata, details about the associated site configuration versions, and details about the associated publishing operations. You can apply filters to the data source.
 ---
 
 # qwilt_cdn_sites (Data Source)
 
-Fetches Qwilt Sites configuration.
+Retrieves the sites available to your user. By default, the output includes site metadata, details about the associated site configuration versions, and details about the associated publishing operations. You can apply filters to the data source.
 
 ## Example Usage
 
@@ -36,7 +36,7 @@ data "qwilt_cdn_sites" "example" {
 
 - `publish_op` (Attributes List) List of publishing operations associated with site. (see [below for nested schema](#nestedatt--publish_op))
 - `revision` (Attributes List) Site configurations associated with the site. (see [below for nested schema](#nestedatt--revision))
-- `site` (Attributes List) List of site configurations. (see [below for nested schema](#nestedatt--site))
+- `site` (Attributes List) Site metadata. (see [below for nested schema](#nestedatt--site))
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`
@@ -77,7 +77,7 @@ Read-Only:
 - `change_description` (String) Comments added by the user to the configuration JSON payload.
 - `created_user` (String) The user who created the site.
 - `creation_time_milli` (Number) The time when the configuration version was added, in epoch time.
-- `host_index` (String) The SVTA metadata objects that define the delivery service	   configuration, in application/json format.
+- `host_index` (String) The SVTA metadata objects that define the delivery service configuration, in application/json format.
 - `last_update_time_milli` (Number) The time when the configuration version was added, in epoch time. (This will be the same as the creationTimeMilli value.)
 - `owner_org_id` (String) The name of the organization that owns the site.
 - `revision_id` (String) The unique identifier of the configuration version.

@@ -68,7 +68,7 @@ func (r *siteResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 				Required:    true,
 			},
 			"routing_method": schema.StringAttribute{
-				Description: "The routing method used for the site. The default is 'DNS.',
+				Description: "The routing method used for the site. The default is DNS.",
 				Computed:    true,
 			},
 			"owner_org_id": schema.StringAttribute{

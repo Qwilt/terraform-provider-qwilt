@@ -25,31 +25,31 @@
 
 # Example of how to set the QCDN_API_KEY env variable:
 
-  ```
-  export QCDN_API_KEY="eyJhbGciOiJSUzI1NiIsIn..."
-  ```
+# ```
+# export QCDN_API_KEY="eyJhbGciOiJSUzI1NiIsIn..."
+# ```
 
-<br>
+
 # When the authentication parameters are set by the environment variables, the provider config looks like this:
-  ```
-  provider "qwilt" { }
-  ```
+#  ```
+#  provider "qwilt" { }
+# ```
 
 
 # Example of how to set the API Key param in the provider config:
 
-  ```
-  provider "qwilt" {
-      api_key = "eyJhbGciOiJSUzI1NiIsIn..."
-  }
-  ```
+#  ```
+#  provider "qwilt" {
+#      api_key = "eyJhbGciOiJSUzI1NiIsIn..."
+#  }
+#  ```
 
 # Example of how to set the username and password params in the provider config:
-  ```
-  provider "qwilt" {
-      username = "me@mycompany.com"    
-      password = "me123456"
-          }
-  ```
+# ```
+#  provider "qwilt" {
+#      username = "me@mycompany.com"    
+#      password = "me123456"
+#          }
+#  ```
 
 

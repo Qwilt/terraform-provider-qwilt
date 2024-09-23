@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_certificates Data Source - qwilt"
 subcategory: ""
 description: |-
-  Fetches Qwilt Certificates configuration.
+  Retrieves the certificates uploaded to Qwilt CDN by your organization and the associated metadata.
 ---
 
 # qwilt_cdn_certificates (Data Source)
 
-Fetches Qwilt Certificates configuration.
+Retrieves the certificates uploaded to Qwilt CDN by your organization and the associated metadata.
 
 ## Example Usage
 
@@ -42,7 +42,7 @@ data "qwilt_cdn_certificates" "detail" {
 
 Optional:
 
-- `cert_id` (Number) Filter certificates based on a specific certificate ID.
+- `cert_id` (Number) The ID of the specific certificate you want to retrieve.
 
 
 <a id="nestedatt--certificate"></a>
@@ -55,7 +55,7 @@ Required:
 
 Optional:
 
-- `description` (String) The certificate's description.
+- `description` (String) The certificate description.
 
 Read-Only:
 
