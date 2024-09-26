@@ -11,6 +11,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
@@ -18,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"strings"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -26,6 +27,7 @@ var (
 	_ resource.Resource                = &siteConfigResource{}
 	_ resource.ResourceWithConfigure   = &siteConfigResource{}
 	_ resource.ResourceWithImportState = &siteConfigResource{}
+	_ resource.ResourceWithModifyPlan  = &siteConfigResource{}
 )
 
 // NewSiteConfigResource is a helper function to simplify the provider implementation.
@@ -66,6 +68,7 @@ func (r *siteConfigResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			},
 			"host_index": schema.StringAttribute{
 				Description: "The SVTA metadata objects that define the delivery service configuration, in application/json format.",
+				CustomType:  cdnmodel.HostIndexType{},
 				Required:    true,
 			},
 			"change_description": schema.StringAttribute{
@@ -321,4 +324,78 @@ func (r *siteConfigResource) ImportState(ctx context.Context, req resource.Impor
 	tflog.Info(ctx, fmt.Sprintf("Importing: %s:%s", site_id, revision_id))
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("site_id"), site_id)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("revision_id"), revision_id)...)
+}
+
+func (r *siteConfigResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+
+	// A null plan means that the resource is being destroyed
+	if req.Plan.Raw.IsNull() || req.State.Raw.IsNull() {
+		return
+	}
+
+	// Get the plan
+	var plan cdnmodel.SiteConfiguration
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	planRawJson := json.RawMessage([]byte(plan.HostIndex.ValueString()))
+	planString, err := json.Marshal(planRawJson)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Validating Configured HostIndex",
+			"Could not marshal configured plan HostIndex to JSON: "+err.Error(),
+		)
+		return
+	}
+
+	// Get the state
+	var state cdnmodel.SiteConfiguration
+	diags = req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	stateRawJson := json.RawMessage([]byte(state.HostIndex.ValueString()))
+	stateString, err := json.Marshal(stateRawJson)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Validating HostIndex from State",
+			"Could not marshal state HostIndex to JSON: "+err.Error(),
+		)
+		return
+	}
+
+	// Compare the plan and state hostIndex JSON
+	hostIndexEqual, err := cdnmodel.JsonBytesEqual(planString, stateString)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Unmarshaling HostIndex for Comparison",
+			"Could not compare plan and state HostIndex JSON: "+err.Error(),
+		)
+		return
+	}
+
+	// If ChangeDescription and HostIndex are both semantically equal,
+	// i.e. no white space changes are detected, use values from the state
+	// to suppress unnecessary updates.
+	// Otherwise, allow all values to pass through unmodified.
+	if (plan.ChangeDescription.ValueString() == state.ChangeDescription.ValueString()) &&
+		hostIndexEqual {
+		plan.HostIndex = state.HostIndex
+		plan.RevisionId = state.RevisionId
+		plan.RevisionNum = state.RevisionNum
+		plan.OwnerOrgId = state.OwnerOrgId
+		plan.LastUpdateTimeMilli = state.LastUpdateTimeMilli
+		plan.Id = state.Id
+
+		diags = resp.Plan.Set(ctx, &plan)
+		resp.Diagnostics.Append(diags...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
 }

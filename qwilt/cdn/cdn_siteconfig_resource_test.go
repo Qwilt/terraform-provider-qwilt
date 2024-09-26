@@ -37,10 +37,6 @@ func TestSiteConfigResource(t *testing.T) {
 	// Write the Terraform configuration to a file in the temporary directory
 	tfFilePath := tempDir + "/main.tf"
 
-	// Initialize a new Terraform instance
-	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
-	assert.Equal(t, nil, err)
-
 	//tf.SetStdout(os.Stdout)
 	//tf.SetStderr(os.Stderr)
 
@@ -55,6 +51,11 @@ func TestSiteConfigResource(t *testing.T) {
 
 	//t.Logf("config: %s", terraformConfig)
 	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
+	assert.Equal(t, nil, err)
+
+	// Initialize a new Terraform instance
+	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
+	//tf.Init(context.Background()) - use this when you are running the tests with formal plugin from registry and NOT dev-overrides
 	assert.Equal(t, nil, err)
 
 	err = tf.Apply(context.Background())
@@ -82,8 +83,17 @@ func TestSiteConfigResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.False(t, plan) //no diff
 
+	//try to execute same config but with different indentation
+	terraformBuilder.SiteConfigResourceWithTabs("test", curHostName, changeDesc)
+	terraformConfig = terraformBuilder.Build()
+
+	//check that plan gives no diff - this actually checks the special host index type which should be non-sensitive to whitespaces
+	plan, err = tf.Plan(context.Background())
+	assert.Equal(t, nil, err)
+	assert.False(t, plan) //no diff
+
 	//update host and desc
-	terraformBuilder.SiteConfigResource("test", "www.unitests-2.com", "yyy")
+	terraformBuilder.SiteConfigResourceWithTabs("test", "www.unitests-2.com", "yyy")
 	terraformConfig = terraformBuilder.Build()
 
 	//t.Logf("config: %s", terraformConfig)
