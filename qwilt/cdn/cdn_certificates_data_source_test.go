@@ -42,7 +42,14 @@ func TestCertificatesDataResource(t *testing.T) {
 	tf, err := tfexec.NewTerraform(tempDir, tfBinaryPath)
 	assert.Equal(t, nil, err)
 
-	terraformBuilder := NewTerraformConfigBuilder().CertResource("test", test_domain_key, test_domain_crt, "ccc")
+	var domain string
+	generateHostName(&domain)
+	certGen := NewSelfSignedCertGenerator()
+	certGen.generate(domain)
+	//t.Logf("pk: %s", certGen.PK)
+	//t.Logf("cert: %s", certGen.Crt)
+
+	terraformBuilder := NewTerraformConfigBuilder().CertResource("test", certGen.PK, certGen.Crt, "ccc")
 	terraformConfig := terraformBuilder.Build()
 
 	//t.Logf("config: %s", terraformConfig)

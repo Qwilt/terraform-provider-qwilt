@@ -143,6 +143,43 @@ func (b *TerraformConfigBuilder) SiteConfigResource(name string, host string, ch
 	b.Host = host
 	return b
 }
+func (b *TerraformConfigBuilder) SiteConfigResourceWithTabs(name string, host string, changeDesc string) *TerraformConfigBuilder {
+	siteConfigCfg := fmt.Sprintf(`
+		resource "qwilt_cdn_site_configuration" "%s" {
+			site_id = qwilt_cdn_site.%s.site_id
+			host_index = <<-EOT
+			{
+				"hosts":		 [
+					{
+						"host": 	"%s",
+						"host-metadata": 	{
+							"metadata": 	[
+								{
+									"generic-metadata-type": "MI.SourceMetadataExtended",
+									"generic-metadata-value": {
+										"sources": [
+											{
+												"protocol": "https/1.1",
+												"endpoints": [
+													"www.example-origin-host.com"
+												]
+											}
+										]
+									}
+								}
+							],
+							"paths": []
+						}
+					}
+				]
+			}
+			EOT
+			  change_description = "%s"
+			}`, name, name, host, changeDesc)
+	b.siteCfgResources[name] = siteConfigCfg
+	b.Host = host
+	return b
+}
 func (b *TerraformConfigBuilder) SiteActivationResource(name string) *TerraformConfigBuilder {
 	cfg := fmt.Sprintf(`
 resource "qwilt_cdn_site_activation" "%s" {
