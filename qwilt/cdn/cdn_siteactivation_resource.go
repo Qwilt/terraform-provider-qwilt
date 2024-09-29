@@ -52,8 +52,7 @@ func (r *siteActivationResource) Metadata(_ context.Context, req resource.Metada
 // Schema defines the schema for the resource.
 func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description:         "Manages a Qwilt CDN site activation and certificate assignment.",
-		MarkdownDescription: "[See the Terraform User Guide for details about authentication.](https://docs.qwilt.com/docs/terraform-user-guide-1#authentication)",
+		Description: "Manages a Qwilt CDN site activation and certificate assignment.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "For internal use only, for testing. Equals site_id:publish_id.",
@@ -111,8 +110,14 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Computed: true,
 			},
 			"publish_acceptance_status": schema.StringAttribute{
-				Description: "The publishing operation acceptance status.",
-				Computed:    true,
+				Description: "The CDN validates and then accepts the publishing operation before initiating it. This attribute lets you track the acceptance process. It is not an indication of the status of the publishing operation on the CDN caches themselves.\n\n" +
+					"- Pending - Pending validation.\n" +
+					"- Invalid - Validation failed. \n" +
+					"- Dismissed - Passed validation but failed to initiate.\n" +
+					"- Aborted - The publishing operation was cancelled.\n" +
+					"- In progress - The publishing operation is validated and pending initiation.\n" +
+					"- Accepted - The publishing operation was initiated.",
+				Computed: true,
 			},
 			"operation_type": schema.StringAttribute{
 				Description: "The operation type (Publish, Unpublish) that was initiated with the request. An Unpublish operation removes a delivery service from the CDN.",

@@ -15,13 +15,15 @@ import (
 
 func AddResponseSchema(resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Interact with Qwilt services.",
+		MarkdownDescription: "Interact with Qwilt services./n" +
+			"[See the Terraform User Guide for details about authentication.](https://docs.qwilt.com/docs/terraform-user-guide-1#authentication)",
 		Attributes: map[string]schema.Attribute{
 			// CDN
 			"env_type": schema.StringAttribute{
-				Description:         "Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable.",
-				MarkdownDescription: "FOR INTERNAL USE ONLY!! Qwilt CDN environment. [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable",
-				Optional:            true,
+				Description: "Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable.",
+				MarkdownDescription: "FOR INTERNAL USE ONLY!! /n" +
+					"Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable",
+				Optional: true,
 			},
 			"username": schema.StringAttribute{
 				Description:         "Username for Qwilt CDN Sites API. May also be provided via QCDN_USERNAME environment variable.",
