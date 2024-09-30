@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_site_activation_staging Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN site activation and certificate assignment.
+  Manages a Qwilt CDN site activation and certificate assignment. Learn about the Publish to Staging Feature. https://docs.qwilt.com/docs/publish-to-staging
 ---
 
 # qwilt_cdn_site_activation_staging (Resource)
 
-Manages a Qwilt CDN site activation and certificate assignment.
+Manages a Qwilt CDN site activation and certificate assignment. <br><br>[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)
 
 ## Example Usage
 
