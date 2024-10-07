@@ -13,7 +13,6 @@ Manages a Qwilt CDN site activation and certificate assignment.
 ## Example Usage
 
 ```terraform
-#
 #Notes:
 #- This resource takes a long time to fully apply.
 

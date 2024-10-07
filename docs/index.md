@@ -13,6 +13,9 @@ Interact with Qwilt services. <br><br>The Qwilt Terraform Provider allows you to
 ## Example Usage
 
 ```terraform
+provider "qwilt" {
+}
+
 #The Qwilt Terraform Provider supports two authentication methods:
 
 #- **API key-based authentication** - The preferred method.

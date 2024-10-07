@@ -1,4 +1,3 @@
-#
 #Notes:
 #- This resource takes a long time to fully apply.
 

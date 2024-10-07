@@ -1,3 +1,6 @@
+provider "qwilt" {
+}
+
 #The Qwilt Terraform Provider supports two authentication methods:
 
 #- **API key-based authentication** - The preferred method.
