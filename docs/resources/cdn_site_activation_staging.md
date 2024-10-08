@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_site_activation_staging Resource - qwilt"
 subcategory: ""
 description: |-
-  See the Terraform User Guide for details about authentication. https://docs.qwilt.com/docs/terraform-user-guide-1#authentication
+  Manages a Qwilt CDN site activation and certificate assignment in a staging environment. Learn about the Publish to Staging Feature. https://docs.qwilt.com/docs/publish-to-staging
 ---
 
 # qwilt_cdn_site_activation_staging (Resource)
 
-[See the Terraform User Guide for details about authentication.](https://docs.qwilt.com/docs/terraform-user-guide-1#authentication)
+Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br><br>[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)
 
 ## Example Usage
 
@@ -16,8 +16,11 @@ description: |-
 #> ⚠️ This is a limited availability feature.
 
 #Notes:
-#- This resource is similar to the qwilt_cdn_site_activation resource but activates the selected configuration to the staging environment only.
-#- Activation cannot be initiated while a previous activation is still in-progress.
+#- This resource is similar to the qwilt_cdn_site_activation resource but 
+#  activates the selected configuration to the staging environment only.
+
+#- Activation cannot be initiated while a previous activation is still 
+#  in progress.
 
 
 resource "qwilt_cdn_site_activation_staging" "example" {
@@ -47,7 +50,14 @@ resource "qwilt_cdn_site_activation_staging" "example" {
 - `last_update_time_milli` (Number) When the publishing operation was last updated, in epoch time.
 - `operation_type` (String) The operation type (Publish, Unpublish) that was initiated with the request. An Unpublish operation removes a delivery service from the CDN.
 - `owner_org_id` (String) The organization that owns the site.
-- `publish_acceptance_status` (String) The publishing operation acceptance status.
+- `publish_acceptance_status` (String) The CDN validates and then accepts the publishing operation before initiating it. This attribute lets you track the acceptance process. It is not an indication of the status of the publishing operation on the CDN caches themselves.
+
+- Pending - Pending validation.
+- Invalid - Validation failed. 
+- Dismissed - Passed validation but failed to initiate.
+- Aborted - The publishing operation was cancelled.
+- In progress - The publishing operation is validated and pending initiation.
+- Accepted - The publishing operation was initiated.
 - `publish_id` (String) The ID of the publishing operation for which you want to retrieve metadata.
 - `publish_state` (String) For internal use. Use the 'publishStatus' values instead.
 - `publish_status` (String) The publishing operation status. The 'publishStatus' values aggregate the 'publishState' values into broader categories. 
@@ -69,20 +79,30 @@ Import is supported using the following syntax:
 
 
 #Create an empty resource to import into.
-#After the import is complete, manually set the required attributes in the resource based on the imported state.
-#We recommend changing the site_id and revision_id attributes with references to the qwilt_cdn_site_configuration resource to achieve implicit dependency.
+
+#After the import is complete, manually set the required attributes 
+#in the resource based on the imported state.
+
+#We recommend changing the site_id and revision_id attributes with references 
+#to the qwilt_cdn_site_configuration resource to achieve implicit dependency.
+
+
 resource "qwilt_cdn_site_activation" "example" {
 }
 
-# You can import the qwilt_cdn_site_activation_staging resource by specifying the site ID.
-# For example: terraform import qwilt_cdn_site_activation_staging.example <site_id>
+  # You can import the qwilt_cdn_site_activation_staging resource by specifying 
+  # the site ID.
 
-    # The process determines which configuration to import based on the following conditions: 
-    # - If there is an active published site configuration, it is imported.
-    # - If there is not, the most recently saved configuration version is imported.
+  # For example: terraform import qwilt_cdn_site_activation_staging.example <site_id>
+
+     # The process determines which configuration to import based on these conditions: 
+     # - If there is an active published site configuration, it is imported.
+     # - If there is not, the most recently saved configuration version is imported.
     
-# Alternatively, you can specify a particular publish_id by appending to the site_id : followed by the publish_id. 
-# For example: */terraform import qwilt_cdn_site_activation_staging.example xxxxxxxxxxxxxxxxxxxx:yyyyyyyyyyyyyyyyyyy
+  # Alternatively, you can specify a particular publish_id by adding a colon (:) and the publish_id. 
+
+  # For example: 
+  #     */terraform import qwilt_cdn_site_activation_staging.example xxxxxxxxxxx:yyyyyyyyyy
 
 terraform import qwilt_cdn_site_activation_staging.example <site_id>:<publish_id>
 ```

@@ -3,68 +3,75 @@
 page_title: "qwilt Provider"
 subcategory: ""
 description: |-
-  Interact with Qwilt services.
+  Interact with Qwilt services. The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuratoin data in the source control system of your choice. The Qwilt Terraform Provider interacts with the Qwilt Sites API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference and the Qwilt Certificate Manager API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1 Qwilt Terraform Provider User Guide. https://docs.qwilt.com/docs/terraform-user-guide
 ---
 
 # qwilt Provider
 
-Interact with Qwilt services.
+Interact with Qwilt services. <br><br>The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuratoin data in the source control system of your choice. <br><br>The Qwilt Terraform Provider interacts with the [Qwilt Sites API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference) and the [Qwilt Certificate Manager API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1) <br><br>[Qwilt Terraform Provider User Guide.](https://docs.qwilt.com/docs/terraform-user-guide)
 
 ## Example Usage
 
 ```terraform
+provider "qwilt" {
+}
+
 #The Qwilt Terraform Provider supports two authentication methods:
 
 #- **API key-based authentication** - The preferred method.
-#    - When the *api_key* parameter is set, the key is passed in the header of each API call to authenticate the request. 
-#    - To obtain an API key, please contact [support@qwilt.com](mailto:support@qwilt.com?subject=Request%20for%20Qwilt%20API%20Key). 
+#    - When the *api_key* parameter is set, the key is passed 
+#      in the header of each API call to authenticate the request. 
+#    - To obtain an API key, please contact support@qwilt.com. 
 
-#- **Login with username and password** - Supported, but not recommended. 
-#  -  When the *user name* and *password* parameters are set, any Terraform command (apply, refresh, plan, etc.)  triggers the [Qwilt Login API](https://api-docs.qwilt.cqloud.com/docs/authentication) to generate the required cqloud access token. 
+#- **Login with username and password** - Not recommended. 
+#  -  When the *user name* and *password* parameters are set, any 
+#     Terraform command (apply, refresh, plan, etc.)  triggers the
+#     Qwilt Login API to generate the required cqloud access token. 
 #  -  Support for this method may be deprecated in the future.
 
 
-# You can set the authentication parameters inside the provider configuration or as environment variables. 
+# You can set the authentication parameters inside the provider 
+# configuration or as environment variables. 
 # We recommend setting env variables.
 
-# |TF Provider Variable |  Env Variable   | Example Value               |
-# | --------------------|-----------------|-----------------------------|
-# | api_key             | QCDN_API_KEY    | "eyJhbGciOiJSUzI1NiIsIn..." |
-# | username            | QCDN_USERNAME   | "me@mycompany.com"          |
-# | password            | QCDN_PASSWORD   | "mypwd123456"               |
+# |TF Provider Variable |  Env Variable   | Example Value |
+# | --- | --- | --- |
+# |api_key | QCDN_API_KEY |  "eyJhbGciOiJSUzI1NiIsIn..." |
+# | username| QCDN_USERNAME  | "me@mycompany.com" |
+# | password |QCDN_PASSWORD |  "mypwd123456" |
 
 
 #**Notes**:
-#- If the QCDN_API_KEY env variable is defined, the QCDN_USERNAME and QCDN_PASSWORD env variables are ignored. 
-#- If you set the authentication parameters in the Terraform provider configuration, you can define *either* the api_key *or*  the username and password. 
+#- If the QCDN_API_KEY env variable is defined, the QCDN_USERNAME 
+#  and QCDN_PASSWORD env variables are ignored. 
+#- If you set the authentication parameters in the Terraform provider configuration,
+#  you can define *either* the api_key *or* the username and password. 
 
 # Example of how to set the QCDN_API_KEY env variable:
 #
-#  ```
-#  export QCDN_API_KEY="eyJhbGciOiJSUzI1NiIsIn..."
-#  ```
+#     export QCDN_API_KEY="eyJhbGciOiJSUzI1NiIsIn..."
 #
-#<br>
+#
 # When the authentication parameters are set by the environment variables, the provider config looks like this:
-#  ```
-#  provider "qwilt" { }
-#  ```
+#  
+#     provider "qwilt" { }
+#  
 
 
 # Example of how to set the API Key param in the provider config:
 #
-#  ```
-#  provider "qwilt" {
-#     api_key = "eyJhbGciOiJSUzI1NiIsIn..."
-#  }```
+#    provider "qwilt" {
+#       api_key = "eyJhbGciOiJSUzI1NiIsIn..."
+#    }
+
 
 # Example of how to set the username and password params in the provider config:
-#  ```
-#  provider "qwilt" {
-#      username = "me@mycompany.com"
-#      password = "me123456"
-#          }
-#  ```
+#  
+#    provider "qwilt" {
+#        username = "me@mycompany.com"
+#        password = "me123456"
+#    }
+#
 ```
 
 <!-- schema generated by tfplugindocs -->
@@ -73,6 +80,6 @@ Interact with Qwilt services.
 ### Optional
 
 - `api_key` (String, Sensitive) API key for Qwilt CDN Sites API. May also be provided via QCDN_API_KEY environment variable.
-- `env_type` (String) FOR INTERNAL USE ONLY!! Qwilt CDN environment. [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable
+- `env_type` (String) FOR INTERNAL USE ONLY!! /nQwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable
 - `password` (String, Sensitive) QC services password. May also be provided via QCDN_PASSWORD environment variable.
 - `username` (String) QC services username.  May also be provided via QCDN_USERNAME environment variable.

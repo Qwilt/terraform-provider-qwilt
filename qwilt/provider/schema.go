@@ -15,13 +15,17 @@ import (
 
 func AddResponseSchema(resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Interact with Qwilt services.",
+		MarkdownDescription: "Interact with Qwilt services. <br><br>" +
+			"The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuratoin data in the source control system of your choice. <br><br>" +
+			"The Qwilt Terraform Provider interacts with the [Qwilt Sites API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference) and the [Qwilt Certificate Manager API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1) <br><br>" +
+			"[Qwilt Terraform Provider User Guide.](https://docs.qwilt.com/docs/terraform-user-guide)",
 		Attributes: map[string]schema.Attribute{
 			// CDN
 			"env_type": schema.StringAttribute{
-				Description:         "Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable.",
-				MarkdownDescription: "FOR INTERNAL USE ONLY!! Qwilt CDN environment. [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable",
-				Optional:            true,
+				Description: "Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable.",
+				MarkdownDescription: "FOR INTERNAL USE ONLY!! /n" +
+					"Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable",
+				Optional: true,
 			},
 			"username": schema.StringAttribute{
 				Description:         "Username for Qwilt CDN Sites API. May also be provided via QCDN_USERNAME environment variable.",
