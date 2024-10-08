@@ -3,7 +3,7 @@
 This is a practical example demonstrating how to use the *sites* and *certificates* data sources to query various resources within your configuration.
 
 First, make sure the QCDN_API_KEY env variable is set. (This is the recommended authentication method.)
-For more information on authentication, see the provider documentation, which also covers alternative methods.
+For more information on authentication, see the [User Guide](https://docs.qwilt.com/docs/terraform-user-guide#authentication), which also covers alternative methods.
 
 By default, checking the plan will return an empty result:
 ```

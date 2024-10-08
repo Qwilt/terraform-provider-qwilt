@@ -8,7 +8,7 @@ provider "qwilt" {
 #      in the header of each API call to authenticate the request. 
 #    - To obtain an API key, please contact support@qwilt.com. 
 
-#- **Login with username and password** - Not recommended. 
+#- **Login with username and password** 
 #  -  When the *user name* and *password* parameters are set, any 
 #     Terraform command (apply, refresh, plan, etc.)  triggers the
 #     Qwilt Login API to generate the required cqloud access token. 
@@ -41,21 +41,5 @@ provider "qwilt" {
 #  
 #     provider "qwilt" { }
 #  
-
-
-# Example of how to set the API Key param in the provider config:
-#
-#    provider "qwilt" {
-#       api_key = "eyJhbGciOiJSUzI1NiIsIn..."
-#    }
-
-
-# Example of how to set the username and password params in the provider config:
-#  
-#    provider "qwilt" {
-#        username = "me@mycompany.com"
-#        password = "me123456"
-#    }
-# 
 
 

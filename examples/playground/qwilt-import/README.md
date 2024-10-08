@@ -3,7 +3,7 @@
 This is a simple example demonstrating how to import a single site, site configuration, certificate, and activation resource.
 
 First, make sure your QCDN_API_KEY env variable is set. (This is the recommended authentication method.)
-For more information on authentication, see the provider documentation, which also covers alternative methods.
+For more information on authentication, see the [User Guide](https://docs.qwilt.com/docs/terraform-user-guide#authentication), which also covers alternative methods.
 
 ## Basic Import
 

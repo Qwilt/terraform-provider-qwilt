@@ -3,7 +3,7 @@
 page_title: "qwilt Provider"
 subcategory: ""
 description: |-
-  Interact with Qwilt services. The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuratoin data in the source control system of your choice. The Qwilt Terraform Provider interacts with the Qwilt Sites API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference and the Qwilt Certificate Manager API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1 Qwilt Terraform Provider User Guide. https://docs.qwilt.com/docs/terraform-user-guide
+  Interact with Qwilt services. The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice. The Qwilt Terraform Provider interacts with the Qwilt Sites API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference and the Qwilt Certificate Manager API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1 Qwilt Terraform Provider User Guide. https://docs.qwilt.com/docs/terraform-user-guide
 ---
 
 # qwilt Provider
