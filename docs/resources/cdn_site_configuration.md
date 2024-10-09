@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_site_configuration Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN site Configuration.
+  Manages a Qwilt CDN site Configuration. Learn how to prepare the configuration JSON. https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/prepare-the-configuration
 ---
 
 # qwilt_cdn_site_configuration (Resource)
 
-Manages a Qwilt CDN site Configuration.
+Manages a Qwilt CDN site Configuration. [Learn how to prepare the configuration JSON.](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/prepare-the-configuration)
 
 ## Example Usage
 

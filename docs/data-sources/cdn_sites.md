@@ -43,7 +43,7 @@ data "qwilt_cdn_sites" "example" {
 
 Optional:
 
-- `publish_id` (String) filter publishing operations based on a specific publish ID.
+- `publish_id` (String) Filter publishing operations based on a specific publish ID.
 - `revision_id` (String) Filter configurations based on a specific revision ID.
 - `site_id` (String) Filter sites based on a specific site ID.
 - `truncate_host_index` (Boolean) By default, the configuration details are included in the response, and you can exclude them by setting this to false.

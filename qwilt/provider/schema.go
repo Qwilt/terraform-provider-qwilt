@@ -15,32 +15,29 @@ import (
 
 func AddResponseSchema(resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Interact with Qwilt services. <br><br>" +
-			"The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice. <br><br>" +
-			"The Qwilt Terraform Provider interacts with the [Qwilt Sites API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference) and the [Qwilt Certificate Manager API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1) <br><br>" +
-			"[Qwilt Terraform Provider User Guide.](https://docs.qwilt.com/docs/terraform-user-guide)",
+		MarkdownDescription: "The Qwilt Terraform provider is used to interact with the Qwilt Sites and Certificate Manager services. <br><br>" +
+			"The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice.",
 		Attributes: map[string]schema.Attribute{
 			// CDN
 			"env_type": schema.StringAttribute{
-				Description: "Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable.",
-				MarkdownDescription: "FOR INTERNAL USE ONLY!! /n" +
-					"Qwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable",
-				Optional: true,
+				Description:         "Qwilt CDN environment [prod,prestg,stage,dev]. May also be set by the QCDN_ENVTYPE environment variable.",
+				MarkdownDescription: "FOR INTERNAL USE ONLY!! The Qwilt CDN environment [prod,prestg,stage,dev]. May also be set by the QCDN_ENVTYPE environment variable.",
+				Optional:            true,
 			},
 			"username": schema.StringAttribute{
 				Description:         "Username for Qwilt CDN Sites API. May also be provided via QCDN_USERNAME environment variable.",
-				MarkdownDescription: "QC services username.  May also be provided via QCDN_USERNAME environment variable.",
+				MarkdownDescription: "QC services username.  May also be set by the QCDN_USERNAME environment variable.",
 				Optional:            true,
 			},
 			"password": schema.StringAttribute{
 				Description:         "Password for Qwilt CDN Sites API. May also be provided via QCDN_PASSWORD environment variable.",
-				MarkdownDescription: "QC services password. May also be provided via QCDN_PASSWORD environment variable.",
+				MarkdownDescription: "QC services password. May also be set by the QCDN_PASSWORD environment variable.",
 				Optional:            true,
 				Sensitive:           true,
 			},
 			"api_key": schema.StringAttribute{
 				Description:         "API key for Qwilt CDN Sites API. May also be provided via QCDN_API_KEY environment variable.",
-				MarkdownDescription: "API key for Qwilt CDN Sites API. May also be provided via QCDN_API_KEY environment variable.",
+				MarkdownDescription: "API key for Qwilt CDN Sites API. May also be set by the QCDN_API_KEY environment variable.",
 				Optional:            true,
 				Sensitive:           true,
 			},

@@ -51,20 +51,20 @@ resource "qwilt_cdn_site_activation" "example" {
 - `owner_org_id` (String) The organization that owns the site.
 - `publish_acceptance_status` (String) The CDN validates and then accepts the publishing operation before initiating it. This attribute lets you track the acceptance process. It is not an indication of the status of the publishing operation on the CDN caches themselves.
 
-- Pending - Pending validation.
-- Invalid - Validation failed. 
-- Dismissed - Passed validation but failed to initiate.
-- Aborted - The publishing operation was cancelled.
-- In progress - The publishing operation is validated and pending initiation.
-- Accepted - The publishing operation was initiated.
+  - Pending - Pending validation.
+  - Invalid - Validation failed. 
+  - Dismissed - Passed validation but failed to initiate.
+  - Aborted - The publishing operation was cancelled.
+  - In progress - The publishing operation is validated and pending initiation.
+  - Accepted - The publishing operation was initiated.
 - `publish_id` (String) The ID of the publishing operation for which you want to retrieve metadata.
 - `publish_state` (String) For internal use. Use the 'publishStatus' values instead.
 - `publish_status` (String) The publishing operation status. The 'publishStatus' values aggregate the 'publishState' values into broader categories. 
 
- - Success - The operation succeeded.
- - Failed - The operation failed.
- - Aborted - The operation was canceled.
- - InProgress - The operation is in progress.
+  - Success - The operation succeeded.
+  - Failed - The operation failed.
+  - Aborted - The operation was canceled.
+  - InProgress - The operation is in progress.
 - `target` (String) The value will always be 'ga'.
 - `username` (String) Username that initiated the publishing operation.
 - `validators_err_details` (String) Details about errors generated during validation.
