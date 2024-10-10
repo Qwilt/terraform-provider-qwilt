@@ -341,6 +341,11 @@ func (r *siteConfigResource) ModifyPlan(ctx context.Context, req resource.Modify
 		return
 	}
 
+	// If the HostIndex is unknown, we can't do anything
+	if plan.HostIndex.IsUnknown() {
+		return
+	}
+
 	planRawJson := json.RawMessage([]byte(plan.HostIndex.ValueString()))
 	planString, err := json.Marshal(planRawJson)
 	if err != nil {
@@ -356,6 +361,11 @@ func (r *siteConfigResource) ModifyPlan(ctx context.Context, req resource.Modify
 	diags = req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// If the HostIndex is unknown, we can't do anything
+	if state.HostIndex.IsUnknown() {
 		return
 	}
 
