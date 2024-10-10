@@ -103,20 +103,20 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 			},
 			"publish_status": schema.StringAttribute{
 				Description: "The publishing operation status. The 'publishStatus' values aggregate the 'publishState' values into broader categories. \n\n" +
-					" - Success - The operation succeeded.\n" +
-					" - Failed - The operation failed.\n" +
-					" - Aborted - The operation was canceled.\n" +
-					" - InProgress - The operation is in progress.",
+					"  - Success - The operation succeeded.\n" +
+					"  - Failed - The operation failed.\n" +
+					"  - Aborted - The operation was canceled.\n" +
+					"  - InProgress - The operation is in progress.",
 				Computed: true,
 			},
 			"publish_acceptance_status": schema.StringAttribute{
 				Description: "The CDN validates and then accepts the publishing operation before initiating it. This attribute lets you track the acceptance process. It is not an indication of the status of the publishing operation on the CDN caches themselves.\n\n" +
-					"- Pending - Pending validation.\n" +
-					"- Invalid - Validation failed. \n" +
-					"- Dismissed - Passed validation but failed to initiate.\n" +
-					"- Aborted - The publishing operation was cancelled.\n" +
-					"- In progress - The publishing operation is validated and pending initiation.\n" +
-					"- Accepted - The publishing operation was initiated.",
+					"  - Pending - Pending validation.\n" +
+					"  - Invalid - Validation failed. \n" +
+					"  - Dismissed - Passed validation but failed to initiate.\n" +
+					"  - Aborted - The publishing operation was cancelled.\n" +
+					"  - In progress - The publishing operation is validated and pending initiation.\n" +
+					"  - Accepted - The publishing operation was initiated.",
 				Computed: true,
 			},
 			"operation_type": schema.StringAttribute{

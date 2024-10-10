@@ -232,7 +232,7 @@ func (d *qwiltSitesDataSource) Schema(_ context.Context, _ datasource.SchemaRequ
 						Optional:    true,
 					},
 					"publish_id": schema.StringAttribute{
-						Description: "filter publishing operations based on a specific publish ID.",
+						Description: "Filter publishing operations based on a specific publish ID.",
 						Optional:    true,
 					},
 					"truncate_host_index": schema.BoolAttribute{

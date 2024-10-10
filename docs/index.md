@@ -3,12 +3,12 @@
 page_title: "qwilt Provider"
 subcategory: ""
 description: |-
-  Interact with Qwilt services. The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice. The Qwilt Terraform Provider interacts with the Qwilt Sites API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference and the Qwilt Certificate Manager API https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1 Qwilt Terraform Provider User Guide. https://docs.qwilt.com/docs/terraform-user-guide
+  The Qwilt Terraform provider is used to interact with the Qwilt Sites and Certificate Manager services. The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice.
 ---
 
 # qwilt Provider
 
-Interact with Qwilt services. <br><br>The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuratoin data in the source control system of your choice. <br><br>The Qwilt Terraform Provider interacts with the [Qwilt Sites API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/sites-api-reference) and the [Qwilt Certificate Manager API](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Certificate%20Manager%20API/certificate-manager-api-reference-v1) <br><br>[Qwilt Terraform Provider User Guide.](https://docs.qwilt.com/docs/terraform-user-guide)
+The Qwilt Terraform provider is used to interact with the Qwilt Sites and Certificate Manager services. <br><br>The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice.
 
 ## Example Usage
 
@@ -23,7 +23,7 @@ provider "qwilt" {
 #      in the header of each API call to authenticate the request. 
 #    - To obtain an API key, please contact support@qwilt.com. 
 
-#- **Login with username and password** - Not recommended. 
+#- **Login with username and password** 
 #  -  When the *user name* and *password* parameters are set, any 
 #     Terraform command (apply, refresh, plan, etc.)  triggers the
 #     Qwilt Login API to generate the required cqloud access token. 
@@ -55,22 +55,6 @@ provider "qwilt" {
 # When the authentication parameters are set by the environment variables, the provider config looks like this:
 #  
 #     provider "qwilt" { }
-#  
-
-
-# Example of how to set the API Key param in the provider config:
-#
-#    provider "qwilt" {
-#       api_key = "eyJhbGciOiJSUzI1NiIsIn..."
-#    }
-
-
-# Example of how to set the username and password params in the provider config:
-#  
-#    provider "qwilt" {
-#        username = "me@mycompany.com"
-#        password = "me123456"
-#    }
 #
 ```
 
@@ -79,7 +63,7 @@ provider "qwilt" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) API key for Qwilt CDN Sites API. May also be provided via QCDN_API_KEY environment variable.
-- `env_type` (String) FOR INTERNAL USE ONLY!! /nQwilt CDN environment [prod,prestg,stage,dev]. May also be provided via QCDN_ENVTYPE environment variable
-- `password` (String, Sensitive) QC services password. May also be provided via QCDN_PASSWORD environment variable.
-- `username` (String) QC services username.  May also be provided via QCDN_USERNAME environment variable.
+- `api_key` (String, Sensitive) API key for Qwilt CDN Sites API. May also be set by the QCDN_API_KEY environment variable.
+- `env_type` (String) FOR INTERNAL USE ONLY!! The Qwilt CDN environment [prod,prestg,stage,dev]. May also be set by the QCDN_ENVTYPE environment variable.
+- `password` (String, Sensitive) QC services password. May also be set by the QCDN_PASSWORD environment variable.
+- `username` (String) QC services username.  May also be set by the QCDN_USERNAME environment variable.
