@@ -87,7 +87,7 @@ Import is supported using the following syntax:
 #to the qwilt_cdn_site_configuration resource to achieve implicit dependency.
 
 
-resource "qwilt_cdn_site_activation" "example" {
+resource "qwilt_cdn_site_activation_staging" "example" {
 }
 
   # You can import the qwilt_cdn_site_activation_staging resource by specifying 
