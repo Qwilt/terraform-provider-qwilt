@@ -52,7 +52,10 @@ func (r *siteActivationResource) Metadata(_ context.Context, req resource.Metada
 // Schema defines the schema for the resource.
 func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a Qwilt CDN site activation and certificate assignment.",
+		MarkdownDescription: "Manages a Qwilt CDN site activation and certificate assignment.<br><br>" +
+			" - This resource takes a long time to fully apply.<br><br>" +
+			" - Any attempt to apply site_activation with the same site_id might encounter a failure due to another publish operation in-progress.<br><br>" +
+			" - Run ```terraform refresh``` to sync the state of this resource explicitly.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "For internal use only, for testing. Equals site_id:publish_id.",

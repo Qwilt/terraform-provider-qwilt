@@ -74,7 +74,7 @@ func (r *certificateResource) Schema(_ context.Context, _ resource.SchemaRequest
 				},
 			},
 			"private_key": schema.StringAttribute{
-				Description: "A PEM private key, which pairs with the public key that is embedded in the certificate. The entire string must be Base64 encoded.",
+				Description: "A PEM private key, which pairs with the public key that is embedded in the certificate. The entire string must be Base64 encoded. It may not include a passphrase.",
 				Computed:    false,
 				Required:    true,
 				Sensitive:   true,

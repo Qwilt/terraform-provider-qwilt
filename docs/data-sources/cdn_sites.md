@@ -13,7 +13,6 @@ Retrieves the sites available to your user. By default, the output includes site
 ## Example Usage
 
 ```terraform
-# View configured CDN sites.
 data "qwilt_cdn_sites" "example" {
   filter = {
     # Specify "all" for site_id, revision_id, or publish_id to list all instances.
