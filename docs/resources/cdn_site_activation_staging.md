@@ -3,24 +3,18 @@
 page_title: "qwilt_cdn_site_activation_staging Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN site activation and certificate assignment in a staging environment. Learn about the Publish to Staging Feature. https://docs.qwilt.com/docs/publish-to-staging
+  ⚠️ This is a limited availability feature. Manages a Qwilt CDN site activation and certificate assignment in a staging environment. This resource is similar to the qwilt_cdn_site_activation resource but activates the selected configuration to the staging environment only.Learn about the Publish to Staging Feature. https://docs.qwilt.com/docs/publish-to-staging
 ---
 
 # qwilt_cdn_site_activation_staging (Resource)
 
-Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br><br>[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)
+⚠️ This is a limited availability feature. <br><br>Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br><br>This resource is similar to the *qwilt_cdn_site_activation* resource but activates the selected configuration to the staging environment only.<br><br>[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)
 
 ## Example Usage
 
 ```terraform
-#> ⚠️ This is a limited availability feature.
-
-#Notes:
-#- This resource is similar to the qwilt_cdn_site_activation resource but 
-#  activates the selected configuration to the staging environment only.
-
-#- Activation cannot be initiated while a previous activation is still 
-#  in progress.
+#Activation cannot be initiated while a previous activation is still 
+#in progress.
 
 
 resource "qwilt_cdn_site_activation_staging" "example" {

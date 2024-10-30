@@ -1,4 +1,4 @@
-# View configured CDN sites.
+
 data "qwilt_cdn_sites" "example" {
   filter = {
     # Specify "all" for site_id, revision_id, or publish_id to list all instances.

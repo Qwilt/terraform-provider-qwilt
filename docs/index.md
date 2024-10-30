@@ -3,59 +3,92 @@
 page_title: "qwilt Provider"
 subcategory: ""
 description: |-
-  The Qwilt Terraform provider is used to interact with the Qwilt Sites and Certificate Manager services. The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice.
+  The Qwilt Terraform provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice. Qwilt Terraform Provider User Guide https://docs.qwilt.com/docs/terraform-user-guideTo manage your sites with the Qwilt Terraform provider, they must first be created in Terraform or imported into Terraform.Learn how to create or import a site.  https://docs.qwilt.com/docs/terraform-user-guide#create-or-import-a-siteAuthenticationThe Qwilt Terraform provider supports two authentication methods: API key-based authentication (the preferred method) and login with user name and password. You can set the authentication parameters inside the provider configuration or as environment variables. We recommend setting env variables.Learn more about the supported authentication methods. https://docs.qwilt.com/docs/terraform-user-guide#authenticationQuick StartThe sample configuration files in our playground on GitHub demonstrate how to use the Qwilt Terraform provider. They can be used as starter files for privisioning and managing resources via the Terraform CLI. They are designed for customization-- replace placeholder values with your own configuration details. Replace the example certificate and key values with your own.Explore the ReadMe files and examples in our playground on GitHub. https://github.com/Qwilt/terraform-provider-qwilt/blob/main/examples/playground/README.md
 ---
 
 # qwilt Provider
 
-The Qwilt Terraform provider is used to interact with the Qwilt Sites and Certificate Manager services. <br><br>The Qwilt Terraform Provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice.
+The Qwilt Terraform provider allows you to manage your site configurations using a declarative configuration language. You can store, manage, and version your configuration data in the source control system of your choice. [Qwilt Terraform Provider User Guide](https://docs.qwilt.com/docs/terraform-user-guide)<br><br>To manage your sites with the Qwilt Terraform provider, they must first be created in Terraform or imported into Terraform.<br>[Learn how to create or import a site. ](https://docs.qwilt.com/docs/terraform-user-guide#create-or-import-a-site)<br><br>**Authentication**<br>The Qwilt Terraform provider supports two authentication methods: API key-based authentication (the preferred method) and login with user name and password. You can set the authentication parameters inside the provider configuration or as environment variables. We recommend setting env variables.<br>[Learn more about the supported authentication methods.](https://docs.qwilt.com/docs/terraform-user-guide#authentication)<br><br>**Quick Start**<br>The sample configuration files in our playground on GitHub demonstrate how to use the Qwilt Terraform provider. They can be used as starter files for privisioning and managing resources via the Terraform CLI. They are designed for customization-- replace placeholder values with your own configuration details. Replace the example certificate and key values with your own.<br>[Explore the ReadMe files and examples in our playground on GitHub.](https://github.com/Qwilt/terraform-provider-qwilt/blob/main/examples/playground/README.md)
 
 ## Example Usage
 
 ```terraform
+# The "required_providers" block declares the provider:
+
+terraform {
+  required_providers {
+    qwilt = {
+      source = "Qwilt/qwilt"
+    }
+  }
+}
+
+
+# The "provider" config (read about Authentication, above.):
+
 provider "qwilt" {
 }
 
-#The Qwilt Terraform Provider supports two authentication methods:
 
-#- **API key-based authentication** - The preferred method.
-#    - When the *api_key* parameter is set, the key is passed 
-#      in the header of each API call to authenticate the request. 
-#    - To obtain an API key, please contact support@qwilt.com. 
+# A named site resource:
 
-#- **Login with username and password** 
-#  -  When the *user name* and *password* parameters are set, any 
-#     Terraform command (apply, refresh, plan, etc.)  triggers the
-#     Qwilt Login API to generate the required cqloud access token. 
-#  -  Support for this method may be deprecated in the future.
+resource "qwilt_cdn_site" "example" {
+  site_name = "Terraform Basic Example Site"
+}
+
+# A named site configuration resource:
+
+resource "qwilt_cdn_site_configuration" "example" {
+  site_id = qwilt_cdn_site.example.site_id
+  #host_index = file("./examplesitebasic.json")
+  host_index         = <<-EOT
+{
+	"hosts": [
+		{
+			"host": "tf.example.com",
+			"host-metadata": {
+				"metadata": [
+					{
+						"generic-metadata-type": "MI.SourceMetadataExtended",
+						"generic-metadata-value": {
+							"sources": [
+								{
+									"protocol": "https/1.1",
+									"endpoints": [
+										"origin-host.example.com"
+									]
+								}
+							]
+						}
+					}
+				],
+				"paths": []
+			}
+		}
+	]
+}
+EOT
+  change_description = "Basic example demonstrating the Terraform plugin."
+}
 
 
-# You can set the authentication parameters inside the provider 
-# configuration or as environment variables. 
-# We recommend setting env variables.
+# A named certificate resource:
 
-# |TF Provider Variable |  Env Variable   | Example Value |
-# | --- | --- | --- |
-# |api_key | QCDN_API_KEY |  "eyJhbGciOiJSUzI1NiIsIn..." |
-# | username| QCDN_USERNAME  | "me@mycompany.com" |
-# | password |QCDN_PASSWORD |  "mypwd123456" |
+resource "qwilt_cdn_certificate" "example" {
+  certificate       = filebase64("./tf.example.com.crt")
+  certificate_chain = filebase64("./tf.example.com.crt")
+  private_key       = filebase64("./tf.example.com.key")
+  description       = "Certificate for the Terraform basic example configuration"
+}
 
 
-#**Notes**:
-#- If the QCDN_API_KEY env variable is defined, the QCDN_USERNAME 
-#  and QCDN_PASSWORD env variables are ignored. 
-#- If you set the authentication parameters in the Terraform provider configuration,
-#  you can define *either* the api_key *or* the username and password. 
+# A named site activation resource:
 
-# Example of how to set the QCDN_API_KEY env variable:
-#
-#     export QCDN_API_KEY="eyJhbGciOiJSUzI1NiIsIn..."
-#
-#
-# When the authentication parameters are set by the environment variables, the provider config looks like this:
-#  
-#     provider "qwilt" { }
-#
+resource "qwilt_cdn_site_activation" "example" {
+  site_id        = qwilt_cdn_site_configuration.example.site_id
+  revision_id    = qwilt_cdn_site_configuration.example.revision_id
+  certificate_id = qwilt_cdn_certificate.example.cert_id
+}
 ```
 
 <!-- schema generated by tfplugindocs -->

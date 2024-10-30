@@ -3,25 +3,16 @@
 page_title: "qwilt_cdn_site_activation Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN site activation and certificate assignment.
+  Manages a Qwilt CDN site activation and certificate assignment. - This resource takes a long time to fully apply. - Any attempt to apply site_activation with the same site_id might encounter a failure due to another publish operation in-progress. - Run terraform refresh to sync the state of this resource explicitly.
 ---
 
 # qwilt_cdn_site_activation (Resource)
 
-Manages a Qwilt CDN site activation and certificate assignment.
+Manages a Qwilt CDN site activation and certificate assignment.<br><br> - This resource takes a long time to fully apply.<br><br> - Any attempt to apply site_activation with the same site_id might encounter a failure due to another publish operation in-progress.<br><br> - Run ```terraform refresh``` to sync the state of this resource explicitly.
 
 ## Example Usage
 
 ```terraform
-#Notes:
-#- This resource takes a long time to fully apply.
-
-#- Any attempt to apply site_activation with the same site_id might encounter 
-#  a failure due to another publish operation in-progress.
-
-#- Run terraform refresh to sync the state of this resource explicitly.
-
-
 resource "qwilt_cdn_site_activation" "example" {
   site_id     = qwilt_cdn_site_configuration.example.site_id
   revision_id = qwilt_cdn_site_configuration.example.revision_id

@@ -2,7 +2,7 @@
 
 This is a more complex example demonstrating how to manage two sites, site configurations, certificates, and activation resources in a single configuration.
 
-Configurations are managed through separate Terraform configuration files (e.g. examplesite.tf and examplesite2.tf), and the SVTA configurations are managed through the corresponding JSON files (e.g. examplesite.json, examplesite2.json) that are included in the configuration.  Each site has its own associated certificate and private key.
+Configurations are managed through separate Terraform configuration files (e.g. *examplesite.tf* and *examplesite2.tf*), and the SVTA configurations are managed through the corresponding JSON files (e.g. *examplesite.json*, *examplesite2.json*) that are included in the configuration.  Each site has its own associated certificate and private key.
 
 To use this example:
 
