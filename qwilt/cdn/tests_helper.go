@@ -243,6 +243,17 @@ func (b *TerraformConfigBuilder) DelCertResource(name string) *TerraformConfigBu
 	delete(b.certResources, name)
 	return b
 }
+func (b *TerraformConfigBuilder) IpAllowListDataSource(name string) *TerraformConfigBuilder {
+	dataCfg := fmt.Sprintf(`
+data "qwilt_cdn_ip_allow_list" "%s" {
+}
+output "ip_allow_list_detail" {
+	value = data.qwilt_cdn_ip_allow_list.%s.md5
+}`, name, name)
+
+	b.siteDataSources[name] = dataCfg
+	return b
+}
 func (b *TerraformConfigBuilder) Build() string {
 	terraformConfig := QwiltCdnFullProviderConfig
 	for _, cfg := range b.certResources {

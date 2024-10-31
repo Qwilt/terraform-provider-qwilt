@@ -180,3 +180,15 @@ type CertificateUpdateRequest struct {
 type SiteCertificateLinkRequest struct {
 	CertificateId string `json:"certificateId"`
 }
+
+// IP ALLOW List model
+type NetworkDeviceIpsModel struct {
+	Ipv4 []string `json:"ipv4"`
+	Ipv6 []string `json:"ipv6"`
+}
+
+type DeviceIpsModel struct {
+	Md5              string                           `tfsdk:"md5"`
+	CreateTimeMillis string                           `json:"createTimeMillis"`
+	IpData           map[string]NetworkDeviceIpsModel `tfsdk:"ipData"`
+}

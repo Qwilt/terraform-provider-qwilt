@@ -25,10 +25,10 @@ import (
 var (
 
 	//- use this when developing locally
-	//providerName = "qwilt.com/qwiltinc/qwilt"
+	providerName = "qwilt.com/qwiltinc/qwilt"
 
 	//use this when testing in released version
-	providerName = "Qwilt/qwilt"
+	//providerName = "Qwilt/qwilt"
 
 	// these will be set by the goreleaser configuration
 	// to appropriate values for the compiled binary.
