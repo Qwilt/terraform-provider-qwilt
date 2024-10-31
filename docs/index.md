@@ -24,7 +24,8 @@ terraform {
 }
 
 
-# The "provider" config (read about Authentication, above.):
+# The "provider" config sets authentication.
+# Read about authentication, above.
 
 provider "qwilt" {
 }
