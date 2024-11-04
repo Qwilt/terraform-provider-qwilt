@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_site_configuration Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN site Configuration.Learn how to prepare the configuration JSON. https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json
+  Manages a Qwilt CDN site Configuration. The site configuration determines how the CDN processes client requests and delivers content.Learn how to prepare the configuration JSON. https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json
 ---
 
 # qwilt_cdn_site_configuration (Resource)
 
-Manages a Qwilt CDN site Configuration.<br><br>[Learn how to prepare the configuration JSON.](https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json)
+Manages a Qwilt CDN site Configuration. The site configuration determines how the CDN processes client requests and delivers content.<br><br>[Learn how to prepare the configuration JSON.](https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json)
 
 ## Example Usage
 
