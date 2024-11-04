@@ -76,6 +76,6 @@ type NetworkIpDataModel struct {
 
 type DeviceIpsDataModel struct {
 	Md5              types.String         `tfsdk:"md5"`
-	CreateTimeMillis types.String         `tfsdk:"createTimeMillis"`
+	CreateTimeMillis types.Int64          `tfsdk:"createTimeMillis"`
 	Networks         []NetworkIpDataModel `tfsdk:"networks"`
 }

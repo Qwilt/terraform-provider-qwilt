@@ -31,7 +31,8 @@ func NewDeviceIpsClient(client *Client) *DeviceIpsClient {
 // GetCertificates - Returns list of certificates
 func (c *DeviceIpsClient) GetOriginAllowList() (*api.DeviceIpsModel, error) {
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/1.0/network/device-ip", c.apiEndpoint), nil)
+	URL := fmt.Sprintf("%s/api/1.0/network/device-ip", c.apiEndpoint)
+	req, err := http.NewRequest("GET", URL, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     qwilt = {
-      source = "Qwilt/qwilt"
+      source = "qwilt.com/qwiltinc/qwilt"
     }
   }
 }

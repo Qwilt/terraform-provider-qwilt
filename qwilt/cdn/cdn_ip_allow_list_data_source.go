@@ -36,7 +36,9 @@ type qwiltIpAllowListDataSource struct {
 
 // qwiltIpAllowListDataSourceModel maps the data source schema data.
 type qwiltIpAllowListDataSourceModel struct {
-	Networks []cdnmodel.DeviceIpsDataModel `tfsdk:"networks"`
+	Md5              types.String                  `tfsdk:"md5"`
+	CreateTimeMillis types.Int64                   `tfsdk:"createTimeMillis"`
+	Networks         []cdnmodel.NetworkIpDataModel `tfsdk:"networks"`
 }
 
 // Metadata returns the data source type name.
@@ -57,19 +59,41 @@ func (d *qwiltIpAllowListDataSource) Schema(_ context.Context, _ datasource.Sche
 				Description: "Creation time in milliseconds",
 				Computed:    true,
 			},
-			"ip_data": schema.SingleNestedAttribute{
-				Description: "IP data containing IPv4 and IPv6 addresses",
+			//"networks": schema.SingleNestedAttribute{
+			//	Description: "IP data containing IPv4 and IPv6 addresses",
+			//	Computed:    true,
+			//	Attributes: map[string]schema.Attribute{
+			//		"ipv4": schema.ListAttribute{
+			//			ElementType: types.StringType,
+			//			Description: "List of IPv4 addresses",
+			//			Computed:    true,
+			//		},
+			//		"ipv6": schema.ListAttribute{
+			//			ElementType: types.StringType,
+			//			Description: "List of IPv6 addresses",
+			//			Computed:    true,
+			//		},
+			//	},
+			//},
+			"networks": schema.ListNestedAttribute{
+				Description: "List of networks and their device-ips.",
 				Computed:    true,
-				Attributes: map[string]schema.Attribute{
-					"ipv4": schema.ListAttribute{
-						ElementType: types.StringType,
-						Description: "List of IPv4 addresses",
-						Computed:    true,
-					},
-					"ipv6": schema.ListAttribute{
-						ElementType: types.StringType,
-						Description: "List of IPv6 addresses",
-						Computed:    true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							Description: "The network name",
+							Computed:    true,
+						},
+						"ipv4": schema.ListAttribute{
+							ElementType: types.StringType,
+							Description: "List of IPv4 addresses",
+							Computed:    true,
+						},
+						"ipv6": schema.ListAttribute{
+							ElementType: types.StringType,
+							Description: "List of IPv6 addresses",
+							Computed:    true,
+						},
 					},
 				},
 			},
@@ -101,7 +125,7 @@ func (d *qwiltIpAllowListDataSource) Read(ctx context.Context, _ datasource.Read
 	// Get networks ips
 	deviceIpsState := cdnmodel.DeviceIpsDataModel{
 		Md5:              types.StringValue(deviceIpsResp.Md5),
-		CreateTimeMillis: types.StringValue(deviceIpsResp.CreateTimeMillis),
+		CreateTimeMillis: types.Int64Value(int64(deviceIpsResp.CreateTimeMillis)),
 	}
 	networks := make([]cdnmodel.NetworkIpDataModel, 0)
 
@@ -118,7 +142,7 @@ func (d *qwiltIpAllowListDataSource) Read(ctx context.Context, _ datasource.Read
 		networks = append(networks, entry)
 	}
 	deviceIpsState.Networks = networks
-	state.Networks = append(state.Networks, deviceIpsState)
+	//state.DeviceIpsDataModel = deviceIpsState
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)
