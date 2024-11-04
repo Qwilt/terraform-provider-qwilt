@@ -177,7 +177,7 @@ type CertificateUpdateRequest struct {
 }
 
 type CertificateTemplate struct {
-	CertificateTemplateID          int      `json:"certificateTemplateId"`
+	CertificateTemplateID          int64    `json:"certificateTemplateId"`
 	Country                        string   `json:"country"`
 	Tenant                         string   `json:"tenant"`
 	State                          string   `json:"state"`
@@ -186,8 +186,8 @@ type CertificateTemplate struct {
 	CommonName                     string   `json:"commonName"`
 	SANs                           []string `json:"sans"`
 	AutoManagedCertificateTemplate bool     `json:"autoManagedCertificateTemplate"`
-	LastCertificateID              int      `json:"lastCertificateId"`
-	CsrIds                         []int    `json:"csrIds"`
+	LastCertificateID              int64    `json:"lastCertificateId"`
+	CsrIds                         []int64  `json:"csrIds"`
 }
 
 type CertificateTemplateCreateRequest struct {
