@@ -45,7 +45,7 @@ type certificateTemplateResource struct {
 
 // Metadata returns the resource type name.
 func (r *certificateTemplateResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_cdn_certificate"
+	resp.TypeName = req.ProviderTypeName + "_cdn_certificate_template"
 }
 
 // Schema defines the schema for the resource.
