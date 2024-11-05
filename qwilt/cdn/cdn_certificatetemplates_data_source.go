@@ -147,7 +147,7 @@ func (d *qwiltCertificateTemplatesDataSource) Read(ctx context.Context, _ dataso
 	certs, err := d.client.GetCertificateTemplates()
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unable to Read Qwilt Certificates",
+			"Unable to Read Qwilt Certificate Templates",
 			err.Error(),
 		)
 		return

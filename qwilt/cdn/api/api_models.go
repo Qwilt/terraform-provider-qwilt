@@ -197,7 +197,6 @@ type CertificateTemplateCreateRequest struct {
 	OrganizationName               string   `json:"organizationName"`
 	CommonName                     string   `json:"commonName"`
 	SANs                           []string `json:"sans"`
-	KeyType                        string   `json:"keyType"`
 	AutoManagedCertificateTemplate bool     `json:"autoManagedCertificateTemplate"`
 }
 
