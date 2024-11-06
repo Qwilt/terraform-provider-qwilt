@@ -47,9 +47,8 @@ func TestCertificateTemplatesDataResource(t *testing.T) {
 	generateHostName(&domain)
 	orgName := "qwilt"
 	sans := []string{"test1.com", "test2.com"}
-	autoManaged := true
 
-	terraformBuilder := NewTerraformConfigBuilder().CertificateTemplateResource("test", domain, orgName, sans, autoManaged)
+	terraformBuilder := NewTerraformConfigBuilder().CertificateTemplateResource("test", domain, orgName, sans, true)
 	terraformConfig := terraformBuilder.Build()
 
 	//t.Logf("config: %s", terraformConfig)
