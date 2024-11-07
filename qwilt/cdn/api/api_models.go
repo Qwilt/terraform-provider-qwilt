@@ -188,7 +188,7 @@ type NetworkDeviceIpsModel struct {
 }
 
 type DeviceIpsModel struct {
-	Md5              string                           `tfsdk:"md5"`
+	Md5              string                           `json:"md5"`
 	CreateTimeMillis int                              `json:"createTimeMillis"`
-	IpData           map[string]NetworkDeviceIpsModel `tfsdk:"ipData"`
+	IpData           map[string]NetworkDeviceIpsModel `json:"ipData"`
 }

@@ -36,9 +36,9 @@ type qwiltIpAllowListDataSource struct {
 
 // qwiltIpAllowListDataSourceModel maps the data source schema data.
 type qwiltIpAllowListDataSourceModel struct {
+	IpAllowList      []cdnmodel.NetworkIpDataModel `tfsdk:"networks"`
 	Md5              types.String                  `tfsdk:"md5"`
-	CreateTimeMillis types.Int64                   `tfsdk:"createTimeMillis"`
-	Networks         []cdnmodel.NetworkIpDataModel `tfsdk:"networks"`
+	CreateTimeMillis types.Int64                   `tfsdk:"create_time_millis"`
 }
 
 // Metadata returns the data source type name.
@@ -59,22 +59,6 @@ func (d *qwiltIpAllowListDataSource) Schema(_ context.Context, _ datasource.Sche
 				Description: "Creation time in milliseconds",
 				Computed:    true,
 			},
-			//"networks": schema.SingleNestedAttribute{
-			//	Description: "IP data containing IPv4 and IPv6 addresses",
-			//	Computed:    true,
-			//	Attributes: map[string]schema.Attribute{
-			//		"ipv4": schema.ListAttribute{
-			//			ElementType: types.StringType,
-			//			Description: "List of IPv4 addresses",
-			//			Computed:    true,
-			//		},
-			//		"ipv6": schema.ListAttribute{
-			//			ElementType: types.StringType,
-			//			Description: "List of IPv6 addresses",
-			//			Computed:    true,
-			//		},
-			//	},
-			//},
 			"networks": schema.ListNestedAttribute{
 				Description: "List of networks and their device-ips.",
 				Computed:    true,
@@ -122,7 +106,6 @@ func (d *qwiltIpAllowListDataSource) Read(ctx context.Context, _ datasource.Read
 	}
 
 	// Map response body to model
-	// Get networks ips
 	deviceIpsState := cdnmodel.DeviceIpsDataModel{
 		Md5:              types.StringValue(deviceIpsResp.Md5),
 		CreateTimeMillis: types.Int64Value(int64(deviceIpsResp.CreateTimeMillis)),
@@ -142,7 +125,7 @@ func (d *qwiltIpAllowListDataSource) Read(ctx context.Context, _ datasource.Read
 		networks = append(networks, entry)
 	}
 	deviceIpsState.Networks = networks
-	//state.DeviceIpsDataModel = deviceIpsState
+	state.IpAllowList = networks
 
 	// Set state
 	diags = resp.State.Set(ctx, &state)
