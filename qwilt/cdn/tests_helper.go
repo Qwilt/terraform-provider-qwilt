@@ -19,8 +19,8 @@ import (
 )
 
 type TerraformConfigBuilder struct {
-	siteResources map[string]string
-	// NOTE add certificateTemplateResource to the map
+	siteResources                  map[string]string
+	certificateTemplateResources   map[string]string
 	certResources                  map[string]string
 	siteCfgResources               map[string]string
 	siteActivationResources        map[string]string
@@ -72,7 +72,7 @@ output "certificate_template" {
 	value = data.qwilt_cdn_certificate_templates.%s.certificateTemplate[0]
 }`, name, id, name)
 
-	b.siteDataSources[name] = dataCfg
+	b.certificateTemplateResources[name] = dataCfg
 	return b
 }
 func (b *TerraformConfigBuilder) CertificateTemplateResource(name, commonName, orgName string, sans []string, autoManaged bool) *TerraformConfigBuilder {
@@ -83,7 +83,7 @@ func (b *TerraformConfigBuilder) CertificateTemplateResource(name, commonName, o
 	auto_managed_certificate_template = %t
 
 }`, name, commonName, sans, orgName, autoManaged)
-	b.certResources[name] = certificateTemplateConfig
+	b.certificateTemplateResources[name] = certificateTemplateConfig
 	return b
 }
 func (b *TerraformConfigBuilder) CertsDataSource(name, certId string) *TerraformConfigBuilder {
@@ -267,7 +267,7 @@ func (b *TerraformConfigBuilder) DelSiteResource(name string) *TerraformConfigBu
 	return b
 }
 func (b *TerraformConfigBuilder) DelCertificateTemplateResource(name string) *TerraformConfigBuilder {
-	delete(b.certResources, name)
+	delete(b.certificateTemplateResources, name)
 	return b
 }
 func (b *TerraformConfigBuilder) DelCertResource(name string) *TerraformConfigBuilder {
