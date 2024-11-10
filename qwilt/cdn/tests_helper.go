@@ -10,15 +10,17 @@ package cdn
 import (
 	b64 "encoding/base64"
 	"fmt"
-	tfjson "github.com/hashicorp/terraform-json"
 	"math/rand"
 	"os"
 	"strconv"
 	"time"
+
+	tfjson "github.com/hashicorp/terraform-json"
 )
 
 type TerraformConfigBuilder struct {
-	siteResources                  map[string]string
+	siteResources map[string]string
+	// NOTE add certificateTemplateResource to the map
 	certResources                  map[string]string
 	siteCfgResources               map[string]string
 	siteActivationResources        map[string]string
@@ -57,6 +59,31 @@ output "site_detail" {
 }`, name, siteId, name)
 
 	b.siteDataSources[name] = dataCfg
+	return b
+}
+func (b *TerraformConfigBuilder) CertificateTemplateDataSource(name, id string) *TerraformConfigBuilder {
+	dataCfg := fmt.Sprintf(`
+data "qwilt_cdn_certificate_templates" "%s" {
+	filter = {
+		id             = "%s"
+	}
+}
+output "certificate_template" {
+	value = data.qwilt_cdn_certificate_templates.%s.certificateTemplate[0]
+}`, name, id, name)
+
+	b.siteDataSources[name] = dataCfg
+	return b
+}
+func (b *TerraformConfigBuilder) CertificateTemplateResource(name, commonName, orgName string, sans []string, autoManaged bool) *TerraformConfigBuilder {
+	certificateTemplateConfig := fmt.Sprintf(`resource "qwilt_cdn_certificate_template" "%s" {
+	common_name = "%s"
+	sans = %v
+	organization_name = "%s"
+	auto_managed_certificate_template = %t
+
+}`, name, commonName, sans, orgName, autoManaged)
+	b.certResources[name] = certificateTemplateConfig
 	return b
 }
 func (b *TerraformConfigBuilder) CertsDataSource(name, certId string) *TerraformConfigBuilder {
@@ -237,6 +264,10 @@ func (b *TerraformConfigBuilder) DelSiteActivationResource(name string) *Terrafo
 }
 func (b *TerraformConfigBuilder) DelSiteResource(name string) *TerraformConfigBuilder {
 	delete(b.siteResources, name)
+	return b
+}
+func (b *TerraformConfigBuilder) DelCertificateTemplateResource(name string) *TerraformConfigBuilder {
+	delete(b.certResources, name)
 	return b
 }
 func (b *TerraformConfigBuilder) DelCertResource(name string) *TerraformConfigBuilder {

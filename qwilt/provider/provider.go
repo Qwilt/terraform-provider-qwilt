@@ -10,6 +10,9 @@ package provider
 import (
 	"context"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn"
 	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
@@ -18,8 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"os"
-	"strings"
 )
 
 // Ensure qwiltCDNProvider satisfies various provider interfaces.
@@ -50,6 +51,7 @@ func (p *qwiltCDNProvider) Schema(_ context.Context, _ provider.SchemaRequest, r
 
 func (p *qwiltCDNProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		cdn.NewCertificateTemplateTemplateResource,
 		cdn.NewCertificateResource,
 		cdn.NewSiteActivationResource,
 		cdn.NewSiteActivationStagingResource,
