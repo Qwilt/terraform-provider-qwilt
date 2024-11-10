@@ -19,7 +19,8 @@ import (
 )
 
 type TerraformConfigBuilder struct {
-	siteResources                  map[string]string
+	siteResources map[string]string
+	// NOTE add certificateTemplateResource to the map
 	certResources                  map[string]string
 	siteCfgResources               map[string]string
 	siteActivationResources        map[string]string

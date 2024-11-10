@@ -53,7 +53,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 	resp.Schema = schema.Schema{
 		Description: "Manages a Qwilt CDN CertificateTemplateTemplate.",
 		Attributes: map[string]schema.Attribute{
-			"autoManagedCertificateTemplate": schema.BoolAttribute{
+			"auto_managed_certificate_template": schema.BoolAttribute{
 				Description: "Indicates whether the certificate template is managed by Qwilt.",
 				Required:    true,
 				PlanModifiers: []planmodifier.Bool{
@@ -148,12 +148,12 @@ func (r *certificateTemplateResource) Create(ctx context.Context, req resource.C
 
 	// Generate API request body from plan
 	certRequest := api.CertificateTemplateCreateRequest{
-		Country:                        plan.Country.ValueString(),
-		State:                          plan.State.ValueString(),
-		Locality:                       plan.Locality.ValueString(),
-		OrganizationName:               plan.OrganizationName.ValueString(),
 		CommonName:                     plan.CommonName.ValueString(),
 		AutoManagedCertificateTemplate: plan.AutoManagedCertificateTemplate.ValueBool(),
+		Country:                        plan.Country.ValueStringPointer(),
+		State:                          plan.State.ValueStringPointer(),
+		Locality:                       plan.Locality.ValueStringPointer(),
+		OrganizationName:               plan.OrganizationName.ValueStringPointer(),
 	}
 
 	for _, san := range plan.SANs {

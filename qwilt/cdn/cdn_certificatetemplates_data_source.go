@@ -14,6 +14,7 @@ import (
 	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -41,8 +42,8 @@ type qwiltCertificateTemplatesDataSource struct {
 
 // qwiltCertificateTemplatesDataSourceModel maps the data source schema data.
 type qwiltCertificateTemplatesDataSourceModel struct {
-	Cert   []cdnmodel.CertificateTemplateDataModel `tfsdk:"certificate"`
-	Filter types.Object                            `tfsdk:"filter"`
+	CertificateTemplates []cdnmodel.CertificateTemplateDataModel `tfsdk:"certificate_template"`
+	Filter               types.Object                            `tfsdk:"filter"`
 }
 
 // qwiltCertificatesFilterModel
@@ -60,12 +61,12 @@ func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ dataso
 	resp.Schema = schema.Schema{
 		Description: "Retrieves the certificate template defined by your organization and the associated metadata.",
 		Attributes: map[string]schema.Attribute{
-			"certificateTemplate": schema.ListNestedAttribute{
+			"certificate_template": schema.ListNestedAttribute{
 				Description: "List of certificate templates.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"autoManagedCertificateTemplate": schema.BoolAttribute{
+						"auto_managed_certificate_template": schema.BoolAttribute{
 							Description: "Indicates whether the certificate template is managed by Qwilt.",
 							Required:    true,
 						},
@@ -179,26 +180,31 @@ func (d *qwiltCertificateTemplatesDataSource) Read(ctx context.Context, _ dataso
 		if !idFilter.IsNull() && cert.CertificateTemplateID != idFilter.ValueInt64() {
 			continue
 		}
+		var sans []attr.Value
+		for _, san := range cert.SANs {
+			sans = append(sans, types.StringValue(san))
+		}
+
+		var csrIds []attr.Value
+		for _, csr := range cert.CsrIds {
+			csrIds = append(csrIds, types.Int64Value(csr))
+		}
+
 		certState := cdnmodel.CertificateTemplateDataModel{
 			CertificateTemplateId:          types.Int64Value(cert.CertificateTemplateID),
-			Country:                        types.StringValue(cert.Country),
+			Country:                        types.StringPointerValue(cert.Country),
 			Tenant:                         types.StringValue(cert.Tenant),
-			State:                          types.StringValue(cert.State),
-			Locality:                       types.StringValue(cert.Locality),
-			OrganizationName:               types.StringValue(cert.OrganizationName),
+			State:                          types.StringPointerValue(cert.State),
+			Locality:                       types.StringPointerValue(cert.Locality),
+			OrganizationName:               types.StringPointerValue(cert.OrganizationName),
 			CommonName:                     types.StringValue(cert.CommonName),
 			AutoManagedCertificateTemplate: types.BoolValue(cert.AutoManagedCertificateTemplate),
-			LastCertificateID:              types.Int64Value(cert.LastCertificateID),
-		}
-		for _, san := range cert.SANs {
-			certState.SANs = append(certState.SANs, types.StringValue(san))
-		}
-
-		for _, csr := range cert.CsrIds {
-			certState.CsrIds = append(certState.CsrIds, types.Int64Value(csr))
+			LastCertificateID:              types.Int64PointerValue(cert.LastCertificateID),
+			SANs:                           types.ListValueMust(types.StringType, sans),
+			CsrIds:                         types.ListValueMust(types.Int64Type, csrIds),
 		}
 
-		state.Cert = append(state.Cert, certState)
+		state.CertificateTemplates = append(state.CertificateTemplates, certState)
 	}
 
 	// Set state

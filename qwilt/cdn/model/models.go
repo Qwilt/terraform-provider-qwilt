@@ -69,15 +69,15 @@ type CertificateDataModel struct {
 
 // CertificateTemplateModel maps CertificateTemplate schema data.
 type CertificateTemplateDataModel struct {
-	CertificateTemplateId          types.Int64    `tfsdk:"certificate_template_id"`
-	Country                        types.String   `tfsdk:"country"`
-	Tenant                         types.String   `tfsdk:"tenant"`
-	State                          types.String   `tfsdk:"state"`
-	Locality                       types.String   `tfsdk:"locality"`
-	OrganizationName               types.String   `tfsdk:"organization_name"`
-	CommonName                     types.String   `tfsdk:"common_name"`
-	SANs                           []types.String `tfsdk:"sans"`
-	AutoManagedCertificateTemplate types.Bool     `tfsdk:"auto_managed_certificate_template"`
-	LastCertificateID              types.Int64    `tfsdk:"last_certificate_id"`
-	CsrIds                         []types.Int64  `tfsdk:"csr_ids"`
+	CertificateTemplateId          types.Int64  `tfsdk:"certificate_template_id"`
+	Country                        types.String `tfsdk:"country"`
+	Tenant                         types.String `tfsdk:"tenant"`
+	State                          types.String `tfsdk:"state"`
+	Locality                       types.String `tfsdk:"locality"`
+	OrganizationName               types.String `tfsdk:"organization_name"`
+	CommonName                     types.String `tfsdk:"common_name"`
+	SANs                           types.List   `tfsdk:"sans"`
+	AutoManagedCertificateTemplate types.Bool   `tfsdk:"auto_managed_certificate_template"`
+	LastCertificateID              types.Int64  `tfsdk:"last_certificate_id"`
+	CsrIds                         types.List   `tfsdk:"csr_ids"`
 }

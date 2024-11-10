@@ -178,25 +178,25 @@ type CertificateUpdateRequest struct {
 
 type CertificateTemplate struct {
 	CertificateTemplateID          int64    `json:"certificateTemplateId"`
-	Country                        string   `json:"country"`
+	Country                        *string  `json:"country"`
 	Tenant                         string   `json:"tenant"`
-	State                          string   `json:"state"`
-	Locality                       string   `json:"locality"`
-	OrganizationName               string   `json:"organizationName"`
+	State                          *string  `json:"state"`
+	Locality                       *string  `json:"locality"`
+	OrganizationName               *string  `json:"organizationName"`
 	CommonName                     string   `json:"commonName"`
 	SANs                           []string `json:"sans"`
 	AutoManagedCertificateTemplate bool     `json:"autoManagedCertificateTemplate"`
-	LastCertificateID              int64    `json:"lastCertificateId"`
+	LastCertificateID              *int64   `json:"lastCertificateId"`
 	CsrIds                         []int64  `json:"csrIds"`
 }
 
 type CertificateTemplateCreateRequest struct {
-	Country                        string   `json:"country"`
-	State                          string   `json:"state"`
-	Locality                       string   `json:"locality"`
-	OrganizationName               string   `json:"organizationName"`
+	Country                        *string  `json:"country,omitempty"`
+	State                          *string  `json:"state,omitempty"`
+	Locality                       *string  `json:"locality,omitempty"`
+	OrganizationName               *string  `json:"organizationName,omitempty"`
 	CommonName                     string   `json:"commonName"`
-	SANs                           []string `json:"sans"`
+	SANs                           []string `json:"sans,omitempty"`
 	AutoManagedCertificateTemplate bool     `json:"autoManagedCertificateTemplate"`
 }
 
