@@ -18,15 +18,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const ApiRoot = "/api/v2/certificate-templates"
+const CertificateTemplatesRoot = "/api/v2/certificate-templates"
+const CertificateSigningRequestsRoot = "/api/v2/certificate-signing-requests"
 
-type CertificateTemplatesClient struct {
+type CertificateTemplateClient struct {
 	*Client
 	apiEndpoint string
 }
 
-func NewCertificateTemplateClient(client *Client) *CertificateTemplatesClient {
-	c := CertificateTemplatesClient{
+func NewCertificateTemplateClient(client *Client) *CertificateTemplateClient {
+	c := CertificateTemplateClient{
 		Client:      client,
 		apiEndpoint: client.endpointBuilder.Build("cert-manager"),
 	}
@@ -34,8 +35,8 @@ func NewCertificateTemplateClient(client *Client) *CertificateTemplatesClient {
 }
 
 // GetCertificateTemplates - Returns list of Certificate Templates
-func (c *CertificateTemplatesClient) GetCertificateTemplates() ([]api.CertificateTemplate, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", c.apiEndpoint, ApiRoot), nil)
+func (c *CertificateTemplateClient) GetCertificateTemplates() ([]api.CertificateTemplate, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", c.apiEndpoint, CertificateTemplatesRoot), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -55,12 +56,12 @@ func (c *CertificateTemplatesClient) GetCertificateTemplates() ([]api.Certificat
 }
 
 // GetCertificateTemplate - Returns Certificate Template details
-func (c *CertificateTemplatesClient) GetCertificateTemplate(id types.Int64) (*api.CertificateTemplate, error) {
+func (c *CertificateTemplateClient) GetCertificateTemplate(id types.Int64) (*api.CertificateTemplate, error) {
 	if id.IsNull() {
 		return nil, fmt.Errorf("certificate template id is empty")
 	}
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/%s", c.apiEndpoint, ApiRoot, id), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/%s", c.apiEndpoint, CertificateTemplatesRoot, id), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -80,13 +81,13 @@ func (c *CertificateTemplatesClient) GetCertificateTemplate(id types.Int64) (*ap
 }
 
 // CreateCertificateTemplate - Create new Certificate Template
-func (c *CertificateTemplatesClient) CreateCertificateTemplate(cert api.CertificateTemplateCreateRequest) (*api.CertificateTemplate, error) {
+func (c *CertificateTemplateClient) CreateCertificateTemplate(cert api.CertificateTemplateCreateRequest) (*api.CertificateTemplate, error) {
 	rb, err := json.Marshal(cert)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.apiEndpoint, ApiRoot), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.apiEndpoint, CertificateTemplatesRoot), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
@@ -106,12 +107,12 @@ func (c *CertificateTemplatesClient) CreateCertificateTemplate(cert api.Certific
 }
 
 // DeleteCertificateTemplate - Deletes a certificate Template
-func (c *CertificateTemplatesClient) DeleteCertificateTemplate(id types.Int64) error {
+func (c *CertificateTemplateClient) DeleteCertificateTemplate(id types.Int64) error {
 	if id.IsNull() {
 		return fmt.Errorf("certificate template id is empty")
 	}
 
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/%s/%s", c.apiEndpoint, ApiRoot, id), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/%s/%s", c.apiEndpoint, CertificateTemplatesRoot, id), nil)
 	if err != nil {
 		return err
 	}
@@ -123,4 +124,65 @@ func (c *CertificateTemplatesClient) DeleteCertificateTemplate(id types.Int64) e
 	}
 
 	return nil
+}
+
+type DomainPairs [][]string
+
+type ChallengeDelegationMap struct {
+	pairs DomainPairs
+}
+
+func (ch *ChallengeDelegationMap) PrettyPrint() string {
+	var sb strings.Builder
+	for i := range ch.pairs {
+		from := ch.pairs[i][0]
+		to := ch.pairs[i][1]
+		sb.WriteString(fmt.Sprintf("%d. %s IN CNAME %s\n", i+1, from, to))
+	}
+	return sb.String()
+}
+
+func (c *CertificateTemplateClient) GetChallengeDelegationDomainsListFromCertificateTemplateId(id types.Int64) (*ChallengeDelegationMap, error) {
+	if id.IsNull() {
+		return nil, fmt.Errorf("certificate template id is empty")
+	}
+
+	certificateTemplate, err := c.GetCertificateTemplate(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(certificateTemplate.CsrIds) == 0 {
+		return nil, fmt.Errorf("certificate template does not have any CSR")
+	}
+
+	lastCsrId := certificateTemplate.CsrIds[len(certificateTemplate.CsrIds)-1]
+	return c.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
+}
+
+func (c *CertificateTemplateClient) GetChallengeDelegationDomainsListFromCsrId(id int64) (*ChallengeDelegationMap, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/%d", c.apiEndpoint, CertificateSigningRequestsRoot, id), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var csr *api.CertificateSigningRequest
+	err = json.Unmarshal(body, &csr)
+	if err != nil {
+		return nil, err
+	}
+
+	challengeDelegationMap := &ChallengeDelegationMap{
+		pairs: make(DomainPairs, len(csr.ChallengeDelegationOfDomainsList)),
+	}
+	for i := range csr.ChallengeDelegationOfDomainsList {
+		challengeDelegationMap.pairs[i] = []string{csr.ChallengeDelegationOfDomainsList[i].FromDomain, csr.ChallengeDelegationOfDomainsList[i].ToDomain}
+	}
+
+	return challengeDelegationMap, nil
 }

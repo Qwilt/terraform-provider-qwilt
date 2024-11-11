@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -11,6 +12,7 @@ type SiteActivation struct {
 	SiteId                  types.String `tfsdk:"site_id"`
 	RevisionId              types.String `tfsdk:"revision_id"`
 	CertificateId           types.Int64  `tfsdk:"certificate_id"`
+	CertificateTemplateId   types.Int64  `tfsdk:"certificate_template_id"`
 	PublishId               types.String `tfsdk:"publish_id"`
 	CreationTimeMilli       types.Int64  `tfsdk:"creation_time_milli"`
 	OwnerOrgId              types.String `tfsdk:"owner_org_id"`

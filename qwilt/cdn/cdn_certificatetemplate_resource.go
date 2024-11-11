@@ -40,7 +40,7 @@ func NewCertificateTemplateTemplateResource() resource.Resource {
 
 // certificateResource is the resource implementation.
 type certificateTemplateResource struct {
-	client *cdnclient.CertificateTemplatesClient
+	client *cdnclient.CertificateTemplateClient
 }
 
 // Metadata returns the resource type name.
@@ -169,6 +169,21 @@ func (r *certificateTemplateResource) Create(ctx context.Context, req resource.C
 		)
 		return
 	}
+
+	lastCsrId := certResp.CsrIds[len(certResp.CsrIds)-1]
+	domainsList, err := r.client.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Getting Challenge Delegation Domains List",
+			"Could not get challenge delegation domains list for Qwilt CDN Certificate Template: "+err.Error(),
+		)
+		return
+	}
+
+	resp.Diagnostics.AddWarning(
+		"New Certificate Template is pending verification",
+		fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAMEs list configured correctly:\n%v", domainsList.PrettyPrint()),
+	)
 
 	// Map response body to schema and populate Computed attribute values
 	newPlan := cdnmodel.NewCertificateTemplateBuilder().

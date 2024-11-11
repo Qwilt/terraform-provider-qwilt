@@ -77,6 +77,10 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Description: "The ID of the certificate you want to link to this site.",
 				Optional:    true,
 			},
+			"certificate_template_id": schema.Int64Attribute{
+				Description: "The ID of the certificate template you want to link to this site.",
+				Optional:    true,
+			},
 			"publish_id": schema.StringAttribute{
 				Description: "The ID of the publishing operation for which you want to retrieve metadata.",
 				Computed:    true,
@@ -156,17 +160,59 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 
 	tflog.Info(ctx, "siteActivationResource: create")
 
-	if plan.CertificateId.ValueInt64() != 0 {
-		//there is a certificate that should be linked
-		// Create new site
-		_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(plan.CertificateId.ValueInt64())))
+	// Evaluate the certificate ID
+	var certificateId int64
+	switch {
+	// If the certificate ID is set, use it
+	case !plan.CertificateId.IsNull():
+		certificateId = plan.CertificateId.ValueInt64()
+	// If the certificate ID is not set and certificate template ID is set, get the certificate ID
+	case !plan.CertificateTemplateId.IsNull():
+		certificateTemplate, err := r.client.GetCertificateTemplate(plan.CertificateTemplateId)
 		if err != nil {
 			resp.Diagnostics.AddError(
-				"Error Linking Certificate to Qwilt CDN Site",
-				"Could not link certificate to Qwilt CDN Site, unexpected error: "+err.Error(),
+				"Error Getting Certificate Template",
+				"Could not get certificate template for Qwilt CDN Site, unexpected error: "+err.Error(),
 			)
 			return
 		}
+
+		// If the certificate template doesn't have a last certificate ID, the certificate template is still pending verification.
+		// Inform the user and return an error.
+		if certificateTemplate.LastCertificateID == nil {
+			domainsList, err := r.client.GetChallengeDelegationDomainsListFromCertificateTemplateId(plan.CertificateTemplateId)
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error Getting Challenge Delegation Domains List",
+					"Could not get challenge delegation domains list for Qwilt CDN Certificate Template",
+				)
+				return
+			}
+			resp.Diagnostics.AddError(
+				"Chosen Certificate Template is pending verification",
+				fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAMEs list configured correctly:\n%v", domainsList.PrettyPrint()),
+			)
+			return
+		}
+		certificateId = *certificateTemplate.LastCertificateID
+
+	// If the certificate ID and certificate template ID are not set, return an error
+	default:
+		resp.Diagnostics.AddError(
+			"Error Creating Qwilt CDN Site",
+			"Either CertificateId or CertificateTemplateId must be set",
+		)
+		return
+	}
+
+	// Link the certificate to the site
+	_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(certificateId)))
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Linking Certificate to Qwilt CDN Site",
+			"Could not link certificate to Qwilt CDN Site, unexpected error: "+err.Error(),
+		)
+		return
 	}
 
 	// Publish the site

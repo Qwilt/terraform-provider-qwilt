@@ -37,7 +37,7 @@ func NewCertificateTemplatesDataSource() datasource.DataSource {
 
 // qwiltCertificateTemplatesDataSource is the data source implementation.
 type qwiltCertificateTemplatesDataSource struct {
-	client *cdnclient.CertificateTemplatesClient
+	client *cdnclient.CertificateTemplateClient
 }
 
 // qwiltCertificateTemplatesDataSourceModel maps the data source schema data.

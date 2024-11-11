@@ -200,6 +200,27 @@ type CertificateTemplateCreateRequest struct {
 	AutoManagedCertificateTemplate bool     `json:"autoManagedCertificateTemplate"`
 }
 
+type CertificateSigningRequest struct {
+	CsrID                            int                   `json:"csrId"`
+	Country                          string                `json:"country"`
+	Tenant                           string                `json:"tenant"`
+	State                            string                `json:"state"`
+	Locality                         string                `json:"locality"`
+	OrganizationName                 string                `json:"organizationName"`
+	CommonName                       string                `json:"commonName"`
+	SANs                             []string              `json:"sans"`
+	ChallengeDelegationOfDomainsList []ChallengeDelegation `json:"challengeDelegationOfDomainsList"`
+	SigningState                     string                `json:"signingState"`
+	AutoManagedCSR                   bool                  `json:"autoManagedCsr"`
+	LastCertificateID                int                   `json:"lastCertificateId"`
+	CertificateTemplateIDRef         string                `json:"certificateTemplateIdRef"`
+}
+
+type ChallengeDelegation struct {
+	FromDomain string `json:"fromDomain"`
+	ToDomain   string `json:"toDomain"`
+}
+
 // SiteCertificateLinkRequest - Model for requesting a new Link Request
 type SiteCertificateLinkRequest struct {
 	CertificateId string `json:"certificateId"`
