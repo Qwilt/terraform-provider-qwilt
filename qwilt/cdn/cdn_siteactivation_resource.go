@@ -16,11 +16,13 @@ import (
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	cdnclient "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/client"
 	cdnmodel "github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/model"
+	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -76,10 +78,16 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 			"certificate_id": schema.Int64Attribute{
 				Description: "The ID of the certificate you want to link to this site.",
 				Optional:    true,
+				Validators: []validator.Int64{
+					validators.NewMutualExclusiveValidator(path.Root("certificate_template_id")),
+				},
 			},
 			"certificate_template_id": schema.Int64Attribute{
 				Description: "The ID of the certificate template you want to link to this site.",
 				Optional:    true,
+				Validators: []validator.Int64{
+					validators.NewMutualExclusiveValidator(path.Root("certificate_id")),
+				},
 			},
 			"publish_id": schema.StringAttribute{
 				Description: "The ID of the publishing operation for which you want to retrieve metadata.",
@@ -195,24 +203,18 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 			return
 		}
 		certificateId = *certificateTemplate.LastCertificateID
-
-	// If the certificate ID and certificate template ID are not set, return an error
-	default:
-		resp.Diagnostics.AddError(
-			"Error Creating Qwilt CDN Site",
-			"Either CertificateId or CertificateTemplateId must be set",
-		)
-		return
 	}
 
-	// Link the certificate to the site
-	_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(certificateId)))
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Linking Certificate to Qwilt CDN Site",
-			"Could not link certificate to Qwilt CDN Site, unexpected error: "+err.Error(),
-		)
-		return
+	// If we have an https site to publish, link the certificate to the site
+	if certificateId != 0 {
+		_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(certificateId)))
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Linking Certificate to Qwilt CDN Site",
+				"Could not link certificate to Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
 	}
 
 	// Publish the site
@@ -371,10 +373,43 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	if state.CertificateId != plan.CertificateId {
-		if !state.CertificateId.IsNull() {
+	var lastCertificateId int64
+	switch {
+	case !state.CertificateId.IsNull():
+		lastCertificateId = state.CertificateId.ValueInt64()
+	case !state.CertificateTemplateId.IsNull():
+		certificateTemplate, err := r.client.GetCertificateTemplate(state.CertificateTemplateId)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting Certificate Template",
+				"Could not get certificate template for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+
+		lastCertificateId = *certificateTemplate.LastCertificateID
+	}
+
+	var newCertificateId int64
+	switch {
+	case !plan.CertificateId.IsNull():
+		newCertificateId = plan.CertificateId.ValueInt64()
+	case !plan.CertificateTemplateId.IsNull():
+		certificateTemplate, err := r.client.GetCertificateTemplate(plan.CertificateTemplateId)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting Certificate Template",
+				"Could not get certificate template for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+		newCertificateId = *certificateTemplate.LastCertificateID
+	}
+
+	if lastCertificateId != newCertificateId {
+		if lastCertificateId != 0 {
 			//unlink previous certificate
-			err := r.client.UnLinkSiteCertificate(state.SiteId.ValueString(), strconv.Itoa(int(state.CertificateId.ValueInt64())))
+			err := r.client.UnLinkSiteCertificate(state.SiteId.ValueString(), strconv.Itoa(int(lastCertificateId)))
 			if err != nil {
 				resp.Diagnostics.AddError(
 					"Error UnLinking Certificate to Qwilt CDN Site",
@@ -383,9 +418,9 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 				return
 			}
 		}
-		if !plan.CertificateId.IsNull() {
+		if newCertificateId != 0 {
 			//there is a certificate that should be linked
-			_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(plan.CertificateId.ValueInt64())))
+			_, err := r.client.LinkSiteCertificate(plan.SiteId.ValueString(), strconv.Itoa(int(newCertificateId)))
 			if err != nil {
 				resp.Diagnostics.AddError(
 					"Error Linking Certificate to Qwilt CDN Site",
