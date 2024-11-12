@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     qwilt = {
-      source = "qwilt.com/qwiltinc/qwilt"
+      source = "Qwilt/qwilt"
     }
   }
 }
@@ -46,21 +46,22 @@ EOT
   change_description = "Basic example demonstrating the Terraform plugin."
 }
 
-# resource "qwilt_cdn_certificate" "example" {
-#   certificate       = filebase64("./tf.example.com.crt")
-#   certificate_chain = filebase64("./tf.example.com.crt")
-#   private_key       = filebase64("./tf.example.com.key")
-#   description       = "Certificate for the Terraform basic example configuration"
-# }
+resource "qwilt_cdn_certificate" "example" {
+  certificate       = filebase64("./tf.example.com.crt")
+  certificate_chain = filebase64("./tf.example.com.crt")
+  private_key       = filebase64("./tf.example.com.key")
+  description       = "Certificate for the Terraform basic example configuration"
+}
 
 resource "qwilt_cdn_certificate_template" "example" {
-  common_name = "example.com"
+  common_name                       = "example.com"
   auto_managed_certificate_template = true
 }
 
 resource "qwilt_cdn_site_activation" "example" {
-  site_id        = qwilt_cdn_site_configuration.example.site_id
-  revision_id    = qwilt_cdn_site_configuration.example.revision_id
+  site_id     = qwilt_cdn_site_configuration.example.site_id
+  revision_id = qwilt_cdn_site_configuration.example.revision_id
+  #   certificate_id = qwilt_cdn_certificate.example.cert_id
   certificate_template_id = qwilt_cdn_certificate_template.example.certificate_template_id
 }
 
@@ -72,9 +73,14 @@ output "examplesiteconfig" {
   value = qwilt_cdn_site_configuration.example
 }
 
-# output "examplecertificate" {
-#   value = qwilt_cdn_certificate.example
-# }
+output "examplecertificate" {
+  value = qwilt_cdn_certificate.example
+}
+
+output "examplecertificatetemplate" {
+  value = qwilt_cdn_certificate_template.example
+}
+
 
 output "examplesiteactivation" {
   value = qwilt_cdn_site_activation.example

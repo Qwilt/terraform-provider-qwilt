@@ -35,6 +35,7 @@ resource "qwilt_cdn_site_activation_staging" "example" {
 ### Optional
 
 - `certificate_id` (Number) The ID of the certificate you want to link to this site.
+- `certificate_template_id` (Number) The ID of the certificate template you want to link to this site.
 
 ### Read-Only
 
