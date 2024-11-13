@@ -8,7 +8,7 @@ This approach is ideal for managing advanced use cases where different teams (e.
 
 If this level of complexity is not needed for your use case, Qwilt provides a simpler method for staging sites for verification before production that does not require workspaces.  For more straightforward requirements, we recommend using the staging capability.
 
-Configurations are managed through separate Terraform configuration files (e.g. examplesite.tf and examplesite2.tf), and the SVTA configurations are managed through the corresponding JSON files (e.g. examplesite.json, examplesite2.json). Both the Terraform and JSON configuration are templated to allow variable substitution based on the type of site being managed. Each site and instance has its own associated certificate and private key.
+Configurations are managed through separate Terraform configuration files (e.g. *examplesite.tf* and *examplesite2.tf*), and the SVTA configurations are managed through the corresponding JSON files (e.g. *examplesite.json*, *examplesite2.json*). Both the Terraform and JSON configuration are templated to allow variable substitution based on the type of site being managed. Each site and instance has its own associated certificate and private key.
 
 To use this example:
 

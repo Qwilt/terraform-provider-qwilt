@@ -40,7 +40,9 @@ func (r *siteActivationStagingResource) Metadata(_ context.Context, req resource
 func (r *siteActivationStagingResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	r.siteActivationResource.Schema(ctx, req, resp)
 	resp.Schema.Description = ""
-	resp.Schema.MarkdownDescription = "Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br><br>" +
+	resp.Schema.MarkdownDescription = "⚠️ This is a limited availability feature. <br><br>" +
+		"Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br>" +
+		"<br>This resource is similar to the *qwilt_cdn_site_activation* resource but activates the selected configuration to the staging environment only.<br><br>" +
 		"[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)"
 	resp.Schema.Attributes["target"] = schema.StringAttribute{
 		Description: "The value will always be 'staging'.",

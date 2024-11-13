@@ -48,7 +48,8 @@ func (r *siteConfigResource) Metadata(_ context.Context, req resource.MetadataRe
 // Schema defines the schema for the resource.
 func (r *siteConfigResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages a Qwilt CDN site Configuration. [Learn how to prepare the configuration JSON.](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/prepare-the-configuration)",
+		MarkdownDescription: "Manages a Qwilt CDN site Configuration. The site configuration determines how the CDN processes client requests and delivers content.<br><br>" +
+			"[Learn how to prepare the configuration JSON.](https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json)",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "For internal use only, for testing. Equals site_id:revision_id.",

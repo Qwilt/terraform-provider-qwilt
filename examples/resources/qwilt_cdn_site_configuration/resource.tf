@@ -5,7 +5,7 @@ resource "qwilt_cdn_site_configuration" "example" {
 {
 	"hosts": [
 		{
-			"host": "www.basicdemo2.kuku.com",
+			"host": "www.basicdemo2.example.com",
 			"host-metadata": {
 				"metadata": [
 					{

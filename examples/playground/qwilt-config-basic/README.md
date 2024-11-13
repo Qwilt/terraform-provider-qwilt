@@ -6,9 +6,9 @@ In this example, the host_index JSON configuration is embedded in *main.tf*.
 
 If you prefer to maintain the SVTA configuration in a separate file, remove the embedded host_index, and instead use the reference to *examplesitebasic.json*: 
 
-    ```
-    host_index = file("./examplesitebasic.json")
-    ```
+```
+host_index = file("./examplesitebasic.json")
+```
 
 
 

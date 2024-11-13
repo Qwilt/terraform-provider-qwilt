@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_site_configuration Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN site Configuration. Learn how to prepare the configuration JSON. https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/prepare-the-configuration
+  Manages a Qwilt CDN site Configuration. The site configuration determines how the CDN processes client requests and delivers content.Learn how to prepare the configuration JSON. https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json
 ---
 
 # qwilt_cdn_site_configuration (Resource)
 
-Manages a Qwilt CDN site Configuration. [Learn how to prepare the configuration JSON.](https://api-docs.qwilt.cqloud.com/docs/CDN%20APIs/Sites%20API/prepare-the-configuration)
+Manages a Qwilt CDN site Configuration. The site configuration determines how the CDN processes client requests and delivers content.<br><br>[Learn how to prepare the configuration JSON.](https://docs.qwilt.com/docs/terraform-user-guide#site-configuration-json)
 
 ## Example Usage
 
@@ -19,7 +19,7 @@ resource "qwilt_cdn_site_configuration" "example" {
 {
 	"hosts": [
 		{
-			"host": "www.basicdemo2.kuku.com",
+			"host": "www.basicdemo2.example.com",
 			"host-metadata": {
 				"metadata": [
 					{

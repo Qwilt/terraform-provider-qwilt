@@ -7,12 +7,12 @@ For more information on authentication, see the [User Guide](https://docs.qwilt.
 
 ## Basic Import
 
-Basic import uses the site_id to automatically detect the revison_id and publish_id.
+Basic import uses the *site_id* to automatically detect the *revison_id* and *publish_id*.
 
-The logic for determining which qwilt_cdn_site_configuration to import is:
+The logic for determining which *qwilt_cdn_site_configuration* to import is:
 1. If there is an active published version, it is imported.
 2. If there is no active published version, the most recently published version is imported.
-3. If the site has never been published, the most recently saved configuration version is imported. (The version with the highest revision_Id value - max revision_number.)
+3. If the site has never been published, the most recently saved configuration version is imported. (The version with the highest revision_Id value.)
 
 To complete the import process, implement the following steps for each resource:
 1. Make sure your QCDN_API_KEY env variable is set.
