@@ -76,14 +76,14 @@ func (r *siteActivationResource) Schema(_ context.Context, _ resource.SchemaRequ
 				Required:    true,
 			},
 			"certificate_id": schema.Int64Attribute{
-				Description: "The ID of the certificate you want to link to this site.",
+				Description: "The ID of the certificate you want to link to this site. Cannot co-exist with certificate_template_id.",
 				Optional:    true,
 				Validators: []validator.Int64{
 					validators.NewMutualExclusiveValidator(path.Root("certificate_template_id")),
 				},
 			},
 			"certificate_template_id": schema.Int64Attribute{
-				Description: "The ID of the certificate template you want to link to this site.",
+				Description: "The ID of the certificate template you want to link to this site. Cannot co-exist with certificate_id.",
 				Optional:    true,
 				Validators: []validator.Int64{
 					validators.NewMutualExclusiveValidator(path.Root("certificate_id")),
