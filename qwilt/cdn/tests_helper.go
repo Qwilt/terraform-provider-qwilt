@@ -245,10 +245,10 @@ func (b *TerraformConfigBuilder) DelCertResource(name string) *TerraformConfigBu
 }
 func (b *TerraformConfigBuilder) IpAllowListDataSource(name string) *TerraformConfigBuilder {
 	dataCfg := fmt.Sprintf(`
-data "qwilt_cdn_ip_allow_list" "%s" {
+data "qwilt_cdn_origin_allow_list" "%s" {
 }
-output "ip_allow_list_detail" {
-	value = data.qwilt_cdn_ip_allow_list.%s.md5
+output "origin_allow_list_detail" {
+	value = data.qwilt_cdn_origin_allow_list.%s
 }`, name, name)
 
 	b.siteDataSources[name] = dataCfg

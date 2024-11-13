@@ -9,6 +9,7 @@ package cdn
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/hashicorp/terraform-exec/tfexec"
 	"github.com/stretchr/testify/assert"
 	"log"
@@ -51,13 +52,16 @@ func TestIpAllowListDataResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	// Read the output value
-	_, err = tf.Output(context.Background())
+	output, err := tf.Output(context.Background())
 	assert.Equal(t, nil, err)
 
 	//t.Logf("%s", output)
 
 	// Assert that the output matches the expected value
-	//var data map[string]interface{}
-	//err = json.Unmarshal(output["cert_detail"].Value, &data)
-	//assert.Equal(t, nil, err)
+	var data map[string]interface{}
+	err = json.Unmarshal(output["origin_allow_list_detail"].Value, &data)
+	assert.Equal(t, nil, err)
+	assert.NotNil(t, data["md5"])
+	assert.NotNil(t, data["create_time_millis"])
+	assert.NotNil(t, data["ip_data"])
 }
