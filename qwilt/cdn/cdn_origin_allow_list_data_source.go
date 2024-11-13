@@ -52,11 +52,11 @@ func (d *qwiltIpAllowListDataSource) Schema(_ context.Context, _ datasource.Sche
 		Description: "Retrieves the device ip's to be added to origin allow iist.",
 		Attributes: map[string]schema.Attribute{
 			"md5": schema.StringAttribute{
-				Description: "MD5 hash value",
+				Description: "A unique identifier for this instance of the IP address list.",
 				Computed:    true,
 			},
 			"create_time_millis": schema.Int64Attribute{
-				Description: "Creation time in milliseconds",
+				Description: "The time this instance of the IP address list was generated.",
 				Computed:    true,
 			},
 			"ip_data": schema.MapNestedAttribute{
@@ -66,12 +66,12 @@ func (d *qwiltIpAllowListDataSource) Schema(_ context.Context, _ datasource.Sche
 					Attributes: map[string]schema.Attribute{
 						"ipv4": schema.ListAttribute{
 							ElementType: types.StringType,
-							Description: "List of IPv4 addresses",
+							Description: "The IPv4 addresses in the network that Qwilt CDN may use to request content from your origin.",
 							Computed:    true,
 						},
 						"ipv6": schema.ListAttribute{
 							ElementType: types.StringType,
-							Description: "List of IPv6 addresses",
+							Description: "The IPv6 addresses in the network that Qwilt CDN may use to request content from your origin.",
 							Computed:    true,
 						},
 					},
