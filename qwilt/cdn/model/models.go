@@ -66,3 +66,9 @@ type CertificateDataModel struct {
 	Status      types.String `tfsdk:"status"`
 	Type        types.String `tfsdk:"type"`
 }
+
+// IP ALLOW List model
+type NetworkIpDataModel struct {
+	Ipv4 []types.String `tfsdk:"ipv4"`
+	Ipv6 []types.String `tfsdk:"ipv6"`
+}
