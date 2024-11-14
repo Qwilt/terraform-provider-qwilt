@@ -62,7 +62,7 @@ func (p *qwiltCDNProvider) DataSources(_ context.Context) []func() datasource.Da
 	return []func() datasource.DataSource{
 		cdn.NewSitesDataSource,
 		cdn.NewCertificatesDataSource,
-		cdn.NewIpAllowListDataSource,
+		cdn.NewOriginAllowListDataSource,
 	}
 }
 

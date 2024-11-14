@@ -17,9 +17,9 @@ import (
 	"testing"
 )
 
-func TestIpAllowListDataResource(t *testing.T) {
+func TestOriginAllowListDataResource(t *testing.T) {
 
-	t.Logf("Starting TestIpAllowListDataResource test DEBUG")
+	t.Logf("Starting TestOriginAllowListDataResource test DEBUG")
 
 	//set this after running script generate_dev_overrides.sh
 	SetDevOverrides()
@@ -36,7 +36,7 @@ func TestIpAllowListDataResource(t *testing.T) {
 	// Write the Terraform configuration to a file in the temporary directory
 	tfFilePath := tempDir + "/main.tf"
 
-	terraformBuilder := NewTerraformConfigBuilder().IpAllowListDataSource("detail")
+	terraformBuilder := NewTerraformConfigBuilder().OriginAllowListDataSource("detail")
 	terraformConfig := terraformBuilder.Build()
 
 	t.Logf("ncjhdbcj: %s", terraformConfig)

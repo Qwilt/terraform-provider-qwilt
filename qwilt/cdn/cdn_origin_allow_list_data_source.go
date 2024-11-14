@@ -20,34 +20,34 @@ import (
 )
 
 var (
-	_ datasource.DataSource              = &qwiltIpAllowListDataSource{}
-	_ datasource.DataSourceWithConfigure = &qwiltIpAllowListDataSource{}
+	_ datasource.DataSource              = &qwiltOriginAllowListDataSource{}
+	_ datasource.DataSourceWithConfigure = &qwiltOriginAllowListDataSource{}
 )
 
-// NewIpAllowListDataSource is a helper function to simplify the provider implementation.
-func NewIpAllowListDataSource() datasource.DataSource {
-	return &qwiltIpAllowListDataSource{}
+// NewOriginAllowListDataSource is a helper function to simplify the provider implementation.
+func NewOriginAllowListDataSource() datasource.DataSource {
+	return &qwiltOriginAllowListDataSource{}
 }
 
-// qwiltIpAllowListDataSource is the data source implementation.
-type qwiltIpAllowListDataSource struct {
+// qwiltOriginAllowListDataSource is the data source implementation.
+type qwiltOriginAllowListDataSource struct {
 	client *cdnclient.DeviceIpsClient
 }
 
-// qwiltIpAllowListDataSourceModel maps the data source schema data.
-type qwiltIpAllowListDataSourceModel struct {
+// qwiltOriginAllowListDataSourceModel maps the data source schema data.
+type qwiltOriginAllowListDataSourceModel struct {
 	IpData           map[string]cdnmodel.NetworkIpDataModel `tfsdk:"ip_data"`
 	Md5              types.String                           `tfsdk:"md5"`
 	CreateTimeMillis types.Int64                            `tfsdk:"create_time_millis"`
 }
 
 // Metadata returns the data source type name.
-func (d *qwiltIpAllowListDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *qwiltOriginAllowListDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_cdn_origin_allow_list"
 }
 
 // Schema defines the schema for the data source.
-func (d *qwiltIpAllowListDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *qwiltOriginAllowListDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Retrieves the device ip's to be added to origin allow iist.",
 		Attributes: map[string]schema.Attribute{
@@ -82,8 +82,8 @@ func (d *qwiltIpAllowListDataSource) Schema(_ context.Context, _ datasource.Sche
 }
 
 // Read refreshes the Terraform state with the latest data.
-func (d *qwiltIpAllowListDataSource) Read(ctx context.Context, _ datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var state qwiltIpAllowListDataSourceModel
+func (d *qwiltOriginAllowListDataSource) Read(ctx context.Context, _ datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var state qwiltOriginAllowListDataSourceModel
 
 	deviceIpsResp, err := d.client.GetOriginAllowList()
 	if err != nil {
@@ -127,7 +127,7 @@ func (d *qwiltIpAllowListDataSource) Read(ctx context.Context, _ datasource.Read
 	}
 }
 
-func (d *qwiltIpAllowListDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *qwiltOriginAllowListDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
