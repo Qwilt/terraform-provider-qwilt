@@ -243,7 +243,7 @@ func (b *TerraformConfigBuilder) DelCertResource(name string) *TerraformConfigBu
 	delete(b.certResources, name)
 	return b
 }
-func (b *TerraformConfigBuilder) IpAllowListDataSource(name string) *TerraformConfigBuilder {
+func (b *TerraformConfigBuilder) OriginAllowListDataSource(name string) *TerraformConfigBuilder {
 	dataCfg := fmt.Sprintf(`
 data "qwilt_cdn_origin_allow_list" "%s" {
 }
