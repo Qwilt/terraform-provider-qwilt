@@ -13,6 +13,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	tfjson "github.com/hashicorp/terraform-json"
@@ -31,13 +32,14 @@ type TerraformConfigBuilder struct {
 
 func SetDevOverrides() {
 	//set this after running script scripts/generate_dev_overrides.sh
-	os.Setenv("TF_CLI_CONFIG_FILE", "/Users/efrats/work/git2/terraform-provider-qwilt/bin/developer_overrides.tfrc")
+	os.Setenv("TF_CLI_CONFIG_FILE", "/Users/yuvalw/Qwilt/projects/qc-microservices/fork/terraform-provider-qwilt/examples/playground/qwilt-config-certificate-template/bin/developer_overrides.tfrc")
 
 }
 func NewTerraformConfigBuilder() *TerraformConfigBuilder {
 	b := TerraformConfigBuilder{}
 	b.siteResources = make(map[string]string, 0)
 	b.certResources = make(map[string]string, 0)
+	b.certificateTemplateResources = make(map[string]string, 0)
 	b.siteCfgResources = make(map[string]string, 0)
 	b.siteActivationResources = make(map[string]string, 0)
 	b.siteActivationStagingResources = make(map[string]string, 0)
@@ -69,7 +71,7 @@ data "qwilt_cdn_certificate_templates" "%s" {
 	}
 }
 output "certificate_template" {
-	value = data.qwilt_cdn_certificate_templates.%s.certificateTemplate[0]
+	value = data.qwilt_cdn_certificate_templates.%s.certificate_template[0]
 }`, name, id, name)
 
 	b.certificateTemplateResources[name] = dataCfg
@@ -78,11 +80,11 @@ output "certificate_template" {
 func (b *TerraformConfigBuilder) CertificateTemplateResource(name, commonName, orgName string, sans []string, autoManaged bool) *TerraformConfigBuilder {
 	certificateTemplateConfig := fmt.Sprintf(`resource "qwilt_cdn_certificate_template" "%s" {
 	common_name = "%s"
-	sans = %v
+	sans = %s
 	organization_name = "%s"
 	auto_managed_certificate_template = %t
 
-}`, name, commonName, sans, orgName, autoManaged)
+}`, name, commonName, "[\""+strings.Join(sans, "\",\"")+"\"]", orgName, autoManaged)
 	b.certificateTemplateResources[name] = certificateTemplateConfig
 	return b
 }
@@ -287,6 +289,9 @@ output "origin_allow_list_detail" {
 }
 func (b *TerraformConfigBuilder) Build() string {
 	terraformConfig := QwiltCdnFullProviderConfig
+	for _, cfg := range b.certificateTemplateResources {
+		terraformConfig += cfg + "\n"
+	}
 	for _, cfg := range b.certResources {
 		terraformConfig += cfg + "\n"
 	}
@@ -334,7 +339,7 @@ func findStateResource(state *tfjson.State, resourceType string, name string) *t
 func randString(length int) string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	charSet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	charSet := "abcdefghijklmnopqrstuvwxyz0123456789"
 	var result string
 	for i := 0; i < length; i++ {
 		result += string(charSet[rand.Intn(len(charSet))])

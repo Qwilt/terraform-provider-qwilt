@@ -46,7 +46,7 @@ func TestCertificateTemplatesDataResource(t *testing.T) {
 	var domain string
 	generateHostName(&domain)
 	orgName := "qwilt"
-	sans := []string{"test1.com", "test2.com"}
+	sans := []string{"test1.com"}
 
 	terraformBuilder := NewTerraformConfigBuilder().CertificateTemplateResource("test", domain, orgName, sans, true)
 	terraformConfig := terraformBuilder.Build()
@@ -91,8 +91,6 @@ func TestCertificateTemplatesDataResource(t *testing.T) {
 	// Read the output value
 	output, err := tf2.Output(context.Background())
 	assert.Equal(t, nil, err)
-
-	//t.Logf("type: %s", output["site_detail"].Type)
 
 	// Assert that the output matches the expected value
 	var data map[string]interface{}

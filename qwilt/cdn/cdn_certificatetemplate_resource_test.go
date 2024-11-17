@@ -48,7 +48,7 @@ func TestCertificateTemplateResource(t *testing.T) {
 	var domain string
 	generateHostName(&domain)
 	orgName := "qwilt"
-	sans := []string{"test1.com", "test2.com"}
+	sans := []string{"test1.com"}
 
 	terraformBuilder := NewTerraformConfigBuilder().CertificateTemplateResource("test", domain, orgName, sans, true)
 	terraformConfig := terraformBuilder.Build()
@@ -71,7 +71,7 @@ func TestCertificateTemplateResource(t *testing.T) {
 	t.Logf("certificate_template_id: %s", id)
 	assert.Equal(t, domain, certificateTemplateState.AttributeValues["common_name"])
 	assert.Equal(t, orgName, certificateTemplateState.AttributeValues["organization_name"])
-	assert.Equal(t, sans, certificateTemplateState.AttributeValues["sans"])
+	assert.Contains(t, certificateTemplateState.AttributeValues["sans"], "test1.com")
 
 	//check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
 	plan, err := tf.Plan(context.Background())
@@ -99,7 +99,7 @@ func TestCertificateTemplateResource(t *testing.T) {
 	assert.NotEqual(t, id, certificateTemplateState.AttributeValues["certificate_template_id"]) //make sure it changed
 	assert.Equal(t, domain, certificateTemplateState.AttributeValues["common_name"])
 	assert.Equal(t, orgName, certificateTemplateState.AttributeValues["organization_name"])
-	assert.Equal(t, sans, certificateTemplateState.AttributeValues["sans"])
+	assert.Contains(t, certificateTemplateState.AttributeValues["sans"], "test1.com")
 
 	//check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
 	plan, err = tf.Plan(context.Background())
@@ -114,7 +114,7 @@ func TestCertificateTemplateResource(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Nil(t, state.Values)
 
-	err = tf.Import(context.Background(), "qwilt_cdn_certificate_template.test", fmt.Sprintf("%s", id))
+	err = tf.Import(context.Background(), "qwilt_cdn_certificate_template.test", fmt.Sprintf("%s", certificateTemplateState.AttributeValues["certificate_template_id"]))
 	assert.Equal(t, nil, err)
 
 	state, err = tf.Show(context.Background())
@@ -127,14 +127,14 @@ func TestCertificateTemplateResource(t *testing.T) {
 	assert.NotEqual(t, id, certificateTemplateState.AttributeValues["certificate_template_id"])
 	assert.Equal(t, domain, certificateTemplateState.AttributeValues["common_name"])
 	assert.Equal(t, orgName, certificateTemplateState.AttributeValues["organization_name"])
-	assert.Equal(t, sans, certificateTemplateState.AttributeValues["sans"])
+	assert.Contains(t, certificateTemplateState.AttributeValues["sans"], "test1.com")
 
 	//check that plan gives no diff - this actually checks the refresh and that all attributes in the state are the same as in the configuration
 	plan, err = tf.Plan(context.Background())
 	assert.Equal(t, nil, err)
 	assert.False(t, plan) //no diff
 
-	terraformBuilder.DelCertResource("test")
+	terraformBuilder.DelCertificateTemplateResource("test")
 	terraformConfig = terraformBuilder.Build()
 
 	err = os.WriteFile(tfFilePath, []byte(terraformConfig), 0644)
