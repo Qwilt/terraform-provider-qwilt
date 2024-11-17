@@ -30,7 +30,8 @@ resource "qwilt_cdn_site_activation" "example" {
 
 ### Optional
 
-- `certificate_id` (Number) The ID of the certificate you want to link to this site.
+- `certificate_id` (Number) The ID of the certificate you want to link to this site. Cannot co-exist with certificate_template_id.
+- `certificate_template_id` (Number) The ID of the certificate template you want to link to this site. Cannot co-exist with certificate_id.
 
 ### Read-Only
 

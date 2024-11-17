@@ -17,16 +17,18 @@ type SiteClientFacade struct {
 	*SiteClient
 	*SiteConfigurationClient
 	*SiteCertificatesClient
+	*CertificateTemplateClient
 	ApiEndpoint string
 }
 
 // Decorator on top of Client type
 func NewSiteFacadeClient(target string, client *Client) *SiteClientFacade {
 	c := SiteClientFacade{
-		PublishOpsClient:        NewPublishOpsClient(target, client),
-		SiteClient:              NewSiteClient(target, client),
-		SiteConfigurationClient: NewSiteConfigurationClient(target, client),
-		SiteCertificatesClient:  NewSiteCertificatesClient(target, client),
+		PublishOpsClient:          NewPublishOpsClient(target, client),
+		SiteClient:                NewSiteClient(target, client),
+		SiteConfigurationClient:   NewSiteConfigurationClient(target, client),
+		SiteCertificatesClient:    NewSiteCertificatesClient(target, client),
+		CertificateTemplateClient: NewCertificateTemplateClient(client),
 	}
 	return &c
 }

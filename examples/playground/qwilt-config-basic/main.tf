@@ -53,10 +53,16 @@ resource "qwilt_cdn_certificate" "example" {
   description       = "Certificate for the Terraform basic example configuration"
 }
 
+resource "qwilt_cdn_certificate_template" "example" {
+  common_name                       = "example.com"
+  auto_managed_certificate_template = true
+}
+
 resource "qwilt_cdn_site_activation" "example" {
-  site_id        = qwilt_cdn_site_configuration.example.site_id
-  revision_id    = qwilt_cdn_site_configuration.example.revision_id
-  certificate_id = qwilt_cdn_certificate.example.cert_id
+  site_id     = qwilt_cdn_site_configuration.example.site_id
+  revision_id = qwilt_cdn_site_configuration.example.revision_id
+  #   certificate_id = qwilt_cdn_certificate.example.cert_id
+  certificate_template_id = qwilt_cdn_certificate_template.example.certificate_template_id
 }
 
 output "examplesite" {
@@ -70,6 +76,11 @@ output "examplesiteconfig" {
 output "examplecertificate" {
   value = qwilt_cdn_certificate.example
 }
+
+output "examplecertificatetemplate" {
+  value = qwilt_cdn_certificate_template.example
+}
+
 
 output "examplesiteactivation" {
   value = qwilt_cdn_site_activation.example
