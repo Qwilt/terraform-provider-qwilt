@@ -188,17 +188,24 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 		// If the certificate template doesn't have a last certificate ID, the certificate template is still pending verification.
 		// Inform the user and return an error.
 		if certificateTemplate.LastCertificateID == nil {
-			domainsList, err := r.client.GetChallengeDelegationDomainsListFromCertificateTemplateId(plan.CertificateTemplateId)
-			if err != nil {
+			if certificateTemplate.AutoManagedCertificateTemplate {
+				domainsList, err := r.client.GetChallengeDelegationDomainsListFromCertificateTemplateId(plan.CertificateTemplateId)
+				if err != nil {
+					resp.Diagnostics.AddError(
+						"Error Getting Challenge Delegation Domains List",
+						"Could not get challenge delegation domains list for Qwilt CDN Certificate Template",
+					)
+					return
+				}
 				resp.Diagnostics.AddError(
-					"Error Getting Challenge Delegation Domains List",
-					"Could not get challenge delegation domains list for Qwilt CDN Certificate Template",
+					"Chosen Certificate Template is pending verification",
+					fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAMEs list configured correctly:\n%v", domainsList.PrettyPrint()),
 				)
 				return
 			}
 			resp.Diagnostics.AddError(
-				"Chosen Certificate Template is pending verification",
-				fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAMEs list configured correctly:\n%v", domainsList.PrettyPrint()),
+				"Chosen Certificate Template is missing Certificate",
+				fmt.Sprintf("Please upload a Certificate to the Certificate Template"),
 			)
 			return
 		}
