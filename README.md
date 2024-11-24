@@ -67,5 +67,6 @@ make testacc
 ```
 
 ## Releasing the Provider to public registry
-Ones a git tag is created, a git Action is executed and creates a new release in 'Draft' mode.
+In order to release a new version, you must tag branch **main** with a new version (based on the latest one).
+Ones a new git tag is pushed, a GitHub Action is executed and creates a new release in 'Draft' mode.
 Then from github release page you can 'publish release'. Once this is done, terraform-public-registry will detect this release as the latest version.
