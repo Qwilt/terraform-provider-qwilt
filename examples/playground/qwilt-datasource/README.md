@@ -94,6 +94,17 @@ $ terraform plan -var="cert_template_id=<CertificateTemplateID>"
 ```
 The output provides details about the specified certificate_template_id.
 
+## Origin Allow List
+
+The origin allow list data source allows you to view the most current origin IP allow list.  This data can be used, for example, to update the firewall rules of your origin server.
+
+To view the most current origin allow list, do this:
+
+```
+$ terraform plan -var="show_origin_allow_list=true"
+```
+The output provides details about current IPv4 and IPv6 addresses associated with each service provider in Qwilt's network.
+
 ## About This Example
 
-This example uses some complex output definitions to query the sites and certs data sources for information.  It illustrates how variables can be defined to search a specific attribute and filter the results.  With some additional effort, the same can be done to query other site, revision, activation, and certificate attributes.
+This example uses some complex output definitions to query the sites, certs, cert templates, and origin allow list data sources for information.  It illustrates how variables can be defined to search a specific attribute and filter the results.  With some additional effort, the same can be done to query other site, revision, activation, certificate, certificate template, and origin allow list attributes.
