@@ -31,6 +31,7 @@ output "examplesiteconfig2" {
 
 output "examplecertificate2" {
   value = qwilt_cdn_certificate.example2
+  sensitive = true
 }
 
 output "examplesiteactivation2" {
