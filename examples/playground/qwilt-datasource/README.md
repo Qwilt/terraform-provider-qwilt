@@ -70,6 +70,30 @@ $ terraform plan -var="cert_id=<CertificateID>"
 ```
 The output provides details about the specified cert_id.
 
+## Certificate Template Lookup
+
+The certificate templates data source can be used to query the details of certificate templates for the CSR workflow.  Certificate templates can be queried by common name and template ID.
+
+To search for certificates by common name:
+
+```
+$ terraform plan -var="cert_template_cn=example.com"
+```
+The above command launches a substring match of the common_name attribute for each defined certificate template and outputs the matching certificate_template_ids.
+
+To retrieve a list of all certificate templates, do this:
+
+```
+$ terraform plan -var="cert_template_id=all"
+```
+
+Once you have identified the certificate_template_id that you are targeting, you may search for it directly:
+
+```
+$ terraform plan -var="cert_template_id=<CertificateTemplateID>"
+```
+The output provides details about the specified certificate_template_id.
+
 ## About This Example
 
 This example uses some complex output definitions to query the sites and certs data sources for information.  It illustrates how variables can be defined to search a specific attribute and filter the results.  With some additional effort, the same can be done to query other site, revision, activation, and certificate attributes.
