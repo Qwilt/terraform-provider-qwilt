@@ -79,8 +79,8 @@ output "examplecertificate" {
 
 output "examplecertificatetemplate" {
   value = qwilt_cdn_certificate_template.example
+  sensitive = true
 }
-
 
 output "examplesiteactivation" {
   value = qwilt_cdn_site_activation.example

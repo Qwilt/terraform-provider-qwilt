@@ -70,6 +70,41 @@ $ terraform plan -var="cert_id=<CertificateID>"
 ```
 The output provides details about the specified cert_id.
 
+## Certificate Template Lookup
+
+The certificate templates data source can be used to query the details of certificate templates for the CSR workflow.  Certificate templates can be queried by common name and template ID.
+
+To search for certificates by common name:
+
+```
+$ terraform plan -var="cert_template_cn=example.com"
+```
+The above command launches a substring match of the common_name attribute for each defined certificate template and outputs the matching certificate_template_ids.
+
+To retrieve a list of all certificate templates, do this:
+
+```
+$ terraform plan -var="cert_template_id=all"
+```
+
+Once you have identified the certificate_template_id that you are targeting, you may search for it directly:
+
+```
+$ terraform plan -var="cert_template_id=<CertificateTemplateID>"
+```
+The output provides details about the specified certificate_template_id.
+
+## Origin Allow List
+
+The origin allow list data source allows you to view the most current origin IP allow list.  This data can be used, for example, to update the firewall rules of your origin server.
+
+To view the most current origin allow list, do this:
+
+```
+$ terraform plan -var="show_origin_allow_list=true"
+```
+The output provides details about current IPv4 and IPv6 addresses associated with each service provider in Qwilt's network.
+
 ## About This Example
 
-This example uses some complex output definitions to query the sites and certs data sources for information.  It illustrates how variables can be defined to search a specific attribute and filter the results.  With some additional effort, the same can be done to query other site, revision, activation, and certificate attributes.
+This example uses some complex output definitions to query the sites, certs, cert templates, and origin allow list data sources for information.  It illustrates how variables can be defined to search a specific attribute and filter the results.  With some additional effort, the same can be done to query other site, revision, activation, certificate, certificate template, and origin allow list attributes.
