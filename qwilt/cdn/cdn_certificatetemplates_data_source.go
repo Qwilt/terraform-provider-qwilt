@@ -59,7 +59,7 @@ func (d *qwiltCertificateTemplatesDataSource) Metadata(_ context.Context, req da
 // Schema defines the schema for the data source.
 func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves the certificate template defined by your organization and the associated metadata.",
+		Description: "Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, retrieve the csr_ids associated with a specific template, identify the latest certificate generated from a particular template, and more.",
 		Attributes: map[string]schema.Attribute{
 			"certificate_template": schema.ListNestedAttribute{
 				Description: "List of certificate templates.",
@@ -75,7 +75,7 @@ func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ dataso
 							Required:    true,
 						},
 						"certificate_template_id": schema.Int64Attribute{
-							Description: "The unique identifier of the certificate template. This identifier will be needed when you add the certificate configuration and when you assign it to a site.",
+							Description: "The unique identifier of the certificate template.",
 							Computed:    true,
 						},
 						"country": schema.StringAttribute{
@@ -107,7 +107,7 @@ func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ dataso
 						},
 						"sans": schema.ListAttribute{
 							ElementType: types.StringType,
-							Description: "Additional domains that the certificate should cover.",
+							Description: "Additional domains that the certificate should cover. Currently, one SAN can be defined.",
 							Computed:    false,
 							Optional:    true,
 							Validators: []validator.List{
@@ -132,7 +132,7 @@ func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ dataso
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"certificate_template_id": schema.Int64Attribute{
-						Description: "The ID of the specific certificate template you want to retrieve.",
+						Description: "The ID of the certificate template to retrieve.",
 						Optional:    true,
 					},
 				},

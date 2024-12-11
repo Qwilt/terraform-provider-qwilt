@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_site_activation_staging Resource - qwilt"
 subcategory: ""
 description: |-
-  ⚠️ This is a limited availability feature. Manages a Qwilt CDN site activation and certificate assignment in a staging environment. This resource is similar to the qwilt_cdn_site_activation resource but activates the selected configuration to the staging environment only.Learn about the Publish to Staging Feature. https://docs.qwilt.com/docs/publish-to-staging
+  Manages a Qwilt CDN site activation and certificate assignment in a staging environment. This resource is similar to the qwilt_cdn_site_activation resource but activates the selected configuration to the staging environment only.Learn about the Publish to Staging Feature. https://docs.qwilt.com/docs/publish-to-staging
 ---
 
 # qwilt_cdn_site_activation_staging (Resource)
 
-⚠️ This is a limited availability feature. <br><br>Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br><br>This resource is similar to the *qwilt_cdn_site_activation* resource but activates the selected configuration to the staging environment only.<br><br>[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)
+Manages a Qwilt CDN site activation and certificate assignment in a staging environment. <br><br>This resource is similar to the *qwilt_cdn_site_activation* resource but activates the selected configuration to the staging environment only.<br><br>[Learn about the Publish to Staging Feature.](https://docs.qwilt.com/docs/publish-to-staging)
 
 ## Example Usage
 
@@ -70,9 +70,6 @@ resource "qwilt_cdn_site_activation_staging" "example" {
 Import is supported using the following syntax:
 
 ```shell
-> ⚠️ This is a limited availability feature.
-
-
 #Create an empty resource to import into.
 
 #After the import is complete, manually set the required attributes 

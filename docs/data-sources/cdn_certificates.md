@@ -59,7 +59,7 @@ Optional:
 
 Read-Only:
 
-- `cert_id` (Number) The unique identifier of the certificate. The certId will be needed when you add the certificate configuration and when you assign it to a site.
+- `cert_id` (Number) The unique identifier of the certificate.
 - `domain` (String) The site host domain the certificate is linked to.
 - `pk_hash` (String) A unique identifier for the private key that does not expose the actual key itself.
 - `status` (String) The status of the certificate:["ISSUED",

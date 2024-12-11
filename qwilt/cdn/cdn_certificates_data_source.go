@@ -62,7 +62,7 @@ func (d *qwiltCertificatesDataSource) Schema(_ context.Context, _ datasource.Sch
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"cert_id": schema.Int64Attribute{
-							Description: "The unique identifier of the certificate. The certId will be needed when you add the certificate configuration and when you assign it to a site.",
+							Description: "The unique identifier of the certificate.",
 							Computed:    true,
 						},
 						"certificate": schema.StringAttribute{

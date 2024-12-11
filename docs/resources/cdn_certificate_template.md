@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_certificate_template Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN CertificateTemplateTemplate.
+  Manages a Qwilt CDN Certificate Template.This resource supports the Certificate Signing Request (CSR) workflow.Learn about Certificate Management https://docs.qwilt.com/docs/certificate-management-in-terraform.
 ---
 
 # qwilt_cdn_certificate_template (Resource)
 
-Manages a Qwilt CDN CertificateTemplateTemplate.
+Manages a Qwilt CDN Certificate Template.<br><br>This resource supports the Certificate Signing Request (CSR) workflow.<br><br>[Learn about Certificate Management](https://docs.qwilt.com/docs/certificate-management-in-terraform).
 
 ## Example Usage
 
@@ -32,12 +32,12 @@ resource "qwilt_cdn_certificate_template" "example" {
 - `country` (String) The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located.
 - `locality` (String) The city or locality where the organization or entity requesting the certificate is located.
 - `organization_name` (String) The legal name of the organization or entity applying for the certificate.
-- `sans` (List of String) Additional domains that the certificate should cover.
+- `sans` (List of String) Additional domains that the certificate should cover. Currently one SAN can be defined.
 - `state` (String) The full name of the state or province where the organization or entity requesting the certificate is located.
 
 ### Read-Only
 
-- `certificate_template_id` (Number) The unique identifier of the certificate template. This identifier will be needed when you add the certificate configuration and when you assign it to a site.
+- `certificate_template_id` (Number) The unique identifier of the certificate template.
 - `csr_ids` (List of Number) The unique identifiers of the certificate signing requests (CSRs) that are associated with this certificate template.
 - `last_certificate_id` (Number) The unique identifier of the last certificate generated from this template.
 - `tenant` (String) The organization your user is assigned to.

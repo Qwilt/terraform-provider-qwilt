@@ -49,7 +49,10 @@ func (d *qwiltOriginAllowListDataSource) Metadata(_ context.Context, req datasou
 // Schema defines the schema for the data source.
 func (d *qwiltOriginAllowListDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves the device ip's to be added to origin allow iist.",
+		MarkdownDescription: "Retrieves a comprehensive list of IP addresses that Qwilt CDN may use to request content from your origin, grouped by ISP network.<br><br>" +
+			"This list includes the IPs from all the networks where Qwilt CDN is present. Because of Qwilt's unique routing strategy, any of the IPs from any of the ISP networks may potentially send a request to your origin.<br><br>" +
+			"If your security policies limit origin access to approved IPs only, make sure to add all of these IP addresses to your allow list.<br><br>" +
+			"The list is verified by Qwilt once per hour.",
 		Attributes: map[string]schema.Attribute{
 			"md5": schema.StringAttribute{
 				Description: "A unique identifier for this instance of the IP address list.",

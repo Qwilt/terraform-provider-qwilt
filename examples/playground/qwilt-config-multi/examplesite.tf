@@ -30,7 +30,7 @@ output "examplesiteconfig" {
 }
 
 output "examplecertificate" {
-  value = qwilt_cdn_certificate.example
+  value     = qwilt_cdn_certificate.example
   sensitive = true
 }
 
