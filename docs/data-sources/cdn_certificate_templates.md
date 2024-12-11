@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_certificate_templates Data Source - qwilt"
 subcategory: ""
 description: |-
-  Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, retrieve the csr_ids associated with a specific template, identify the latest certificate generated from a particular template, and more.
+  Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, the csr_ids associated with a particular template, the certificate_id of the latest certificate generated from a particular template, and more.
 ---
 
 # qwilt_cdn_certificate_templates (Data Source)
 
-Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, retrieve the csr_ids associated with a specific template, identify the latest certificate generated from a particular template, and more.
+Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, the csr_ids associated with a particular template, the certificate_id of the latest certificate generated from a particular template, and more.
 
 
 

@@ -52,7 +52,7 @@ func (r *certificateTemplateResource) Metadata(_ context.Context, req resource.M
 func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages a Qwilt CDN Certificate Template.<br><br>" +
-			"This resource supports the Certificate Signing Request (CSR) workflow.<br><br>" +
+			"This resource supports the Certificate Signing Request (CSR) workflow. <br><br>" +
 			"[Learn about Certificate Management](https://docs.qwilt.com/docs/certificate-management-in-terraform).",
 		Attributes: map[string]schema.Attribute{
 			"auto_managed_certificate_template": schema.BoolAttribute{

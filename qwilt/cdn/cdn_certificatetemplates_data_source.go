@@ -59,7 +59,7 @@ func (d *qwiltCertificateTemplatesDataSource) Metadata(_ context.Context, req da
 // Schema defines the schema for the data source.
 func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, retrieve the csr_ids associated with a specific template, identify the latest certificate generated from a particular template, and more.",
+		Description: "Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, the csr_ids associated with a particular template, the certificate_id of the latest certificate generated from a particular template, and more.",
 		Attributes: map[string]schema.Attribute{
 			"certificate_template": schema.ListNestedAttribute{
 				Description: "List of certificate templates.",

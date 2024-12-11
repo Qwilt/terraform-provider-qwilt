@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_certificate_template Resource - qwilt"
 subcategory: ""
 description: |-
-  Manages a Qwilt CDN Certificate Template.This resource supports the Certificate Signing Request (CSR) workflow.Learn about Certificate Management https://docs.qwilt.com/docs/certificate-management-in-terraform.
+  Manages a Qwilt CDN Certificate Template.This resource supports the Certificate Signing Request (CSR) workflow. Learn about Certificate Management https://docs.qwilt.com/docs/certificate-management-in-terraform.
 ---
 
 # qwilt_cdn_certificate_template (Resource)
 
-Manages a Qwilt CDN Certificate Template.<br><br>This resource supports the Certificate Signing Request (CSR) workflow.<br><br>[Learn about Certificate Management](https://docs.qwilt.com/docs/certificate-management-in-terraform).
+Manages a Qwilt CDN Certificate Template.<br><br>This resource supports the Certificate Signing Request (CSR) workflow. <br><br>[Learn about Certificate Management](https://docs.qwilt.com/docs/certificate-management-in-terraform).
 
 ## Example Usage
 
