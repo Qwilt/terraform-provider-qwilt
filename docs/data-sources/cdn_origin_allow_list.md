@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_origin_allow_list Data Source - qwilt"
 subcategory: ""
 description: |-
-  Retrieves the device ip's to be added to origin allow iist.
+  Retrieves a comprehensive list of IP addresses that Qwilt CDN may use to request content from your origin, grouped by ISP network.This list includes the IPs from all the networks where Qwilt CDN is present. Because of Qwilt's unique routing strategy, any of the IPs from any of the ISP networks may potentially send a request to your origin.If your security policies limit origin access to approved IPs only, make sure to add all of these IP addresses to your allow list.The list is verified by Qwilt once per hour.
 ---
 
 # qwilt_cdn_origin_allow_list (Data Source)
 
-Retrieves the device ip's to be added to origin allow iist.
+Retrieves a comprehensive list of IP addresses that Qwilt CDN may use to request content from your origin, grouped by ISP network.<br><br>This list includes the IPs from all the networks where Qwilt CDN is present. Because of Qwilt's unique routing strategy, any of the IPs from any of the ISP networks may potentially send a request to your origin.<br><br>If your security policies limit origin access to approved IPs only, make sure to add all of these IP addresses to your allow list.<br><br>The list is verified by Qwilt once per hour.
 
 ## Example Usage
 

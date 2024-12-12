@@ -51,7 +51,9 @@ func (r *certificateTemplateResource) Metadata(_ context.Context, req resource.M
 // Schema defines the schema for the resource.
 func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a Qwilt CDN CertificateTemplateTemplate.",
+		MarkdownDescription: "Manages a Qwilt CDN Certificate Template.<br><br>" +
+			"This resource supports the Certificate Signing Request (CSR) workflow. <br><br>" +
+			"[Learn about Certificate Management](https://docs.qwilt.com/docs/certificate-management-in-terraform).",
 		Attributes: map[string]schema.Attribute{
 			"auto_managed_certificate_template": schema.BoolAttribute{
 				Description: "Indicates whether the certificate template is managed by Qwilt.",
@@ -68,7 +70,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				},
 			},
 			"certificate_template_id": schema.Int64Attribute{
-				Description: "The unique identifier of the certificate template. This identifier will be needed when you add the certificate configuration and when you assign it to a site.",
+				Description: "The unique identifier of the certificate template.",
 				Computed:    true,
 			},
 			"country": schema.StringAttribute{
@@ -112,7 +114,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 			},
 			"sans": schema.ListAttribute{
 				ElementType: types.StringType,
-				Description: "Additional domains that the certificate should cover.",
+				Description: "Additional domains that the certificate should cover. Currently one SAN can be defined.",
 				Computed:    false,
 				Optional:    true,
 				Validators: []validator.List{

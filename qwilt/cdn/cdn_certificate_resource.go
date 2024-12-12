@@ -44,14 +44,15 @@ func (r *certificateResource) Metadata(_ context.Context, req resource.MetadataR
 // Schema defines the schema for the resource.
 func (r *certificateResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a Qwilt CDN Certificate.",
+		MarkdownDescription: "Manages a Qwilt CDN Certificate. <br><br>" +
+			"[Learn about Certificate Management](https://docs.qwilt.com/docs/certificate-management-in-terraform)",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.Int64Attribute{
 				Description: "For internal use only, for testing. Equals cert_id.",
 				Computed:    true,
 			},
 			"cert_id": schema.Int64Attribute{
-				Description: "The unique identifier of the certificate. The certId will be needed when you add the certificate configuration and when you assign it to a site.",
+				Description: "The unique identifier of the certificate.",
 				Computed:    true,
 				//PlanModifiers: []planmodifier.Int64{
 				//	setplanmodifier.UseStateForUnknown(),

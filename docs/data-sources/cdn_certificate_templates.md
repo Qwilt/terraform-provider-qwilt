@@ -3,12 +3,12 @@
 page_title: "qwilt_cdn_certificate_templates Data Source - qwilt"
 subcategory: ""
 description: |-
-  Retrieves the certificate template defined by your organization and the associated metadata.
+  Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, the csr_ids associated with a particular template, the certificate_id of the latest certificate generated from a particular template, and more.
 ---
 
 # qwilt_cdn_certificate_templates (Data Source)
 
-Retrieves the certificate template defined by your organization and the associated metadata.
+Retrieves the certificate templates defined by your organization and the associated metadata. This data source lets you retrieve certificate_template_ids, the csr_ids associated with a particular template, the certificate_id of the latest certificate generated from a particular template, and more.
 
 
 
@@ -28,7 +28,7 @@ Retrieves the certificate template defined by your organization and the associat
 
 Optional:
 
-- `certificate_template_id` (Number) The ID of the specific certificate template you want to retrieve.
+- `certificate_template_id` (Number) The ID of the certificate template to retrieve.
 
 
 <a id="nestedatt--certificate_template"></a>
@@ -44,12 +44,12 @@ Optional:
 - `country` (String) The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located.
 - `locality` (String) The city or locality where the organization or entity requesting the certificate is located.
 - `organization_name` (String) The legal name of the organization or entity applying for the certificate.
-- `sans` (List of String) Additional domains that the certificate should cover.
+- `sans` (List of String) Additional domains that the certificate should cover. Currently, one SAN can be defined.
 - `state` (String) The full name of the state or province where the organization or entity requesting the certificate is located.
 
 Read-Only:
 
-- `certificate_template_id` (Number) The unique identifier of the certificate template. This identifier will be needed when you add the certificate configuration and when you assign it to a site.
+- `certificate_template_id` (Number) The unique identifier of the certificate template.
 - `csr_ids` (List of Number) The unique identifiers of the certificate signing requests (CSRs) that are associated with this certificate template.
 - `last_certificate_id` (Number) The unique identifier of the last certificate generated from this template.
 - `tenant` (String) The organization your user is assigned to.

@@ -1,6 +1,3 @@
-> ⚠️ This is a limited availability feature.
-
-
 #Create an empty resource to import into.
 
 #After the import is complete, manually set the required attributes 
