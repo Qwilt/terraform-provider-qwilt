@@ -23,6 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -269,6 +270,7 @@ func (r *siteActivationResource) Create(ctx context.Context, req resource.Create
 		OwnerOrgId(pubOpResp.OwnerOrgId).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(plan.CertificateId.ValueInt64()).
+		CertificateTemplateId(plan.CertificateTemplateId.ValueInt64()).
 		PublishState(pubOpResp.PublishState).
 		OperationType(pubOpResp.OperationType).
 		Target(pubOpResp.Target).
@@ -319,6 +321,7 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	var certId int64
+	var certificateTemplateId int64
 	if len(certsResp) > 0 {
 		certId, err = strconv.ParseInt(certsResp[0].CertificateId, 10, 64)
 		if err != nil {
@@ -327,6 +330,45 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 				"Could not convert certificate ID for Qwilt CDN Site, unexpected error: "+err.Error(),
 			)
 			return
+		}
+
+		certResp, err := r.client.GetCertificate(types.Int64Value(certId), false)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Getting Certificate for Qwilt CDN Site",
+				"Could not get certificate for Qwilt CDN Site, unexpected error: "+err.Error(),
+			)
+			return
+		}
+		if certResp.CsrId != nil {
+			csrId, err := strconv.Atoi(*certResp.CsrId)
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error Converting Certificate Id",
+					"Could not convert certificate ID for Qwilt CDN Site, unexpected error: "+err.Error(),
+				)
+			}
+			csrResp, err := r.client.GetCertificateSigningRequest(types.Int64Value(int64(csrId)))
+			if err != nil {
+				resp.Diagnostics.AddError(
+					"Error Getting Certificate Signing Request for Qwilt CDN Site",
+					"Could not get certificate signing request for Qwilt CDN Site, unexpected error: "+err.Error(),
+				)
+				return
+			}
+
+			// If this is an auto-managed CSR, we should use the certificate template ID in the Site Activation
+			if csrResp.AutoManagedCSR {
+				certificateTemplateIdInt, err := strconv.Atoi(csrResp.CertificateTemplateIDRef)
+				if err != nil {
+					resp.Diagnostics.AddError(
+						"Error Converting Certificate Template Id",
+						"Could not convert certificate template ID for Qwilt CDN Site, unexpected error: "+err.Error(),
+					)
+					return
+				}
+				certificateTemplateId = int64(certificateTemplateIdInt)
+			}
 		}
 	}
 
@@ -341,6 +383,7 @@ func (r *siteActivationResource) Read(ctx context.Context, req resource.ReadRequ
 		OwnerOrgId(pubOpResp.OwnerOrgId).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(certId).
+		CertificateTemplateId(certificateTemplateId).
 		PublishState(pubOpResp.PublishState).
 		OperationType(pubOpResp.OperationType).
 		Target(pubOpResp.Target).
@@ -481,6 +524,7 @@ func (r *siteActivationResource) Update(ctx context.Context, req resource.Update
 		OwnerOrgId(pubOpResp.OwnerOrgId).
 		LastUpdateTimeMilli(pubOpResp.LastUpdateTimeMilli).
 		CertificateId(plan.CertificateId.ValueInt64()).
+		CertificateTemplateId(plan.CertificateTemplateId.ValueInt64()).
 		PublishState(pubOpResp.PublishState).
 		PublishStatus(pubOpResp.PublishStatus).
 		AcceptanceStatus(pubOpResp.PublishAcceptanceStatus).

@@ -19,16 +19,17 @@ import (
 )
 
 const CertificateTemplatesRoot = "/api/v2/certificate-templates"
-const CertificateSigningRequestsRoot = "/api/v2/certificate-signing-requests"
 
 type CertificateTemplateClient struct {
 	*Client
+	csrClient   *CertificateSigningRequestClient
 	apiEndpoint string
 }
 
 func NewCertificateTemplateClient(client *Client) *CertificateTemplateClient {
 	c := CertificateTemplateClient{
 		Client:      client,
+		csrClient:   NewCertificateSigningRequestClient(client),
 		apiEndpoint: client.endpointBuilder.Build("cert-manager"),
 	}
 	return &c
@@ -126,12 +127,6 @@ func (c *CertificateTemplateClient) DeleteCertificateTemplate(id types.Int64) er
 	return nil
 }
 
-type DomainPairs [][]string
-
-type ChallengeDelegationMap struct {
-	pairs DomainPairs
-}
-
 func (ch *ChallengeDelegationMap) PrettyPrint() string {
 	var sb strings.Builder
 	for i := range ch.pairs {
@@ -157,32 +152,5 @@ func (c *CertificateTemplateClient) GetChallengeDelegationDomainsListFromCertifi
 	}
 
 	lastCsrId := certificateTemplate.CsrIds[len(certificateTemplate.CsrIds)-1]
-	return c.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
-}
-
-func (c *CertificateTemplateClient) GetChallengeDelegationDomainsListFromCsrId(id int64) (*ChallengeDelegationMap, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/%d", c.apiEndpoint, CertificateSigningRequestsRoot, id), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	body, err := c.doRequest(req)
-	if err != nil {
-		return nil, err
-	}
-
-	var csr *api.CertificateSigningRequest
-	err = json.Unmarshal(body, &csr)
-	if err != nil {
-		return nil, err
-	}
-
-	challengeDelegationMap := &ChallengeDelegationMap{
-		pairs: make(DomainPairs, len(csr.ChallengeDelegationOfDomainsList)),
-	}
-	for i := range csr.ChallengeDelegationOfDomainsList {
-		challengeDelegationMap.pairs[i] = []string{csr.ChallengeDelegationOfDomainsList[i].FromDomain, csr.ChallengeDelegationOfDomainsList[i].ToDomain}
-	}
-
-	return challengeDelegationMap, nil
+	return c.csrClient.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
 }
