@@ -137,7 +137,7 @@ func (ch *ChallengeDelegationMap) PrettyPrint() string {
 	for i := range ch.pairs {
 		from := ch.pairs[i][0]
 		to := ch.pairs[i][1]
-		sb.WriteString(fmt.Sprintf("%d. %s IN CNAME %s\n", i+1, from, to))
+		sb.WriteString(fmt.Sprintf("%d. Record Name: %s Value: %s\n", i+1, from, to))
 	}
 	return sb.String()
 }
