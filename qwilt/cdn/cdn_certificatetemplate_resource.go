@@ -262,11 +262,11 @@ func (r *certificateTemplateResource) Read(ctx context.Context, req resource.Rea
 	}
 }
 
-// Updates the resource and sets the updated Terraform state on success.
+// Update Updates the resource and sets the updated Terraform state on success.
 func (r *certificateTemplateResource) Update(_ context.Context, _ resource.UpdateRequest, _ *resource.UpdateResponse) {
 }
 
-// Deletes the resource and removes the Terraform state on success.
+// Delete Deletes the resource and removes the Terraform state on success.
 func (r *certificateTemplateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	// Retrieve values from state
 	var state cdnmodel.CertificateTemplate
