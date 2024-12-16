@@ -12,12 +12,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 const CertificateSigningRequestsRoot = "/api/v2/certificate-signing-requests"
+
+type ChallengeDelegationMap struct {
+	pairs [][]string
+}
+
+func (ch *ChallengeDelegationMap) PrettyPrint() string {
+	var sb strings.Builder
+	for i := range ch.pairs {
+		from := ch.pairs[i][0]
+		to := ch.pairs[i][1]
+		sb.WriteString(fmt.Sprintf("%d. Record Name: %s Value: %s\n", i+1, from, to))
+	}
+	return sb.String()
+}
 
 type CertificateSigningRequestClient struct {
 	*Client
@@ -57,12 +72,6 @@ func (c *CertificateSigningRequestClient) GetCertificateSigningRequest(id types.
 	return &certDetail, nil
 }
 
-type DomainPairs [][]string
-
-type ChallengeDelegationMap struct {
-	pairs DomainPairs
-}
-
 func (c *CertificateSigningRequestClient) GetChallengeDelegationDomainsListFromCsrId(id int64) (*ChallengeDelegationMap, error) {
 	csr, err := c.GetCertificateSigningRequest(types.Int64Value(id))
 	if err != nil {
@@ -70,7 +79,7 @@ func (c *CertificateSigningRequestClient) GetChallengeDelegationDomainsListFromC
 	}
 
 	challengeDelegationMap := &ChallengeDelegationMap{
-		pairs: make(DomainPairs, len(csr.ChallengeDelegationOfDomainsList)),
+		pairs: make([][]string, len(csr.ChallengeDelegationOfDomainsList)),
 	}
 	for i := range csr.ChallengeDelegationOfDomainsList {
 		challengeDelegationMap.pairs[i] = []string{csr.ChallengeDelegationOfDomainsList[i].FromDomain, csr.ChallengeDelegationOfDomainsList[i].ToDomain}

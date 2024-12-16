@@ -181,7 +181,7 @@ func (r *certificateTemplateResource) Create(ctx context.Context, req resource.C
 			return
 		}
 		lastCsrId := certResp.CsrIds[len(certResp.CsrIds)-1]
-		domainsList, err := r.client.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
+		domainsList, err := r.client.GetCsrClient().GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Getting Challenge Delegation Domains List",

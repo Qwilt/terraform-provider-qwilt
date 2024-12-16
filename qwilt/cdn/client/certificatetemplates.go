@@ -127,16 +127,6 @@ func (c *CertificateTemplateClient) DeleteCertificateTemplate(id types.Int64) er
 	return nil
 }
 
-func (ch *ChallengeDelegationMap) PrettyPrint() string {
-	var sb strings.Builder
-	for i := range ch.pairs {
-		from := ch.pairs[i][0]
-		to := ch.pairs[i][1]
-		sb.WriteString(fmt.Sprintf("%d. Record Name: %s Value: %s\n", i+1, from, to))
-	}
-	return sb.String()
-}
-
 func (c *CertificateTemplateClient) GetChallengeDelegationDomainsListFromCertificateTemplateId(id types.Int64) (*ChallengeDelegationMap, error) {
 	if id.IsNull() {
 		return nil, fmt.Errorf("certificate template id is empty")
@@ -153,4 +143,8 @@ func (c *CertificateTemplateClient) GetChallengeDelegationDomainsListFromCertifi
 
 	lastCsrId := certificateTemplate.CsrIds[len(certificateTemplate.CsrIds)-1]
 	return c.csrClient.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
+}
+
+func (c *CertificateTemplateClient) GetCsrClient() *CertificateSigningRequestClient {
+	return c.csrClient
 }
