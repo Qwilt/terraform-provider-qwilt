@@ -34,7 +34,7 @@ var (
 )
 
 // NewCertificateTemplateResource is a helper function to simplify the provider implementation.
-func NewCertificateTemplateTemplateResource() resource.Resource {
+func NewCertificateTemplateResource() resource.Resource {
 	return &certificateTemplateResource{}
 }
 

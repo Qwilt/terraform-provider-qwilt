@@ -51,7 +51,7 @@ func (p *qwiltCDNProvider) Schema(_ context.Context, _ provider.SchemaRequest, r
 
 func (p *qwiltCDNProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		cdn.NewCertificateTemplateTemplateResource,
+		cdn.NewCertificateTemplateResource,
 		cdn.NewCertificateResource,
 		cdn.NewSiteActivationResource,
 		cdn.NewSiteActivationStagingResource,
