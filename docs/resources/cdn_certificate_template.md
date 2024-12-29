@@ -25,7 +25,7 @@ resource "qwilt_cdn_certificate_template" "example" {
 ### Required
 
 - `auto_managed_certificate_template` (Boolean) Indicates whether the certificate template is managed by Qwilt.
-- `common_name` (String) The fully qualified domain name for which the certificate is issued.
+- `common_name` (String) The fully qualified domain name for which the certificate is issued. Wildcards are allowed.
 
 ### Optional
 

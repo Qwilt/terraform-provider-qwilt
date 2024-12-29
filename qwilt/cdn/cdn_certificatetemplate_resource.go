@@ -63,7 +63,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				},
 			},
 			"common_name": schema.StringAttribute{
-				Description: "The fully qualified domain name for which the certificate is issued.",
+				Description: "The fully qualified domain name for which the certificate is issued. Wildcards are allowed.",
 				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
