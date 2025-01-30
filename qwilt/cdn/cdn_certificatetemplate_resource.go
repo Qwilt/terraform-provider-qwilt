@@ -194,7 +194,7 @@ func (r *certificateTemplateResource) Create(ctx context.Context, req resource.C
 
 		resp.Diagnostics.AddWarning(
 			"New Certificate Template is pending verification",
-			fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAME recrods configured correctly:\n%v", domainsList.PrettyPrint()),
+			fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAME records configured correctly:\n%v", domainsList.PrettyPrint()),
 		)
 	}
 
