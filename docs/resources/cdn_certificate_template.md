@@ -32,7 +32,7 @@ resource "qwilt_cdn_certificate_template" "example" {
 - `country` (String) The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.
 - `locality` (String) The city or locality where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.
 - `organization_name` (String) The legal name of the organization or entity applying for the certificate. Not supported for Qwilt-managed certificate templates.
-- `sans` (List of String) Additional domains that the certificate should cover. Currently SANs are not supported for Qwilt-managed templates. This is a temporary limitation.
+- `sans` (List of String) Additional domains that the certificate should cover.
 - `state` (String) The full name of the state or province where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.
 
 ### Read-Only

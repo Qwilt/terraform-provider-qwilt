@@ -114,7 +114,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 			},
 			"sans": schema.ListAttribute{
 				ElementType: types.StringType,
-				Description: "Additional domains that the certificate should cover. Currently SANs are not supported for Qwilt-managed templates. This is a temporary limitation.",
+				Description: "Additional domains that the certificate should cover.",
 				Computed:    false,
 				Optional:    true,
 				Validators: []validator.List{
