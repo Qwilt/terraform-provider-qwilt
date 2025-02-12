@@ -74,7 +74,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				Computed:    true,
 			},
 			"country": schema.StringAttribute{
-				Description: "The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located.",
+				Description: "The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.",
 				Computed:    false,
 				Optional:    true,
 				Validators: []validator.String{
@@ -89,7 +89,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				Computed:    true,
 			},
 			"state": schema.StringAttribute{
-				Description: "The full name of the state or province where the organization or entity requesting the certificate is located.",
+				Description: "The full name of the state or province where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.",
 				Computed:    false,
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
@@ -97,7 +97,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				},
 			},
 			"locality": schema.StringAttribute{
-				Description: "The city or locality where the organization or entity requesting the certificate is located.",
+				Description: "The city or locality where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.",
 				Computed:    false,
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
@@ -105,7 +105,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				},
 			},
 			"organization_name": schema.StringAttribute{
-				Description: "The legal name of the organization or entity applying for the certificate.",
+				Description: "The legal name of the organization or entity applying for the certificate. Not supported for Qwilt-managed certificate templates.",
 				Computed:    false,
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
