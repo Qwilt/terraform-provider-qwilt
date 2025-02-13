@@ -60,6 +60,7 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 				Description: "Indicates whether the certificate template is managed by Qwilt.",
 				Required:    true,
 				Default:     booldefault.StaticBool(true),
+				Computed:    true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplace(),
 				},
