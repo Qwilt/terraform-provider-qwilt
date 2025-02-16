@@ -107,7 +107,7 @@ func (d *qwiltCertificateTemplatesDataSource) Schema(_ context.Context, _ dataso
 						},
 						"sans": schema.ListAttribute{
 							ElementType: types.StringType,
-							Description: "Additional domains that the certificate should cover. Currently, one SAN can be defined.",
+							Description: "Additional domains that the certificate should cover.",
 							Computed:    false,
 							Optional:    true,
 							Validators: []validator.List{
