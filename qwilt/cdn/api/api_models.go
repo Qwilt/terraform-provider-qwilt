@@ -145,9 +145,10 @@ type RepubRequest struct {
 
 // Certificate - Model for the Certificate object
 type Certificate struct {
-	CertId           int64  `json:"certId"`
-	Certificate      string `json:"certificate"`
-	CertificateChain string `json:"certificateChain"`
+	CertId           int64   `json:"certId"`
+	Certificate      string  `json:"certificate"`
+	CertificateChain string  `json:"certificateChain"`
+	CsrId            *string `json:"csrId"`
 	//PrivateKey       string `json:"privateKey"`
 	//Email            string `json:"email"`
 	Description string `json:"description"`

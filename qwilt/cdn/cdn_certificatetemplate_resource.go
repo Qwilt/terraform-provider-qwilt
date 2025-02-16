@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -34,7 +35,7 @@ var (
 )
 
 // NewCertificateTemplateResource is a helper function to simplify the provider implementation.
-func NewCertificateTemplateTemplateResource() resource.Resource {
+func NewCertificateTemplateResource() resource.Resource {
 	return &certificateTemplateResource{}
 }
 
@@ -58,6 +59,8 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 			"auto_managed_certificate_template": schema.BoolAttribute{
 				Description: "Indicates whether the certificate template is managed by Qwilt.",
 				Required:    true,
+				Default:     booldefault.StaticBool(true),
+				Computed:    true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplace(),
 				},
@@ -181,7 +184,7 @@ func (r *certificateTemplateResource) Create(ctx context.Context, req resource.C
 			return
 		}
 		lastCsrId := certResp.CsrIds[len(certResp.CsrIds)-1]
-		domainsList, err := r.client.GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
+		domainsList, err := r.client.GetCsrClient().GetChallengeDelegationDomainsListFromCsrId(lastCsrId)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Getting Challenge Delegation Domains List",
@@ -192,7 +195,7 @@ func (r *certificateTemplateResource) Create(ctx context.Context, req resource.C
 
 		resp.Diagnostics.AddWarning(
 			"New Certificate Template is pending verification",
-			fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAMEs list configured correctly:\n%v", domainsList.PrettyPrint()),
+			fmt.Sprintf("Certificate Template is pending verification. Please make sure to have the CNAME records configured correctly:\n%v", domainsList.PrettyPrint()),
 		)
 	}
 
@@ -262,11 +265,11 @@ func (r *certificateTemplateResource) Read(ctx context.Context, req resource.Rea
 	}
 }
 
-// Updates the resource and sets the updated Terraform state on success.
+// Update Updates the resource and sets the updated Terraform state on success.
 func (r *certificateTemplateResource) Update(_ context.Context, _ resource.UpdateRequest, _ *resource.UpdateResponse) {
 }
 
-// Deletes the resource and removes the Terraform state on success.
+// Delete Deletes the resource and removes the Terraform state on success.
 func (r *certificateTemplateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	// Retrieve values from state
 	var state cdnmodel.CertificateTemplate

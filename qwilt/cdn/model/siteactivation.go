@@ -57,11 +57,25 @@ func (b *SiteActivationBuilder) SiteId(value string) *SiteActivationBuilder {
 func (b *SiteActivationBuilder) CertificateId(value int64) *SiteActivationBuilder {
 	if value != 0 {
 		b.activation.CertificateId = types.Int64Value(value)
+		// Unset CertificateTemplateId
+		b.activation.CertificateTemplateId = types.Int64Null()
 	} else {
 		b.activation.CertificateId = types.Int64Null()
 	}
 	return b
 }
+
+func (b *SiteActivationBuilder) CertificateTemplateId(value int64) *SiteActivationBuilder {
+	if value != 0 {
+		b.activation.CertificateTemplateId = types.Int64Value(value)
+		// Unset CertificateId
+		b.activation.CertificateId = types.Int64Null()
+	} else {
+		b.activation.CertificateTemplateId = types.Int64Null()
+	}
+	return b
+}
+
 func (b *SiteActivationBuilder) PublishState(value string) *SiteActivationBuilder {
 	b.activation.PublishState = types.StringValue(value)
 	return b
