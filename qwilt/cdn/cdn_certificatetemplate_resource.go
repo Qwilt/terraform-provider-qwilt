@@ -58,7 +58,6 @@ func (r *certificateTemplateResource) Schema(_ context.Context, _ resource.Schem
 		Attributes: map[string]schema.Attribute{
 			"auto_managed_certificate_template": schema.BoolAttribute{
 				Description: "Indicates whether the certificate template is managed by Qwilt.",
-				Required:    true,
 				Default:     booldefault.StaticBool(true),
 				Computed:    true,
 				PlanModifiers: []planmodifier.Bool{
