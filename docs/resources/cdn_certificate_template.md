@@ -25,15 +25,15 @@ resource "qwilt_cdn_certificate_template" "example" {
 ### Required
 
 - `auto_managed_certificate_template` (Boolean) Indicates whether the certificate template is managed by Qwilt.
-- `common_name` (String) The fully qualified domain name for which the certificate is issued.
+- `common_name` (String) The fully qualified domain name for which the certificate is issued. Wildcards are allowed.
 
 ### Optional
 
-- `country` (String) The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located.
-- `locality` (String) The city or locality where the organization or entity requesting the certificate is located.
-- `organization_name` (String) The legal name of the organization or entity applying for the certificate.
-- `sans` (List of String) Additional domains that the certificate should cover. Currently one SAN can be defined.
-- `state` (String) The full name of the state or province where the organization or entity requesting the certificate is located.
+- `country` (String) The two-letter ISO 3166-1 country code that represents the country where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.
+- `locality` (String) The city or locality where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.
+- `organization_name` (String) The legal name of the organization or entity applying for the certificate. Not supported for Qwilt-managed certificate templates.
+- `sans` (List of String) Additional domains that the certificate should cover.
+- `state` (String) The full name of the state or province where the organization or entity requesting the certificate is located. Not supported for Qwilt-managed certificate templates.
 
 ### Read-Only
 
