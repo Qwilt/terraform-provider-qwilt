@@ -24,7 +24,6 @@ resource "qwilt_cdn_certificate_template" "example" {
 
 ### Required
 
-- `auto_managed_certificate_template` (Boolean) Indicates whether the certificate template is managed by Qwilt.
 - `common_name` (String) The fully qualified domain name for which the certificate is issued. Wildcards are allowed.
 
 ### Optional
@@ -37,6 +36,7 @@ resource "qwilt_cdn_certificate_template" "example" {
 
 ### Read-Only
 
+- `auto_managed_certificate_template` (Boolean) Indicates whether the certificate template is managed by Qwilt.
 - `certificate_template_id` (Number) The unique identifier of the certificate template.
 - `csr_ids` (List of Number) The unique identifiers of the certificate signing requests (CSRs) that are associated with this certificate template.
 - `last_certificate_id` (Number) The unique identifier of the last certificate generated from this template.
