@@ -232,13 +232,12 @@ func (r *siteResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 
 	tflog.Debug(ctx, "siteResource: delete\n")
 
-	// Delete the site - but rename it afterwards. This due to the fact that sites aren't really deleted but only marked for deletion,
-	//so avoid future calls failure on name conflicts
-	err := r.client.DeleteAndRenameSite(state.SiteId.ValueString(), state.SiteName.ValueString())
+	// Delete the site permanently
+	err := r.client.PermanentDeleteSite(state.SiteId.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting Qwilt CDN Site",
-			"Could not deleting Qwilt CDN Site, unexpected error: "+err.Error(),
+			"Could not delete Qwilt CDN Site, unexpected error: "+err.Error(),
 		)
 		return
 	}
