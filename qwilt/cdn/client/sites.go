@@ -14,9 +14,7 @@ import (
 	"github.com/Qwilt/terraform-provider-qwilt/qwilt/cdn/api"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
-	"time"
 )
 
 type SiteClient struct {
@@ -175,7 +173,9 @@ func (c *SiteClient) DeleteSite(siteId string) error {
 		return fmt.Errorf("siteId is empty")
 	}
 
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/api/v2/sites/%s", c.apiEndpoint, siteId), nil)
+	url := fmt.Sprintf("%s/api/v2/sites/%s?permanent=true", c.apiEndpoint, siteId)
+
+	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
@@ -184,32 +184,6 @@ func (c *SiteClient) DeleteSite(siteId string) error {
 	_ = body
 	if err != nil {
 		return err
-	}
-
-	return nil
-}
-
-// DeleteAndRenameSite - Deletes a site so we can reuse the name later
-//
-//	This adds "DELETED <unixtimestamp>" to the end of the site name to make it unique
-func (c *SiteClient) DeleteAndRenameSite(siteId string, siteName string) error {
-	if siteId == "" || siteName == "" {
-		return fmt.Errorf("DeleteAndRenameSite: Invalid input, siteId=%s siteName=%s", siteId, siteName)
-	}
-
-	err := c.DeleteSite(siteId)
-	if err != nil {
-		return fmt.Errorf("DeleteAndRenameSite delete API call failed: %s", err)
-	}
-
-	site := api.SiteUpdateRequest{
-		SiteName: fmt.Sprintf("%s DELETED %s", siteName,
-			strconv.FormatInt(time.Now().UTC().UnixNano(), 10)),
-	}
-
-	_, err = c.UpdateSite(siteId, site)
-	if err != nil {
-		return fmt.Errorf("DeleteAndRenameSite update API call failed: %s", err)
 	}
 
 	return nil
