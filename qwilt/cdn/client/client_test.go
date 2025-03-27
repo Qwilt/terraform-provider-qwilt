@@ -102,7 +102,7 @@ func updateSite(client *cdnclient.SiteClientFacade, siteId string, siteName stri
 }
 
 func deleteSite(client *cdnclient.SiteClientFacade, siteId string, name string) {
-	err := client.PermanentDeleteSite(siteId)
+	err := client.DeleteSite(siteId)
 	if err != nil {
 		log.Fatal(err.Error())
 	} else {

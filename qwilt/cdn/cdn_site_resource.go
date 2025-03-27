@@ -233,7 +233,7 @@ func (r *siteResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	tflog.Debug(ctx, "siteResource: delete\n")
 
 	// Delete the site permanently
-	err := r.client.PermanentDeleteSite(state.SiteId.ValueString())
+	err := r.client.DeleteSite(state.SiteId.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting Qwilt CDN Site",

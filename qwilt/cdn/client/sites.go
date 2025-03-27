@@ -168,15 +168,12 @@ func (c *SiteClient) UpdateSite(siteId string, site api.SiteUpdateRequest) (*api
 }
 
 // DeleteSite - Deletes a site
-func (c *SiteClient) DeleteSite(siteId string, permanent bool) error {
+func (c *SiteClient) DeleteSite(siteId string) error {
 	if siteId == "" {
 		return fmt.Errorf("siteId is empty")
 	}
 
-	url := fmt.Sprintf("%s/api/v2/sites/%s", c.apiEndpoint, siteId)
-	if permanent {
-		url += "?permanent=true"
-	}
+	url := fmt.Sprintf("%s/api/v2/sites/%s?permanent=true", c.apiEndpoint, siteId)
 
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
@@ -187,20 +184,6 @@ func (c *SiteClient) DeleteSite(siteId string, permanent bool) error {
 	_ = body
 	if err != nil {
 		return err
-	}
-
-	return nil
-}
-
-// PermanentDeleteSite - Permanently deletes a site
-func (c *SiteClient) PermanentDeleteSite(siteId string) error {
-	if siteId == "" {
-		return fmt.Errorf("PermanentDeleteSite: Invalid input, siteId=%s", siteId)
-	}
-
-	err := c.DeleteSite(siteId, true)
-	if err != nil {
-		return fmt.Errorf("PermanentDeleteSite API call failed: %s", err)
 	}
 
 	return nil
